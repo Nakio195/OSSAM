@@ -1,9 +1,10 @@
 #include "UI_Button.h"
 
-UI_Button::UI_Button(std::string Path, UserInterface *Parent)
+UI_Button::UI_Button(std::string Path, UserInterface *pParent)
 {
     Background.loadFromFile(Path);
-    setTexture(Background);
+    sf::Sprite::setTexture(Background);
+    Parent = pParent;
 
     State = UI_Button::Enabled;
     Triggered = false;
@@ -23,7 +24,8 @@ bool UI_Button::isTriggered()
 
 void UI_Button::Display(sf::RenderWindow &Window)
 {
-    //Window.draw();
+    setPosition(Parent->getPosition() + Position);
+    Window.draw(*this);//Window.draw();
 }
 
 void UI_Button::setRelativePosition(sf::Vector2f RelativePosition)

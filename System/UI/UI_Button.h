@@ -6,13 +6,13 @@
 
 #include "../UserInterface.h"
 
-class UI_Button : public sf::Sprite, UserInterface
+class UI_Button : UserInterface
 {
     public:
         enum States{Enabled, Disabled, Clicked, Released};
 
     public:
-        UI_Button(std::string Path, UserInterface *Parent);
+        UI_Button(std::string Path, UserInterface *pParent);
         bool isTriggered();
         void setState(unsigned int pState);
 
