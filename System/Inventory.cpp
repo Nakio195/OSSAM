@@ -2,6 +2,8 @@
 
 Inventory::Inventory()
 {
+    Opened = false;
+
     Background.loadFromFile("Ressources/System/Inventory.png");
     setTexture(Background);
     setPosition(200, 200);
@@ -29,4 +31,22 @@ void Inventory::HandleEvent(sf::Event &Event)
     CloseBtn->HandleEvent(Event);
     PreviousBtn->HandleEvent(Event);
     NextBtn->HandleEvent(Event);
+
+    if(CloseBtn->isTriggered())
+        Close();
+}
+
+bool Inventory::isOpen()
+{
+    return Opened;
+}
+
+void Inventory::Open()
+{
+    Opened = true;
+}
+
+void Inventory::Close()
+{
+    Opened = false;
 }

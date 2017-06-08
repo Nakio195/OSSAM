@@ -13,8 +13,12 @@ class Inventory : public UserInterface
         Inventory();
         void Display(sf::RenderWindow &Window);
         void HandleEvent(sf::Event &Event);
+        bool isOpen();
+        void Close();
+        void Open();
 
     private:
+        bool Opened;
         sf::Texture Background;
         UI_Button *CloseBtn;
         UI_Button *NextBtn;

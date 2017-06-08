@@ -230,6 +230,7 @@ void OSSAM::HandleEvents()
             {
                 GameState = OSSAM::OnInventory;
                 OpenedInventory = Captain->getInventory();
+                OpenedInventory->Open();
             }
 
             else
@@ -238,7 +239,13 @@ void OSSAM::HandleEvents()
     }
 
     if(GameState == OSSAM::OnInventory)
+    {
         OpenedInventory->HandleEvent(event);
+
+        if(OpenedInventory->isOpen() == false)
+            GameState = OSSAM::Playing;
+
+    }
 }
 
 void OSSAM::HandleTime()
