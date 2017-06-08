@@ -55,8 +55,6 @@ class Spaceship : public Entity
         void RefreshElapsedTime(bool Release = false);
         void draw(sf::RenderWindow *Window);
 
-        Inventory* getInventory();
-
         /** Animations and Textures **/
         //Shield
         void setTexture_Shield(sf::Texture *pTexture);
@@ -77,8 +75,6 @@ class Spaceship : public Entity
         void Anim_stop_Dying();
 
     protected:
-
-        Inventory MainInventory;
 
         int HealthPoints;
         int Faction;

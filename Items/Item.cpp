@@ -4,6 +4,7 @@ Item::Item(std::string pName)
 {
     Name = pName;
     Clock.restart();
+    Category = Item::Passive;
 }
 
 void Item::setName(std::string pName)
@@ -32,4 +33,10 @@ void Item::RefreshElapsedTime(bool Release)
 
     else
         ElapsedTime = Clock.restart().asSeconds();
+}
+
+
+void Item::setCategory(unsigned int pCategory)
+{
+    Category = pCategory;
 }

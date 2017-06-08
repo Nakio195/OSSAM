@@ -21,6 +21,8 @@ Player::Player(string pName, string PathTotexture, unsigned int pLife, unsigned 
     UI->setHealthBar(sf::Color(102, 204, 51), sf::Vector2f(217, 21), sf::Vector2f(41, 51));
     UI->Fix(sf::Vector2f(10, 10));
 
+    mInventory = new Inventory();
+    /*
     cout << endl;
 
     cout << pName << endl;
@@ -34,6 +36,7 @@ Player::Player(string pName, string PathTotexture, unsigned int pLife, unsigned 
     cout << "\t" << "Ammunitions size : " << pAmmo << endl;
     cout << "\t" << "Skin : " << PathTotexture << endl;
     cout << endl;
+    */
 }
 
 

@@ -36,7 +36,6 @@ Spaceship::Spaceship(string pName, string PathToTexture, unsigned int pLife, uns
     Texture_FullLife = new sf::Texture();
     Texture_FullLife->loadFromFile(PathToTexture);
 
-
     Texture_Spaceship = Texture_FullLife;
     ChangeTexture(Texture_Spaceship);
     this->setOrigin(getTexture()->getSize().x/2, getTexture()->getSize().y/2);
@@ -220,14 +219,6 @@ void Spaceship::draw(sf::RenderWindow *Window)
     }
 
 }
-
-
-
-Inventory* Spaceship::getInventory()
-{
-    return &MainInventory;
-}
-
 
 void Spaceship::setTexture_Shield(sf::Texture *pTexture)
 {

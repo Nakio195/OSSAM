@@ -7,6 +7,9 @@
 class Item
 {
     public:
+        enum {Weapon, Shield, PowerUp, Passive};
+
+    public:
         Item(std::string pName);
         void setName(std::string pName);
         std::string getName();
@@ -15,7 +18,11 @@ class Item
         void RefreshElapsedTime(bool Release = false);
 
     protected:
+        setCategory(unsigned int pCategory);
+
         std::string Name;
+        unsigned int Category;
+
         float ElapsedTime;
         sf::Clock Clock;
 

@@ -4,6 +4,8 @@ extern list<Bullet*> FiredBullets;
 
 Weapon::Weapon(Spaceship *pParent, string pName, string PathToWeapon, unsigned int pHit, float pSpeed, string PathToBulletTexture, string PathToBlastTexture) : Item(pName)
 {
+    setCategory(Item::Weapon);
+
     Parent = pParent;
     setSpeed(pSpeed);
 

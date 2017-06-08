@@ -2,6 +2,8 @@
 
 Shield::Shield(Entity *pParent, unsigned int Shield, std::string pName) : Item(pName)
 {
+    setCategory(Item::Shield);
+
     ShieldMax = Shield;
     ShieldPoints = ShieldMax;
 

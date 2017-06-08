@@ -16,6 +16,7 @@ class Player : public Spaceship
     private:
         unsigned int Xp;
         int Level;
+        Inventory *myInventory;
 };
 
 #endif // PLAYER_H
