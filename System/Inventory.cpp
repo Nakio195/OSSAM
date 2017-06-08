@@ -28,5 +28,5 @@ void Inventory::HandleEvent(sf::Event &Event)
 {
     CloseBtn->HandleEvent(Event);
     PreviousBtn->HandleEvent(Event);
-    NextBtn->HandleEvent(Event);*
+    NextBtn->HandleEvent(Event);
 }

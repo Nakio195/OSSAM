@@ -18,7 +18,7 @@ class Item
         void RefreshElapsedTime(bool Release = false);
 
     protected:
-        setCategory(unsigned int pCategory);
+        void setCategory(unsigned int pCategory);
 
         std::string Name;
         unsigned int Category;

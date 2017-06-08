@@ -40,4 +40,7 @@ Player::Player(string pName, string PathTotexture, unsigned int pLife, unsigned 
 }
 
 
-
+Inventory* Player::getInventory()
+{
+    return mInventory;
+}
