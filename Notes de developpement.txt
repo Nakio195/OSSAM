@@ -1,5 +1,3 @@
 Inventaire:
 On a dans la classe OSSAm un pointeur sur l'inventaire à afficher. Pour l'instant on affichera l'inventaire depuis la fonction OSSAM::HandleDisplay qui utilisera justement ce pointeur pour afficher l'inventaire sur lequel on pointeras. Ceci dans le cas ou on voudrais afiher l'inventaire d'une autre entité : un marchand, un ennemi, un allié. On a comme ça la possibilité d'afficher l'inventaire de n'importe qui.
 L'inventaire à proprement parler est défini dans la classe Spaceship. Il contiendra toute les Items (Armes, Poucliers, Power Up et etc etc).
-
-dsgfjhdqgjhdsklfjghsdklfjghsdfklgjh
