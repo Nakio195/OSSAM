@@ -6,7 +6,6 @@
 #include "UI/UI_Button.h"
 #include "../Items/Weapons/Weapon.h"
 #include "../Items/Shield.h"
-//#include <list>
 
 class Spaceship;
 
