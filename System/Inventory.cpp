@@ -33,7 +33,10 @@ void Inventory::HandleEvent(sf::Event &Event)
     NextBtn->HandleEvent(Event);
 
     if(CloseBtn->isTriggered())
+    {
+        CloseBtn->setState(UI_Button::Released);
         Close();
+    }
 }
 
 bool Inventory::isOpen()

@@ -80,7 +80,6 @@ void UI_Button::HandleEvent(sf::Event &Event)
                 if(this->getGlobalBounds().contains(Event.mouseButton.x, Event.mouseButton.y))
                 {
                     setState(UI_Button::Clicked);
-                    Triggered = true;
                 }
             }
             break;
@@ -89,7 +88,10 @@ void UI_Button::HandleEvent(sf::Event &Event)
             if(Event.mouseButton.button == sf::Mouse::Left)
             {
                 if(State == UI_Button::Clicked)
+                {
                     setState(UI_Button::Released);
+                    Triggered = true;
+                }
             }
             break;
 
