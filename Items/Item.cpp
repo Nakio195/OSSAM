@@ -18,6 +18,21 @@ std::string Item::getName()
     return Name;
 }
 
+sf::Texture* Item::getIcon()
+{
+    return &Icon;
+}
+
+void Item::setIcon(std::string Path)
+{
+    Icon.loadFromFile(Path);
+}
+
+unsigned int Item::getCategory()
+{
+    return Category;
+}
+
 float Item::getElapsedTime()
 {
     return ElapsedTime;

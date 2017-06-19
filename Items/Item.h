@@ -13,6 +13,10 @@ class Item
         Item(std::string pName);
         void setName(std::string pName);
         std::string getName();
+        unsigned int getCategory();
+
+        void setIcon(std::string Path);
+        sf::Texture* getIcon();
 
         float getElapsedTime();
         void RefreshElapsedTime(bool Release = false);

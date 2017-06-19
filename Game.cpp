@@ -14,7 +14,7 @@ OSSAM::OSSAM()
     sf::ContextSettings Settings;
     Settings.antialiasingLevel = ANTI_ALIAS;
 
-    Window.create(sf::VideoMode(WINDOW_WIDHT, WINDOW_HEIGHT), "#OSSAM 2017", sf::Style::Fullscreen, Settings);
+    Window.create(sf::VideoMode(WINDOW_WIDHT, WINDOW_HEIGHT), "#OSSAM 2017", sf::Style::Default, Settings);
 
     Window_Height = Window.getSize().y;
     Window_Width = Window.getSize().x;

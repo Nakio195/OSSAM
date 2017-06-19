@@ -3,8 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 
-#define WINDOW_WIDHT    1000
-#define WINDOW_HEIGHT   600
+#define WINDOW_WIDHT    1400
+#define WINDOW_HEIGHT   800
 
 #include "Entities/Player.h"
 #include "Entities/Ennemy.h"

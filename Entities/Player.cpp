@@ -22,6 +22,10 @@ Player::Player(string pName, string PathTotexture, unsigned int pLife, unsigned 
     UI->Fix(sf::Vector2f(10, 10));
 
     mInventory = new Inventory();
+    mInventory->addItem(MainWeapon);
+    mInventory->addItem(SecondaryWeapon);
+    mInventory->addItem(MainShield);
+
     /*
     cout << endl;
 

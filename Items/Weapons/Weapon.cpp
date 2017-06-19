@@ -29,6 +29,8 @@ Weapon::Weapon(Spaceship *pParent, string pName, string PathToWeapon, unsigned i
     BulletType->setBlastTexture(PathToBlastTexture);
     BulletType->setBulletTexture(PathToBulletTexture);
 
+    setIcon("Ressources/System/Icon/CP_1.png");
+
     cout << endl;
     cout << "Weapon : " << pName << endl;
     cout << "\t" << "Hit : " << pHit << endl;
