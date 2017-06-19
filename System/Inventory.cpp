@@ -83,6 +83,8 @@ void Inventory::selectTab(unsigned int Category)
 
             CurrentTab = Item::Weapon;
             CategoryTxt.setString("ARMES");
+            CategoryTxt.setPosition(this->getPosition()+sf::Vector2f(658, 95));
+            CategoryTxt.setCharacterSize(20);
 
             for (list<Weapon*>::iterator it = MyWeapons.begin(); it != MyWeapons.end(); ++it)
             {
@@ -99,8 +101,10 @@ void Inventory::selectTab(unsigned int Category)
 
         case Item::Shield:
 
-            CurrentTab = Item::Weapon;
+            CurrentTab = Item::Shield;
             CategoryTxt.setString("POUCLIERS");
+            CategoryTxt.setPosition(this->getPosition()+sf::Vector2f(646, 97));
+            CategoryTxt.setCharacterSize(17);
 
             for (list<Weapon*>::iterator it = MyWeapons.begin(); it != MyWeapons.end(); ++it)
             {
