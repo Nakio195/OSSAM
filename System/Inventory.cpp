@@ -44,6 +44,14 @@ void Inventory::Display(sf::RenderWindow &Window)
             Window.draw(MyBag[i]);
         }
     }
+
+    else if(CurrentTab == Item::Shield)
+    {
+        for(unsigned int i = 0; i < MyShields.size(); i++)
+        {
+            Window.draw(MyBag[i]);
+        }
+    }
 }
 
 
@@ -103,16 +111,16 @@ void Inventory::selectTab(unsigned int Category)
 
             CurrentTab = Item::Shield;
             CategoryTxt.setString("POUCLIERS");
-            CategoryTxt.setPosition(this->getPosition()+sf::Vector2f(646, 97));
+            CategoryTxt.setPosition(this->getPosition()+sf::Vector2f(645, 97));
             CategoryTxt.setCharacterSize(17);
 
-            for (list<Weapon*>::iterator it = MyWeapons.begin(); it != MyWeapons.end(); ++it)
+            for (list<Shield*>::iterator it = MyShields.begin(); it != MyShields.end(); ++it)
             {
-                Weapon* CurrentWeapon = *it;
+                Shield* CurrentShield = *it;
 
                 if(i < BAG_SIZE)
                 {
-                    MyBag[i].setTexture(*CurrentWeapon->getIcon());
+                    MyBag[i].setTexture(*CurrentShield->getIcon());
                 }
 
                 i++;

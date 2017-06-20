@@ -30,6 +30,10 @@ class Inventory : public UserInterface
         sf::Font TextFont;
         sf::Text CategoryTxt;
 
+        sf::Sprite Slot_MainWeapon;
+        sf::Sprite Slot_SecondaryWeapon;
+        sf::Sprite Slot_MainShield;
+        sf::Sprite Slot_MainBumper;
         sf::Sprite MyBag[BAG_SIZE];
         UI_Button *CloseBtn;
         UI_Button *NextBtn;
@@ -39,6 +43,7 @@ class Inventory : public UserInterface
 
         std::list<Weapon*> MyWeapons;
         std::list<Shield*> MyShields;
+        std::list<Shield*> MyPowerUp;
 
         Weapon *MainWeapon;
         Weapon *SecondaryWeapon;

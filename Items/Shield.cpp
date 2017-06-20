@@ -3,6 +3,7 @@
 Shield::Shield(Entity *pParent, unsigned int Shield, std::string pName) : Item(pName)
 {
     setCategory(Item::Shield);
+    setIcon("Ressources/System/Icon/SH_1.png");
 
     ShieldMax = Shield;
     ShieldPoints = ShieldMax;
