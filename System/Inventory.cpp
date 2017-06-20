@@ -17,7 +17,8 @@ Inventory::Inventory()
 
     for(unsigned int i = 0; i < BAG_SIZE; i++)
     {
-        MyBag[i].setPosition(this->getPosition()+sf::Vector2f(622 + i%2 *75, 141 + i/2 * 76));
+        MyBag[i] = new UI_Slot("", this);
+        MyBag[i]->setRelativePosition(sf::Vector2f(622 + i%2 *75, 141 + i/2 * 76));
     }
 
     TextFont.loadFromFile("Ressources/System/UI/TYPO KLM.ttf");
@@ -41,7 +42,7 @@ void Inventory::Display(sf::RenderWindow &Window)
     {
         for(unsigned int i = 0; i < MyWeapons.size(); i++)
         {
-            Window.draw(MyBag[i]);
+            MyBag[i]->Display(Window);
         }
     }
 
@@ -49,7 +50,7 @@ void Inventory::Display(sf::RenderWindow &Window)
     {
         for(unsigned int i = 0; i < MyShields.size(); i++)
         {
-            Window.draw(MyBag[i]);
+            MyBag[i]->Display(Window);
         }
     }
 }
@@ -78,6 +79,12 @@ void Inventory::HandleEvent(sf::Event &Event)
         if(CurrentTab < 3)
             selectTab(CurrentTab +1);
     }
+
+
+    for(unsigned int i = 0; i < 10; i++)
+    {
+        MyBag[i]->HandleEvent(Event);
+    }
 }
 
 
@@ -100,7 +107,7 @@ void Inventory::selectTab(unsigned int Category)
 
                 if(i < BAG_SIZE)
                 {
-                    MyBag[i].setTexture(*CurrentWeapon->getIcon());
+                    MyBag[i]->setIcon(CurrentWeapon->getIcon());
                 }
 
                 i++;
@@ -120,7 +127,7 @@ void Inventory::selectTab(unsigned int Category)
 
                 if(i < BAG_SIZE)
                 {
-                    MyBag[i].setTexture(*CurrentShield->getIcon());
+                    MyBag[i]->setIcon(CurrentShield->getIcon());
                 }
 
                 i++;

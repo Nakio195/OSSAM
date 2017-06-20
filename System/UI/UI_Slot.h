@@ -1,20 +1,25 @@
-#ifndef UI_BUTTON_H
-#define UI_BUTTON_H
+#ifndef UI_SLOT_H
+#define UI_SLOT_H
 
 #include <SFML/Graphics.hpp>
 #include <string>
 
 #include "../UserInterface.h"
 
-class UI_Button : public UserInterface
+class UI_Slot : public UserInterface
 {
     public:
-        enum States{Enabled, Disabled, Clicked, Released};
+        enum States{Enabled, Disabled, Clicked, Released, Draged};
 
     public:
-        UI_Button(std::string Path, UserInterface *pParent);
+        UI_Slot(std::string Path, UserInterface *pParent);
+        UI_Slot(sf::Texture *Texture, UserInterface *pParent);
+
         bool isTriggered();
+        bool isHovered();
         void setState(unsigned int pState);
+
+        void setIcon(sf::Texture* pTexture);
 
         void setRelativePosition(float x, float y);
         void setRelativePosition(sf::Vector2f RelativePosition);
@@ -25,10 +30,13 @@ class UI_Button : public UserInterface
 
     private:
         UserInterface *Parent;
-        sf::Texture Background;
+        sf::Texture *Background;
         sf::Vector2f Position;
+        sf::Vector2f DragStartPosition;
         unsigned int State;
         bool Triggered;
+        bool Hovered;
+
 };
 
-#endif // UI_BUTTON_H
+#endif // UI_SLOT_H

@@ -18,7 +18,8 @@ SOURCES += main.cpp \
     Items/Item.cpp \
     System/Inventory.cpp \
     System/UserInterface.cpp \
-    System/UI/UI_Button.cpp
+    System/UI/UI_Button.cpp \
+    System/UI/UI_Slot.cpp
 
 include(deployment.pri)
 qtcAddDeployment()
@@ -62,4 +63,5 @@ HEADERS += \
     Items/Item.h \
     System/Inventory.h \
     System/UserInterface.h \
-    System/UI/UI_Button.h
+    System/UI/UI_Button.h \
+    System/UI/UI_Slot.h

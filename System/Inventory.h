@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "UserInterface.h"
 #include "UI/UI_Button.h"
+#include "UI/UI_Slot.h"
 #include "../Items/Weapons/Weapon.h"
 #include "../Items/Shield.h"
 
@@ -30,11 +31,11 @@ class Inventory : public UserInterface
         sf::Font TextFont;
         sf::Text CategoryTxt;
 
-        sf::Sprite Slot_MainWeapon;
-        sf::Sprite Slot_SecondaryWeapon;
-        sf::Sprite Slot_MainShield;
-        sf::Sprite Slot_MainBumper;
-        sf::Sprite MyBag[BAG_SIZE];
+        UI_Slot* Slot_MainWeapon;
+        UI_Slot* Slot_SecondaryWeapon;
+        UI_Slot* Slot_MainShield;
+        UI_Slot* Slot_MainBumper;
+        UI_Slot* MyBag[BAG_SIZE];
         UI_Button *CloseBtn;
         UI_Button *NextBtn;
         UI_Button *PreviousBtn;
