@@ -9,13 +9,13 @@
 class UI_Slot : public UserInterface
 {
     public:
-        enum States{Enabled, Disabled, Clicked, Released, Draged};
+        enum States{Enabled, Disabled, Clicked, Draged};
 
     public:
         UI_Slot(std::string Path, UserInterface *pParent);
         UI_Slot(sf::Texture *Texture, UserInterface *pParent);
 
-        bool isTriggered();
+        sf::FloatRect isDropped();
         bool isHovered();
         void setState(unsigned int pState);
 
@@ -32,9 +32,10 @@ class UI_Slot : public UserInterface
         UserInterface *Parent;
         sf::Texture *Background;
         sf::Vector2f Position;
+        sf::Vector2f Origin;
         sf::Vector2f DragStartPosition;
         unsigned int State;
-        bool Triggered;
+        bool Dropped;
         bool Hovered;
 
 };

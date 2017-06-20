@@ -10,7 +10,7 @@ UI_Slot::UI_Slot(std::string Path, UserInterface *pParent) : UserInterface()
     Parent = pParent;
 
     State = UI_Slot::Enabled;
-    Triggered = false;
+    Dropped = false;
 }
 
 UI_Slot::UI_Slot(sf::Texture *Texture, UserInterface *pParent) : UserInterface()
@@ -20,19 +20,20 @@ UI_Slot::UI_Slot(sf::Texture *Texture, UserInterface *pParent) : UserInterface()
     Parent = pParent;
 
     State = UI_Slot::Enabled;
-    Triggered = false;
+    Dropped = false;
 }
 
-bool UI_Slot::isTriggered()
+sf::FloatRect UI_Slot::isDropped()
 {
-    if(Triggered)
+    if(Dropped)
     {
-        Triggered = false;
-        return true;
+        Dropped = false;
+        Position = Origin;
+        return getGlobalBounds();
     }
 
     else
-        return false;
+        return sf::FloatRect();
 }
 
 bool UI_Slot::isHovered()
@@ -66,12 +67,6 @@ void UI_Slot::setState(unsigned int pState)
         State = pState;
     }
 
-    else if(pState == UI_Slot::Released)
-    {
-        this->setColor(sf::Color(0xFF, 0xFF, 0xFF));
-        State = pState;
-    }
-
     else if(pState == UI_Slot::Draged)
     {
         this->setColor(sf::Color(0x80, 0xFF, 0x80));
@@ -82,11 +77,13 @@ void UI_Slot::setState(unsigned int pState)
 void UI_Slot::setRelativePosition(float x, float y)
 {
     Position = sf::Vector2f(x, y);
+    Origin = Position;
 }
 
 void UI_Slot::setRelativePosition(sf::Vector2f RelativePosition)
 {
     Position = RelativePosition;
+    Origin = Position;
 }
 
 sf::Vector2f UI_Slot::getRelativePosition()
@@ -102,6 +99,9 @@ void UI_Slot::Display(sf::RenderWindow &Window)
 
 void UI_Slot::HandleEvent(sf::Event &Event)
 {
+    if(State == UI_Slot::Disabled)
+        return;
+
     switch(Event.type)
     {
         case sf::Event::MouseButtonPressed:
@@ -120,8 +120,8 @@ void UI_Slot::HandleEvent(sf::Event &Event)
             {
                 if(State == UI_Slot::Draged)
                 {
-                    setState(UI_Slot::Released);
-                    Triggered = true;
+                    setState(UI_Slot::Enabled);
+                    Dropped = true;
                 }
             }
             break;

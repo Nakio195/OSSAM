@@ -38,20 +38,9 @@ void Inventory::Display(sf::RenderWindow &Window)
 
     Window.draw(CategoryTxt);
 
-    if(CurrentTab == Item::Weapon)
+    for(unsigned int i = 0; i < BAG_SIZE; i++)
     {
-        for(unsigned int i = 0; i < MyWeapons.size(); i++)
-        {
-            MyBag[i]->Display(Window);
-        }
-    }
-
-    else if(CurrentTab == Item::Shield)
-    {
-        for(unsigned int i = 0; i < MyShields.size(); i++)
-        {
-            MyBag[i]->Display(Window);
-        }
+        MyBag[i]->Display(Window);
     }
 }
 
@@ -81,9 +70,28 @@ void Inventory::HandleEvent(sf::Event &Event)
     }
 
 
-    for(unsigned int i = 0; i < 10; i++)
+    for(unsigned int i = 0; i < BAG_SIZE; i++)
     {
+        sf::FloatRect DropPlace;
+
         MyBag[i]->HandleEvent(Event);
+        DropPlace = MyBag[i]->isDropped();
+
+        if(DropPlace != sf::FloatRect())
+        {
+            for(unsigned int j = 0; j < BAG_SIZE; j++)
+            {
+                if(i != j)
+                {
+                    if(MyBag[j]->getGlobalBounds().intersects(DropPlace))
+                    {
+                        UI_Slot* Temp = MyBag[j];
+                        MyBag[j] = MyBag[i];
+                        MyBag[i] = Temp;
+                    }
+                }
+            }
+        }
     }
 }
 
