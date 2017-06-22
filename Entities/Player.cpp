@@ -10,6 +10,7 @@ Player::Player(string pName, string PathTotexture, unsigned int pLife, unsigned 
     MainWeapon->setRelativePosition(sf::Vector2f(-27, -30));
     MainWeapon->setShootPosition(sf::Vector2f(80, -6));
     MainWeapon->setBlastTexture("Ressources/Sprite/blast-CP.png");
+    MainWeapon->setIcon("Ressources/System/Icon/RG_1.png");
 
     SecondaryWeapon = new Weapon(this, "Lance Missile", "", 30, 1, "Ressources/Sprite/missile.png", "Ressources/Sprite/explosion.png");
     SecondaryWeapon->setShootingDirection(sf::Vector2f(1, 0));

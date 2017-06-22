@@ -1,26 +1,19 @@
 #include "UI_Slot.h"
 
-UI_Slot::UI_Slot(std::string Path, UserInterface *pParent) : UserInterface()
+UI_Slot::UI_Slot(UserInterface *pParent) : UserInterface()
 {
     Background = new sf::Texture();
 
-    if(Background->loadFromFile(Path))
+    if(Background->loadFromFile("Ressources/System/Icon/Empty.png"))
         sf::Sprite::setTexture(*Background);
 
+    Icon = new sf::Texture();
+
     Parent = pParent;
 
     State = UI_Slot::Enabled;
     Dropped = false;
-}
-
-UI_Slot::UI_Slot(sf::Texture *Texture, UserInterface *pParent) : UserInterface()
-{
-    Background = Texture;
-    sf::Sprite::setTexture(*Background);
-    Parent = pParent;
-
-    State = UI_Slot::Enabled;
-    Dropped = false;
+    Empty = true;
 }
 
 sf::FloatRect UI_Slot::isDropped()
@@ -41,10 +34,35 @@ bool UI_Slot::isHovered()
 
 }
 
+bool UI_Slot::isEmpty()
+{
+    return Empty;
+}
+
+
+void UI_Slot::Clear()
+{
+    Container = NULL;
+    setTexture(*Background);
+    Empty = true;
+}
+
+void UI_Slot::setItem(Item* pItem)
+{
+    Container = pItem;
+    setIcon(pItem->getIcon());
+    Empty = false;
+}
+
+Item* UI_Slot::getItem()
+{
+    return Container;
+}
+
 void UI_Slot::setIcon(sf::Texture* pTexture)
 {
-    Background = pTexture;
-    setTexture(*Background);
+    Icon = pTexture;
+    setTexture(*Icon);
 }
 
 void UI_Slot::setState(unsigned int pState)
@@ -74,6 +92,12 @@ void UI_Slot::setState(unsigned int pState)
     }
 }
 
+
+unsigned int UI_Slot::getState()
+{
+    return State;
+}
+
 void UI_Slot::setRelativePosition(float x, float y)
 {
     Position = sf::Vector2f(x, y);
@@ -99,7 +123,7 @@ void UI_Slot::Display(sf::RenderWindow &Window)
 
 void UI_Slot::HandleEvent(sf::Event &Event)
 {
-    if(State == UI_Slot::Disabled)
+    if(State == UI_Slot::Disabled || Empty)
         return;
 
     switch(Event.type)

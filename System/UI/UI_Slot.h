@@ -5,6 +5,7 @@
 #include <string>
 
 #include "../UserInterface.h"
+#include "../../Items/Item.h"
 
 class UI_Slot : public UserInterface
 {
@@ -12,12 +13,18 @@ class UI_Slot : public UserInterface
         enum States{Enabled, Disabled, Clicked, Draged};
 
     public:
-        UI_Slot(std::string Path, UserInterface *pParent);
-        UI_Slot(sf::Texture *Texture, UserInterface *pParent);
+        UI_Slot(UserInterface *pParent);
 
         sf::FloatRect isDropped();
         bool isHovered();
+        bool isEmpty();
+
         void setState(unsigned int pState);
+        unsigned int getState();
+
+        void Clear();
+        void setItem(Item* pItem);
+        Item* getItem();
 
         void setIcon(sf::Texture* pTexture);
 
@@ -30,13 +37,19 @@ class UI_Slot : public UserInterface
 
     private:
         UserInterface *Parent;
+
         sf::Texture *Background;
+        sf::Texture *Icon;
+
         sf::Vector2f Position;
         sf::Vector2f Origin;
         sf::Vector2f DragStartPosition;
         unsigned int State;
         bool Dropped;
         bool Hovered;
+        bool Empty;
+
+        Item *Container;
 
 };
 

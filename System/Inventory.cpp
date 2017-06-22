@@ -17,7 +17,7 @@ Inventory::Inventory()
 
     for(unsigned int i = 0; i < BAG_SIZE; i++)
     {
-        MyBag[i] = new UI_Slot("", this);
+        MyBag[i] = new UI_Slot(this);
         MyBag[i]->setRelativePosition(sf::Vector2f(622 + i%2 *75, 141 + i/2 * 76));
     }
 
@@ -40,7 +40,14 @@ void Inventory::Display(sf::RenderWindow &Window)
 
     for(unsigned int i = 0; i < BAG_SIZE; i++)
     {
-        MyBag[i]->Display(Window);
+        if(MyBag[i]->getState() != UI_Slot::Draged)
+            MyBag[i]->Display(Window);
+    }
+
+    for(unsigned int i = 0; i < BAG_SIZE; i++)
+    {
+        if(MyBag[i]->getState() == UI_Slot::Draged)
+            MyBag[i]->Display(Window);
     }
 }
 
@@ -85,9 +92,20 @@ void Inventory::HandleEvent(sf::Event &Event)
                 {
                     if(MyBag[j]->getGlobalBounds().intersects(DropPlace))
                     {
-                        UI_Slot* Temp = MyBag[j];
-                        MyBag[j] = MyBag[i];
-                        MyBag[i] = Temp;
+                        if(!MyBag[j]->isEmpty())
+                        {
+                            Item* Temp = MyBag[j]->getItem();
+                            MyBag[j]->setItem(MyBag[i]->getItem());
+                            MyBag[i]->setItem(Temp);
+                        }
+
+                        else
+                        {
+                            MyBag[j]->setItem(MyBag[i]->getItem());
+                            MyBag[i]->Clear();
+                        }
+
+                        break;
                     }
                 }
             }
@@ -99,6 +117,11 @@ void Inventory::HandleEvent(sf::Event &Event)
 void Inventory::selectTab(unsigned int Category)
 {
     unsigned int i = 0;
+
+    for(int i = 0; i < BAG_SIZE; i++)
+    {
+        MyBag[i]->Clear();
+    }
 
     switch (Category)
     {
@@ -115,7 +138,7 @@ void Inventory::selectTab(unsigned int Category)
 
                 if(i < BAG_SIZE)
                 {
-                    MyBag[i]->setIcon(CurrentWeapon->getIcon());
+                    MyBag[i]->setItem(CurrentWeapon);
                 }
 
                 i++;
@@ -135,7 +158,7 @@ void Inventory::selectTab(unsigned int Category)
 
                 if(i < BAG_SIZE)
                 {
-                    MyBag[i]->setIcon(CurrentShield->getIcon());
+                    MyBag[i]->setItem(CurrentShield);
                 }
 
                 i++;
