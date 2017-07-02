@@ -36,6 +36,7 @@ class Inventory : public UserInterface
         UI_Slot* Slot_MainShield;
         UI_Slot* Slot_MainBumper;
         UI_Slot* MyBag[BAG_SIZE];
+
         UI_Button *CloseBtn;
         UI_Button *NextBtn;
         UI_Button *PreviousBtn;

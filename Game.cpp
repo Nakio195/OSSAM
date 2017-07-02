@@ -77,7 +77,7 @@ void OSSAM::HandlePhysics()
 
     int randomval = rand();
 
-    if(randomval < 8000)
+    if(randomval < 1200)
         Bleuton->Shoot(Weapon::Main);
 
 

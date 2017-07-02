@@ -15,10 +15,22 @@ Inventory::Inventory()
     NextBtn = new UI_Button("Ressources/System/UI/NextBtn.png", this);
     NextBtn->setRelativePosition(745, 97);
 
+    Slot_MainWeapon = new UI_Slot(this);
+    Slot_SecondaryWeapon = new UI_Slot(this);
+    Slot_MainShield = new UI_Slot(this);
+    Slot_MainBumper = new UI_Slot(this);
+
+    Slot_MainWeapon->setRelativePosition(sf::Vector2f(470, 158));
+    Slot_SecondaryWeapon->setRelativePosition(sf::Vector2f(470, 231));
+    Slot_MainBumper->setRelativePosition(sf::Vector2f(470, 366));
+    Slot_MainShield->setRelativePosition(sf::Vector2f(248, 366));
+
+
     for(unsigned int i = 0; i < BAG_SIZE; i++)
     {
         MyBag[i] = new UI_Slot(this);
         MyBag[i]->setRelativePosition(sf::Vector2f(622 + i%2 *75, 141 + i/2 * 76));
+        MyBag[i]->setType(UI_Slot::Bag);
     }
 
     TextFont.loadFromFile("Ressources/System/UI/TYPO KLM.ttf");
@@ -38,6 +50,15 @@ void Inventory::Display(sf::RenderWindow &Window)
 
     Window.draw(CategoryTxt);
 
+    if(Slot_MainWeapon->getState() != UI_Slot::Draged)
+        Slot_MainWeapon->Display(Window);
+    if(Slot_SecondaryWeapon->getState() != UI_Slot::Draged)
+        Slot_SecondaryWeapon->Display(Window);
+    if(Slot_MainShield->getState() != UI_Slot::Draged)
+        Slot_MainShield->Display(Window);
+    if(Slot_MainBumper->getState() != UI_Slot::Draged)
+        Slot_MainBumper->Display(Window);
+
     for(unsigned int i = 0; i < BAG_SIZE; i++)
     {
         if(MyBag[i]->getState() != UI_Slot::Draged)
@@ -49,6 +70,15 @@ void Inventory::Display(sf::RenderWindow &Window)
         if(MyBag[i]->getState() == UI_Slot::Draged)
             MyBag[i]->Display(Window);
     }
+
+    if(Slot_MainWeapon->getState() == UI_Slot::Draged)
+        Slot_MainWeapon->Display(Window);
+    if(Slot_SecondaryWeapon->getState() == UI_Slot::Draged)
+        Slot_SecondaryWeapon->Display(Window);
+    if(Slot_MainShield->getState() == UI_Slot::Draged)
+        Slot_MainShield->Display(Window);
+    if(Slot_MainBumper->getState() == UI_Slot::Draged)
+        Slot_MainBumper->Display(Window);
 }
 
 
@@ -57,6 +87,10 @@ void Inventory::HandleEvent(sf::Event &Event)
     CloseBtn->HandleEvent(Event);
     PreviousBtn->HandleEvent(Event);
     NextBtn->HandleEvent(Event);
+    Slot_MainBumper->HandleEvent(Event);
+    Slot_MainWeapon->HandleEvent(Event);
+    Slot_SecondaryWeapon->HandleEvent(Event);
+    Slot_MainShield->HandleEvent(Event);
 
     if(CloseBtn->isTriggered())
     {
@@ -76,40 +110,109 @@ void Inventory::HandleEvent(sf::Event &Event)
             selectTab(CurrentTab +1);
     }
 
+    //Handling Drag&Drop
 
-    for(unsigned int i = 0; i < BAG_SIZE; i++)
+    UI_Slot *MovedSlot = NULL;
+    UI_Slot *DestinationSlot = NULL;
+
+    sf::FloatRect DropPlace;
+
+
+    //Identifying MovedSlot
+    if(Slot_MainWeapon->isDropped())
     {
-        sf::FloatRect DropPlace;
+        MovedSlot = Slot_MainWeapon;
+        DropPlace = MovedSlot->getDropPosition();
+    }
 
-        MyBag[i]->HandleEvent(Event);
-        DropPlace = MyBag[i]->isDropped();
+    else if(Slot_SecondaryWeapon->isDropped())
+    {
+        MovedSlot = Slot_SecondaryWeapon;
+        DropPlace = MovedSlot->getDropPosition();
+    }
 
-        if(DropPlace != sf::FloatRect())
+    else if(Slot_MainShield->isDropped())
+    {
+        MovedSlot = Slot_MainShield;
+        DropPlace = MovedSlot->getDropPosition();
+    }
+
+    else if(Slot_MainBumper->isDropped())
+    {
+        MovedSlot = Slot_MainBumper;
+        DropPlace = MovedSlot->getDropPosition();
+    }
+
+    else
+    {
+        for(unsigned int i = 0; i < BAG_SIZE; i++)
         {
-            for(unsigned int j = 0; j < BAG_SIZE; j++)
+            MyBag[i]->HandleEvent(Event);
+
+            if(MyBag[i]->isDropped())
             {
-                if(i != j)
+                MovedSlot = MyBag[i];
+                DropPlace = MovedSlot->getDropPosition();
+                break;
+            }
+        }
+    }
+
+    //Finding DestinationSlot
+    if(DropPlace != sf::FloatRect())
+    {
+        if(Slot_MainWeapon->getGlobalBounds().intersects(DropPlace))
+            DestinationSlot = Slot_MainWeapon;
+
+        else if(Slot_SecondaryWeapon->getGlobalBounds().intersects(DropPlace))
+            DestinationSlot = Slot_SecondaryWeapon;
+
+        else if(Slot_MainShield->getGlobalBounds().intersects(DropPlace))
+            DestinationSlot = Slot_MainShield;
+
+        else if(Slot_MainBumper->getGlobalBounds().intersects(DropPlace))
+            DestinationSlot = Slot_MainBumper;
+
+        else
+        {
+            for(unsigned int i = 0; i < BAG_SIZE; i++)
+            {
+                if(MyBag[i] != MovedSlot)
                 {
-                    if(MyBag[j]->getGlobalBounds().intersects(DropPlace))
+                    if(MyBag[i]->getGlobalBounds().intersects(DropPlace))
                     {
-                        if(!MyBag[j]->isEmpty())
-                        {
-                            Item* Temp = MyBag[j]->getItem();
-                            MyBag[j]->setItem(MyBag[i]->getItem());
-                            MyBag[i]->setItem(Temp);
-                        }
-
-                        else
-                        {
-                            MyBag[j]->setItem(MyBag[i]->getItem());
-                            MyBag[i]->Clear();
-                        }
-
+                        DestinationSlot = MyBag[i];
                         break;
                     }
                 }
             }
         }
+
+        if(DestinationSlot != NULL)
+        {
+            if(!DestinationSlot->isEmpty())
+            {
+                Item* Temp = DestinationSlot->getItem();
+                DestinationSlot->setItem(MovedSlot->getItem());
+                MovedSlot->setItem(Temp);
+            }
+
+            else
+            {
+                DestinationSlot->setItem(MovedSlot->getItem());
+                MovedSlot->Clear();
+            }
+
+            if(DestinationSlot->getType() == UI_Slot::Bag)
+                DestinationSlot->getItem()->setState(Item::InBag);
+            else if(DestinationSlot->getType() == UI_Slot::Equipement)
+                DestinationSlot->getItem()->setState(Item::Equiped);
+
+            MovedSlot->ValidateDrop();
+        }
+
+        else
+            MovedSlot->UnvalidateDrop();
     }
 }
 
@@ -138,10 +241,12 @@ void Inventory::selectTab(unsigned int Category)
 
                 if(i < BAG_SIZE)
                 {
-                    MyBag[i]->setItem(CurrentWeapon);
+                    if(CurrentWeapon->getState() == Item::InBag)
+                    {
+                        MyBag[i]->setItem(CurrentWeapon);
+                        i++;
+                    }
                 }
-
-                i++;
             }
             break;
 
@@ -158,10 +263,12 @@ void Inventory::selectTab(unsigned int Category)
 
                 if(i < BAG_SIZE)
                 {
-                    MyBag[i]->setItem(CurrentShield);
+                    if(MyBag[i]->getState() == Item::InBag)
+                    {
+                        MyBag[i]->setItem(CurrentShield);
+                        i++;
+                    }
                 }
-
-                i++;
             }
             break;
 

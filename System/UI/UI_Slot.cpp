@@ -7,26 +7,55 @@ UI_Slot::UI_Slot(UserInterface *pParent) : UserInterface()
     if(Background->loadFromFile("Ressources/System/Icon/Empty.png"))
         sf::Sprite::setTexture(*Background);
 
-    Icon = new sf::Texture();
+    TextureIcon = new sf::Texture();
 
     Parent = pParent;
 
     State = UI_Slot::Enabled;
     Dropped = false;
     Empty = true;
+    Type = UI_Slot::Equipement;
 }
 
-sf::FloatRect UI_Slot::isDropped()
+void UI_Slot::setType(unsigned int pType)
+{
+    if(pType == UI_Slot::Bag || UI_Slot::Equipement)
+    {
+        Type = pType;
+    }
+}
+
+unsigned int UI_Slot::getType()
+{
+    return Type;
+}
+
+sf::FloatRect UI_Slot::getDropPosition()
 {
     if(Dropped)
     {
-        Dropped = false;
         Position = Origin;
-        return getGlobalBounds();
+        return Icon.getGlobalBounds();
     }
 
     else
         return sf::FloatRect();
+}
+
+bool UI_Slot::isDropped()
+{
+    return Dropped;
+}
+
+void UI_Slot::ValidateDrop()
+{
+    Dropped = false;
+}
+
+void UI_Slot::UnvalidateDrop()
+{
+    Dropped = false;
+    Position = Origin;
 }
 
 bool UI_Slot::isHovered()
@@ -61,33 +90,33 @@ Item* UI_Slot::getItem()
 
 void UI_Slot::setIcon(sf::Texture* pTexture)
 {
-    Icon = pTexture;
-    setTexture(*Icon);
+    TextureIcon = pTexture;
+    Icon.setTexture(*pTexture);
 }
 
 void UI_Slot::setState(unsigned int pState)
 {
     if(pState == UI_Slot::Enabled)
     {
-        this->setColor(sf::Color(0xFF, 0xFF, 0xFF));
+        Icon.setColor(sf::Color(0xFF, 0xFF, 0xFF));
         State = pState;
     }
 
     else if(pState == UI_Slot::Disabled)
     {
-        this->setColor(sf::Color(0x80, 0x80, 0x80));
+        Icon.setColor(sf::Color(0x80, 0x80, 0x80));
         State = pState;
     }
 
     else if(pState == UI_Slot::Clicked)
     {
-        this->setColor(sf::Color(0x80, 0xFF, 0x80));
+        Icon.setColor(sf::Color(0x80, 0xFF, 0x80));
         State = pState;
     }
 
     else if(pState == UI_Slot::Draged)
     {
-        this->setColor(sf::Color(0x80, 0xFF, 0x80));
+        Icon.setColor(sf::Color(0x80, 0xFF, 0x80));
         State = pState;
     }
 }
@@ -117,8 +146,12 @@ sf::Vector2f UI_Slot::getRelativePosition()
 
 void UI_Slot::Display(sf::RenderWindow &Window)
 {
-    setPosition(Parent->getPosition() + Position);
+    setPosition(Parent->getPosition() + Origin);
+    Icon.setPosition(Parent->getPosition() + Position);
     Window.draw(*this);
+
+    if(!Empty)
+        Window.draw(Icon);
 }
 
 void UI_Slot::HandleEvent(sf::Event &Event)

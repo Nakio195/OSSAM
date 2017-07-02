@@ -5,6 +5,7 @@ Item::Item(std::string pName)
     Name = pName;
     Clock.restart();
     Category = Item::Passive;
+    State = Item::InBag;
 }
 
 void Item::setName(std::string pName)
@@ -16,6 +17,17 @@ void Item::setName(std::string pName)
 std::string Item::getName()
 {
     return Name;
+}
+
+unsigned int Item::getState()
+{
+    return State;
+}
+
+void Item::setState(unsigned int pState)
+{
+    if(pState == Item::Equiped || pState == Item::InBag)
+        State = pState;
 }
 
 sf::Texture* Item::getIcon()

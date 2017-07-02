@@ -8,6 +8,7 @@ class Item
 {
     public:
         enum {Weapon, Shield, PowerUp, Passive};
+        enum {InBag, Equiped};
 
     public:
         Item(std::string pName);
@@ -17,6 +18,9 @@ class Item
 
         void setIcon(std::string Path);
         sf::Texture* getIcon();
+
+        unsigned int getState();
+        void setState(unsigned int pState);
 
         float getElapsedTime();
         void RefreshElapsedTime(bool Release = false);
@@ -31,6 +35,8 @@ class Item
         sf::Clock Clock;
 
         sf::Texture Icon;
+
+        unsigned int State;
 
 
 };

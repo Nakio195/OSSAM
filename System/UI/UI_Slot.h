@@ -11,11 +11,12 @@ class UI_Slot : public UserInterface
 {
     public:
         enum States{Enabled, Disabled, Clicked, Draged};
+        enum Types{Bag, Equipement};
 
     public:
         UI_Slot(UserInterface *pParent);
 
-        sf::FloatRect isDropped();
+        bool isDropped();
         bool isHovered();
         bool isEmpty();
 
@@ -23,6 +24,8 @@ class UI_Slot : public UserInterface
         unsigned int getState();
 
         void Clear();
+        void setType(unsigned int pType);
+        unsigned int getType();
         void setItem(Item* pItem);
         Item* getItem();
 
@@ -31,6 +34,10 @@ class UI_Slot : public UserInterface
         void setRelativePosition(float x, float y);
         void setRelativePosition(sf::Vector2f RelativePosition);
         sf::Vector2f getRelativePosition();
+        sf::FloatRect getDropPosition();
+
+        void ValidateDrop();
+        void UnvalidateDrop();
 
         void Display(sf::RenderWindow &Window);
         void HandleEvent(sf::Event &Event);
@@ -38,8 +45,12 @@ class UI_Slot : public UserInterface
     private:
         UserInterface *Parent;
 
+        unsigned int Type;
+
         sf::Texture *Background;
-        sf::Texture *Icon;
+
+        sf::Sprite Icon;
+        sf::Texture *TextureIcon;
 
         sf::Vector2f Position;
         sf::Vector2f Origin;

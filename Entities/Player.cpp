@@ -5,7 +5,7 @@ extern int Window_Width;
 
 Player::Player(string pName, string PathTotexture, unsigned int pLife, unsigned int pShield, unsigned int pAttack, unsigned int pDefense, unsigned int pGenerator, float pSpeed, unsigned int pXP, unsigned int pAmmo) : Spaceship(pName, PathTotexture, pLife, pShield, pAttack, pDefense, pGenerator, pSpeed, pXP, pAmmo)
 {
-    MainWeapon = new Weapon(this, "Laser Simple", "Ressources/Sprite/Player/canon.png", 10, 0.01, "Ressources/Sprite/LaserBleu.png", "Ressources/Sprite/boom2.png");
+    MainWeapon = new Weapon(this, "Laser Simple", "Ressources/Sprite/Player/canon.png", 10, 0.1, "Ressources/Sprite/LaserBleu.png", "Ressources/Sprite/boom2.png");
     MainWeapon->setShootingDirection(sf::Vector2f(1, 0));
     MainWeapon->setRelativePosition(sf::Vector2f(-27, -30));
     MainWeapon->setShootPosition(sf::Vector2f(80, -6));
