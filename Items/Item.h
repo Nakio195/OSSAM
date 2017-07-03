@@ -7,7 +7,7 @@
 class Item
 {
     public:
-        enum {Weapon, Shield, PowerUp, Passive};
+        enum {Weapon, Shield, PowerUp, Bumper, Passive};
         enum {InBag, Equiped};
 
     public:

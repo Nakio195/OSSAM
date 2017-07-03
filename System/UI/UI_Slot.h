@@ -10,11 +10,11 @@
 class UI_Slot : public UserInterface
 {
     public:
-        enum States{Enabled, Disabled, Clicked, Draged};
-        enum Types{Bag, Equipement};
+        enum States{Enabled, Disabled, Clicked, Dragged, Accept, Reject};
+        enum Types{Bag = Item::Passive, Weapon = Item::Weapon, Shield = Item::Shield, Bumper = Item::Bumper};
 
     public:
-        UI_Slot(UserInterface *pParent);
+        UI_Slot(UserInterface *pParent, unsigned int pType);
 
         bool isDropped();
         bool isHovered();
@@ -56,6 +56,7 @@ class UI_Slot : public UserInterface
         sf::Vector2f Origin;
         sf::Vector2f DragStartPosition;
         unsigned int State;
+        unsigned int OldState;
         bool Dropped;
         bool Hovered;
         bool Empty;

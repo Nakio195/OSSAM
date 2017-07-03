@@ -1,6 +1,6 @@
 #include "UI_Slot.h"
 
-UI_Slot::UI_Slot(UserInterface *pParent) : UserInterface()
+UI_Slot::UI_Slot(UserInterface *pParent, unsigned int pType) : UserInterface()
 {
     Background = new sf::Texture();
 
@@ -12,16 +12,20 @@ UI_Slot::UI_Slot(UserInterface *pParent) : UserInterface()
     Parent = pParent;
 
     State = UI_Slot::Enabled;
+    OldState = State;
     Dropped = false;
     Empty = true;
-    Type = UI_Slot::Equipement;
+    Type = pType;
+    Hovered = false;
 }
 
 void UI_Slot::setType(unsigned int pType)
 {
-    if(pType == UI_Slot::Bag || UI_Slot::Equipement)
+    switch(pType)
     {
-        Type = pType;
+        case UI_Slot::Bag || UI_Slot::Bumper || UI_Slot::Weapon || UI_Slot::Shield:
+            Type = pType;
+            break;
     }
 }
 
@@ -50,17 +54,19 @@ bool UI_Slot::isDropped()
 void UI_Slot::ValidateDrop()
 {
     Dropped = false;
+    setState(UI_Slot::Enabled);
 }
 
 void UI_Slot::UnvalidateDrop()
 {
     Dropped = false;
     Position = Origin;
+    setState(UI_Slot::Enabled);
 }
 
 bool UI_Slot::isHovered()
 {
-
+    return Hovered;
 }
 
 bool UI_Slot::isEmpty()
@@ -85,7 +91,8 @@ void UI_Slot::setItem(Item* pItem)
 
 Item* UI_Slot::getItem()
 {
-    return Container;
+    if(!Empty)
+        return Container;
 }
 
 void UI_Slot::setIcon(sf::Texture* pTexture)
@@ -98,6 +105,7 @@ void UI_Slot::setState(unsigned int pState)
 {
     if(pState == UI_Slot::Enabled)
     {
+        setColor(sf::Color(0xFF, 0xFF, 0xFF));
         Icon.setColor(sf::Color(0xFF, 0xFF, 0xFF));
         State = pState;
     }
@@ -114,10 +122,30 @@ void UI_Slot::setState(unsigned int pState)
         State = pState;
     }
 
-    else if(pState == UI_Slot::Draged)
+    else if(pState == UI_Slot::Dragged)
     {
-        Icon.setColor(sf::Color(0x80, 0xFF, 0x80));
+        Icon.setColor(sf::Color(0xFF, 0xFF, 0xFF, 0xA0));
         State = pState;
+    }
+
+    else if(pState == UI_Slot::Accept)
+    {
+        setColor(sf::Color(0x80, 0xFF, 0x80));
+        if(State != UI_Slot::Accept && State != UI_Slot::Reject)
+        {
+            OldState = State;
+            State = pState;
+        }
+    }
+
+    else if(pState == UI_Slot::Reject)
+    {
+        setColor(sf::Color(0xFF, 0x00, 0x00));
+        if(State != UI_Slot::Accept && State != UI_Slot::Reject)
+        {
+            OldState = State;
+            State = pState;
+        }
     }
 }
 
@@ -156,7 +184,7 @@ void UI_Slot::Display(sf::RenderWindow &Window)
 
 void UI_Slot::HandleEvent(sf::Event &Event)
 {
-    if(State == UI_Slot::Disabled || Empty)
+    if(State == UI_Slot::Disabled)
         return;
 
     switch(Event.type)
@@ -164,9 +192,9 @@ void UI_Slot::HandleEvent(sf::Event &Event)
         case sf::Event::MouseButtonPressed:
             if(Event.mouseButton.button == sf::Mouse::Left)
             {
-                if(this->getGlobalBounds().contains(Event.mouseButton.x, Event.mouseButton.y))
+                if(this->getGlobalBounds().contains(Event.mouseButton.x, Event.mouseButton.y) && !Empty)
                 {
-                    setState(UI_Slot::Draged);
+                    setState(UI_Slot::Dragged);
                     DragStartPosition = sf::Vector2f(Event.mouseButton.x, Event.mouseButton.y);
                 }
             }
@@ -175,7 +203,7 @@ void UI_Slot::HandleEvent(sf::Event &Event)
         case sf::Event::MouseButtonReleased:
             if(Event.mouseButton.button == sf::Mouse::Left)
             {
-                if(State == UI_Slot::Draged)
+                if(State == UI_Slot::Dragged)
                 {
                     setState(UI_Slot::Enabled);
                     Dropped = true;
@@ -184,7 +212,17 @@ void UI_Slot::HandleEvent(sf::Event &Event)
             break;
 
         case sf::Event::MouseMoved:
-            if(State == UI_Slot::Draged)
+            if(this->getGlobalBounds().contains(sf::Vector2f(Event.mouseMove.x, Event.mouseMove.y)))
+                Hovered = true;
+
+            else
+            {
+                Hovered = false;
+                if(State == UI_Slot::Accept || State == UI_Slot::Reject)
+                    setState(OldState);
+            }
+
+            if(State == UI_Slot::Dragged)
             {
                 Position += sf::Vector2f(Event.mouseMove.x, Event.mouseMove.y) - DragStartPosition;
                 DragStartPosition = sf::Vector2f(Event.mouseMove.x, Event.mouseMove.y);
