@@ -121,7 +121,7 @@ void Inventory::HandleEvent(sf::Event &Event)
     UI_Slot *MovedSlot = NULL;
     UI_Slot *DestinationSlot = NULL;
 
-    sf::FloatRect DropPlace;
+    sf::Vector2f DropPlace;
 
     //Identifying DraggedSlot
     if(Slot_MainWeapon->getState() == UI_Slot::Dragged)
@@ -157,7 +157,7 @@ void Inventory::HandleEvent(sf::Event &Event)
         }
     }
 
-    if(Slot_MainWeapon->isHovered() && DraggedSlot != NULL && Slot_MainWeapon != DraggedSlot)
+    if(Slot_MainWeapon->isHovered() && DraggedSlot != NULL)
     {
         if(DraggedSlot->getItem()->getCategory() == Slot_MainWeapon->getType())
             Slot_MainWeapon->setState(UI_Slot::Accept);
@@ -165,7 +165,7 @@ void Inventory::HandleEvent(sf::Event &Event)
             Slot_MainWeapon->setState(UI_Slot::Reject);
     }
 
-    if(Slot_SecondaryWeapon->isHovered() && DraggedSlot != NULL && Slot_SecondaryWeapon != DraggedSlot)
+    if(Slot_SecondaryWeapon->isHovered() && DraggedSlot != NULL)
     {
         if(DraggedSlot->getItem()->getCategory() == Slot_SecondaryWeapon->getType())
             Slot_SecondaryWeapon->setState(UI_Slot::Accept);
@@ -173,7 +173,7 @@ void Inventory::HandleEvent(sf::Event &Event)
             Slot_SecondaryWeapon->setState(UI_Slot::Reject);
     }
 
-    if(Slot_MainShield->isHovered() && DraggedSlot != NULL && Slot_MainShield != DraggedSlot)
+    if(Slot_MainShield->isHovered() && DraggedSlot != NULL)
     {
         if(DraggedSlot->getItem()->getCategory() == Slot_MainShield->getType())
             Slot_MainShield->setState(UI_Slot::Accept);
@@ -181,7 +181,7 @@ void Inventory::HandleEvent(sf::Event &Event)
             Slot_MainShield->setState(UI_Slot::Reject);
     }
 
-    if(Slot_MainBumper->isHovered() && DraggedSlot != NULL && Slot_MainBumper != DraggedSlot)
+    if(Slot_MainBumper->isHovered() && DraggedSlot != NULL)
     {
         if(DraggedSlot->getItem()->getCategory() == Slot_MainBumper->getType())
             Slot_MainBumper->setState(UI_Slot::Accept);
@@ -194,16 +194,16 @@ void Inventory::HandleEvent(sf::Event &Event)
     {
         DropPlace = MovedSlot->getDropPosition();
 
-        if(Slot_MainWeapon->getGlobalBounds().intersects(DropPlace))
+        if(Slot_MainWeapon->getGlobalBounds().contains(DropPlace))
             DestinationSlot = Slot_MainWeapon;
 
-        else if(Slot_SecondaryWeapon->getGlobalBounds().intersects(DropPlace))
+        else if(Slot_SecondaryWeapon->getGlobalBounds().contains(DropPlace))
             DestinationSlot = Slot_SecondaryWeapon;
 
-        else if(Slot_MainShield->getGlobalBounds().intersects(DropPlace))
+        else if(Slot_MainShield->getGlobalBounds().contains(DropPlace))
             DestinationSlot = Slot_MainShield;
 
-        else if(Slot_MainBumper->getGlobalBounds().intersects(DropPlace))
+        else if(Slot_MainBumper->getGlobalBounds().contains(DropPlace))
             DestinationSlot = Slot_MainBumper;
 
         else
@@ -212,7 +212,7 @@ void Inventory::HandleEvent(sf::Event &Event)
             {
                 if(MyBag[i] != MovedSlot)
                 {
-                    if(MyBag[i]->getGlobalBounds().intersects(DropPlace))
+                    if(MyBag[i]->getGlobalBounds().contains(DropPlace))
                     {
                         DestinationSlot = MyBag[i];
                         break;

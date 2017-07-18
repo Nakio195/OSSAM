@@ -31,9 +31,6 @@ Bullet::Bullet(Bullet *copy) : Entity(copy->getName())
 void Bullet::Hitting(Spaceship *Shooter, Spaceship *Shooted)
 {
     Shooted->TakeDamage(this);
-    cout << Shooter->getName() << " hitted " << getHit() << " to " << Shooted->getName() << endl;
-    cout << "\tRemains " << Shooted->getHealth() << " to " << Shooted->getName() << endl;
-
 }
 
 unsigned int Bullet::getHit()

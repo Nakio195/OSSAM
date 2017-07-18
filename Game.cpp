@@ -236,16 +236,18 @@ void OSSAM::HandleEvents()
             else
                 GameState = OSSAM::Playing;
         }
+
+        if(GameState == OSSAM::OnInventory)
+        {
+            OpenedInventory->HandleEvent(event);
+
+            if(OpenedInventory->isOpen() == false)
+                GameState = OSSAM::Playing;
+
+        }
     }
 
-    if(GameState == OSSAM::OnInventory)
-    {
-        OpenedInventory->HandleEvent(event);
 
-        if(OpenedInventory->isOpen() == false)
-            GameState = OSSAM::Playing;
-
-    }
 }
 
 void OSSAM::HandleTime()

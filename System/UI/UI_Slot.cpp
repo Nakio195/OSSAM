@@ -34,16 +34,16 @@ unsigned int UI_Slot::getType()
     return Type;
 }
 
-sf::FloatRect UI_Slot::getDropPosition()
+sf::Vector2f UI_Slot::getDropPosition()
 {
     if(Dropped)
     {
         Position = Origin;
-        return Icon.getGlobalBounds();
+        return DropPlace;
     }
 
     else
-        return sf::FloatRect();
+        return sf::Vector2f();
 }
 
 bool UI_Slot::isDropped()
@@ -54,6 +54,7 @@ bool UI_Slot::isDropped()
 void UI_Slot::ValidateDrop()
 {
     Dropped = false;
+    DropPlace = sf::Vector2f();
     setState(UI_Slot::Enabled);
 }
 
@@ -61,6 +62,7 @@ void UI_Slot::UnvalidateDrop()
 {
     Dropped = false;
     Position = Origin;
+    DropPlace = sf::Vector2f();
     setState(UI_Slot::Enabled);
 }
 
@@ -196,6 +198,8 @@ void UI_Slot::HandleEvent(sf::Event &Event)
                 {
                     setState(UI_Slot::Dragged);
                     DragStartPosition = sf::Vector2f(Event.mouseButton.x, Event.mouseButton.y);
+                    //Icon.setOrigin(Icon.getTexture()->getSize().x/2, Icon.getTexture()->getSize().y/2);
+                    Icon.setPosition(Event.mouseButton.x, Event.mouseButton.y);
                 }
             }
             break;
@@ -207,6 +211,7 @@ void UI_Slot::HandleEvent(sf::Event &Event)
                 {
                     setState(UI_Slot::Enabled);
                     Dropped = true;
+                    DropPlace = sf::Vector2f(Event.mouseButton.x, Event.mouseButton.y);
                 }
             }
             break;

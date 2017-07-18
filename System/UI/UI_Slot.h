@@ -34,7 +34,7 @@ class UI_Slot : public UserInterface
         void setRelativePosition(float x, float y);
         void setRelativePosition(sf::Vector2f RelativePosition);
         sf::Vector2f getRelativePosition();
-        sf::FloatRect getDropPosition();
+        sf::Vector2f getDropPosition();
 
         void ValidateDrop();
         void UnvalidateDrop();
@@ -55,6 +55,7 @@ class UI_Slot : public UserInterface
         sf::Vector2f Position;
         sf::Vector2f Origin;
         sf::Vector2f DragStartPosition;
+        sf::Vector2f DropPlace;
         unsigned int State;
         unsigned int OldState;
         bool Dropped;
