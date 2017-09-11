@@ -4,8 +4,7 @@
 #include "Item.h"
 #include "System/Timer.h"
 #include "Weapons/Bullet.h"
-
-class Bullet;
+//class Bullet;
 
 class Shield : public Item
 {

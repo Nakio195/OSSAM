@@ -1,5 +1,9 @@
 #include "Weapon.h"
 
+/**
+ * @brief FiredBullets
+ */
+
 extern list<Bullet*> FiredBullets;
 
 Weapon::Weapon(Spaceship *pParent, string pName, string PathToWeapon, unsigned int pHit, float pSpeed, string PathToBulletTexture, string PathToBlastTexture) : Item(pName)
@@ -23,12 +27,6 @@ Weapon::Weapon(Spaceship *pParent, string pName, string PathToWeapon, unsigned i
     Base_Texture->loadFromFile(PathToWeapon);
     MainSprite.setTexture(*Base_Texture);
 
-    BulletType = new Bullet(pParent);
-    BulletType->setHit(pHit);
-
-    BulletType->setBlastTexture(PathToBlastTexture);
-    BulletType->setBulletTexture(PathToBulletTexture);
-
     setIcon("Ressources/System/Icon/CP_1.png");
 
     cout << endl;
@@ -46,9 +44,20 @@ Weapon::~Weapon()
     delete Blast_Texture;
 }
 
-Bullet* Weapon::getBulletType()
+Bullet* Weapon::copyBullet()
 {
-    return BulletType;
+    switch(BulletType->getType())
+    {
+        case Bullet::Laser:
+            return new Laser(static_cast<Laser*>(BulletType));
+        break;
+
+        case Bullet::Missile:
+            return new Missile(static_cast<Missile*>(BulletType));
+        break;
+    }
+
+    return NULL;
 }
 
 
@@ -62,6 +71,11 @@ void Weapon::setBullet(unsigned int pHit, string PathToBulletTexture, string Pat
     BulletType->setHit(pHit);
     BulletType->setBlastTexture(PathToBlastTexture);
     BulletType->setBulletTexture(PathToBulletTexture);
+}
+
+void Weapon::setBullet(Bullet BulletReference)
+{
+    BulletType = new Bullet(&BulletReference);
 }
 
 
@@ -108,7 +122,7 @@ void Weapon::Shoot(sf::Vector2f InitialPosition)
 {
     if(!ReloadTimer.isRunning())
     {
-        Bullet *newBullet = new Bullet(getBulletType());
+        Bullet *newBullet = copyBullet();
         newBullet->setDirection(ShootingDirection);
         newBullet->setPosition(InitialPosition.x+ShootPosition.x+RelativePosition.x, InitialPosition.y+ShootPosition.y+RelativePosition.y);
         FiredBullets.push_back(newBullet);

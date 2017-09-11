@@ -6,6 +6,11 @@
 #include "Entities/Player.h"
 #include "main.h"
 
+/**
+ * @brief main
+ * @return
+ */
+
 int main()
 {
     OSSAM Game;

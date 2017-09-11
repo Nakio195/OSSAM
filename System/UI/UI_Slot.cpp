@@ -1,5 +1,11 @@
 #include "UI_Slot.h"
 
+/**
+ * @brief UI_Slot::UI_Slot
+ * @param pParent
+ * @param pType
+ */
+
 UI_Slot::UI_Slot(UserInterface *pParent, unsigned int pType) : UserInterface()
 {
     Background = new sf::Texture();

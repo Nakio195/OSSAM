@@ -1,5 +1,10 @@
 #include "Item.h"
 
+/**
+ * @brief Item::Item
+ * @param pName
+ */
+
 Item::Item(std::string pName)
 {
     Name = pName;

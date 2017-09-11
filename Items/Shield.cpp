@@ -1,5 +1,12 @@
 #include "Shield.h"
 
+/**
+ * @brief Shield::Shield
+ * @param pParent
+ * @param Shield
+ * @param pName
+ */
+
 Shield::Shield(Entity *pParent, unsigned int Shield, std::string pName) : Item(pName)
 {
     setCategory(Item::Shield);

@@ -1,5 +1,19 @@
 #include "Ennemy.h"
 
+/**
+ * @brief Ennemy::Ennemy
+ * @param PathTotexture
+ * @param pName
+ * @param pLife
+ * @param pShield
+ * @param pAttack
+ * @param pDefense
+ * @param pGenerator
+ * @param pSpeed
+ * @param pXP
+ * @param pAmmo
+ */
+
 Ennemy::Ennemy(string PathTotexture, string pName, unsigned int pLife, unsigned int pShield, unsigned int pAttack, unsigned int pDefense, unsigned int pGenerator, float pSpeed, unsigned int pXP, unsigned int pAmmo) : Spaceship(PathTotexture, pName)
 {
     cout << endl;
@@ -24,7 +38,14 @@ Ennemy::Ennemy(string PathTotexture, string pName, unsigned int pLife, unsigned 
     MainWeapon->setShootPosition(sf::Vector2f(-27-125, -6));
     MainWeapon->setBlastTexture("Ressources/Sprite/blast-CP.png");
 
+    Laser MainWeaponBullet(this);
+    MainWeaponBullet.setHit(7);
+    MainWeaponBullet.setBulletTexture("Ressources/Sprite/LaserRouge.png");
+    MainWeaponBullet.setBlastTexture("Ressources/Sprite/boom2.png");
+    MainWeapon->setBullet(MainWeaponBullet);
+
     SecondaryWeapon = new Weapon(this);
+
 
 
     DyingAnim->setFrame(3, sf::IntRect(0, 0, 130, 140));

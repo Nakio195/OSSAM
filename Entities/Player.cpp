@@ -1,10 +1,15 @@
 #include "Player.h"
 
+/**
+ * @brief Window_Height
+ */
+
 extern int Window_Height;
 extern int Window_Width;
 
 Player::Player(string pName, string PathTotexture, unsigned int pLife, unsigned int pShield, unsigned int pAttack, unsigned int pDefense, unsigned int pGenerator, float pSpeed, unsigned int pXP, unsigned int pAmmo) : Spaceship(pName, PathTotexture, pLife, pShield, pAttack, pDefense, pGenerator, pSpeed, pXP, pAmmo)
 {
+
     MainWeapon = new Weapon(this, "Laser Simple", "Ressources/Sprite/Player/canon.png", 10, 0.1, "Ressources/Sprite/LaserBleu.png", "Ressources/Sprite/boom2.png");
     MainWeapon->setShootingDirection(sf::Vector2f(1, 0));
     MainWeapon->setRelativePosition(sf::Vector2f(-27, -30));
@@ -12,8 +17,21 @@ Player::Player(string pName, string PathTotexture, unsigned int pLife, unsigned 
     MainWeapon->setBlastTexture("Ressources/Sprite/blast-CP.png");
     MainWeapon->setIcon("Ressources/System/Icon/RG_1.png");
 
-    SecondaryWeapon = new Weapon(this, "Lance Missile", "", 30, 1, "Ressources/Sprite/missile.png", "Ressources/Sprite/explosion.png");
+    Laser MainWeaponBullet(this);
+    MainWeaponBullet.setHit(10);
+    MainWeaponBullet.setBulletTexture("Ressources/Sprite/LaserBleu.png");
+    MainWeaponBullet.setBlastTexture("Ressources/Sprite/boom2.png");
+    MainWeapon->setBullet(MainWeaponBullet);
+
+
+    SecondaryWeapon = new Weapon(this, "Lance Missile", "", 40, 1, "Ressources/Sprite/missile.png", "Ressources/Sprite/explosion.png");
     SecondaryWeapon->setShootingDirection(sf::Vector2f(1, 0));
+
+    Missile SecondaryWeaponBullet(this);
+    SecondaryWeaponBullet.setHit(40);
+    SecondaryWeaponBullet.setBulletTexture("Ressources/Sprite/missile.png");
+    SecondaryWeaponBullet.setBlastTexture("Ressources/Sprite/boom2.png");
+    SecondaryWeapon->setBullet(SecondaryWeaponBullet);
 
     DyingAnim->setFrame(4, sf::IntRect(0, 0, 177, 153));
 

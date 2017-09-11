@@ -1,6 +1,10 @@
 #include "Spaceship.h"
 #include "Game.h"
 
+/**
+ * @brief Window_Height
+ */
+
 extern int Window_Height;
 extern int Window_Width;
 

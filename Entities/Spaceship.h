@@ -3,13 +3,13 @@
 
 
 #include "Entity.h"
-#include "Items/Weapons/Weapon.h"
+//#include "Items/Weapons/Weapon.h"
 #include "System/ATH.h"
 #include "Items/Shield.h"
 #include "System/Inventory.h"
 
 class Weapon;
-class Bullet;
+//class Bullet;
 class ATH;
 class Shield;
 class Inventory;

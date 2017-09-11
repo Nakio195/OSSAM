@@ -1,5 +1,14 @@
 #include "Animation.h"
 
+/**
+ * @brief Animation::Animation
+ * @param pParent
+ * @param Period
+ * @param pAnimationMode
+ * @param Texture
+ * @param pTimerMode
+ */
+
 Animation::Animation(Spaceship *pParent, float Period, unsigned int pAnimationMode, sf::Texture *Texture, unsigned int pTimerMode)
 {
     Parent = pParent;

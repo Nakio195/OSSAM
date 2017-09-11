@@ -20,7 +20,8 @@ SOURCES += main.cpp \
     System/UserInterface.cpp \
     System/UI/UI_Button.cpp \
     System/UI/UI_Slot.cpp \
-    Items/Weapons/Bullet/Missile.cpp
+    Items/Weapons/Bullet/Missile.cpp \
+    Items/Weapons/Bullet/Laser.cpp
 
 include(deployment.pri)
 qtcAddDeployment()
@@ -66,4 +67,5 @@ HEADERS += \
     System/UserInterface.h \
     System/UI/UI_Button.h \
     System/UI/UI_Slot.h \
-    Items/Weapons/Bullet/Missile.h
+    Items/Weapons/Bullet/Missile.h \
+    Items/Weapons/Bullet/Laser.h

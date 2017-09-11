@@ -1,5 +1,11 @@
 #include "ATH.h"
 
+/**
+ * @brief ATH::ATH
+ * @param pParent
+ * @param PathToBackground
+ */
+
 ATH::ATH(Spaceship *pParent, string PathToBackground) : Sprite()
 {
     Parent = pParent;

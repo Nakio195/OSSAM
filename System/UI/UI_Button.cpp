@@ -1,5 +1,11 @@
 #include "UI_Button.h"
 
+/**
+ * @brief UI_Button::UI_Button
+ * @param Path
+ * @param pParent
+ */
+
 UI_Button::UI_Button(std::string Path, UserInterface *pParent)
 {
     Background.loadFromFile(Path);

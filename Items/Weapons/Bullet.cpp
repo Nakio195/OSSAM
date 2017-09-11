@@ -1,4 +1,15 @@
 #include "Bullet.h"
+#include "../../Entities/Spaceship.h"
+
+
+/**
+ * @brief Bullet::Bullet
+ * @param pParent
+ * @param pName
+ * @param pHit
+ * @param PathToBulletTexture
+ * @param PathToBlastTexture
+ */
 
 Bullet::Bullet(Spaceship *pParent, string pName, unsigned int pHit, string PathToBulletTexture, string PathToBlastTexture) : Entity(pName)
 {
@@ -24,7 +35,18 @@ Bullet::Bullet(Bullet *copy) : Entity(copy->getName())
     Speed = copy->Speed;
     BulletTexture = copy->BulletTexture;
     BlastTexture = copy->BlastTexture;
+    Type = copy->Type;
     ChangeTexture(BulletTexture);
+}
+
+Bullet::~Bullet()
+{
+
+}
+
+unsigned int Bullet::getType()
+{
+    return Type;
 }
 
 
@@ -32,6 +54,7 @@ void Bullet::Hitting(Spaceship *Shooter, Spaceship *Shooted)
 {
     Shooted->TakeDamage(this);
 }
+
 
 unsigned int Bullet::getHit()
 {
@@ -79,7 +102,7 @@ void Bullet::setParent(Spaceship *pParent)
     Parent = pParent;
 }
 
-Spaceship* Bullet::getParent()
+Spaceship *Bullet::getParent()
 {
     return Parent;
 }

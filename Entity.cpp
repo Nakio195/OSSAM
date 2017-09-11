@@ -1,5 +1,9 @@
 #include "Entity.h"
 
+/**
+ * @brief Entity::Entity
+ * @param pName
+ */
 
 Entity::Entity(string pName)
 {

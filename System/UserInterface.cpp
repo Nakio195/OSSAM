@@ -1,5 +1,9 @@
 #include "UserInterface.h"
 
+/**
+ * @brief UserInterface::UserInterface
+ */
+
 UserInterface::UserInterface() : sf::Sprite()
 {
 }

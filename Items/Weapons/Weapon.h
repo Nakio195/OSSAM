@@ -7,9 +7,11 @@
 #include <SFML/Graphics.hpp>
 #include "../Item.h"
 #include "Entities/Spaceship.h"
-#include "Bullet.h"
 
 using namespace std;
+
+#include "Bullet/Laser.h"
+#include "Bullet/Missile.h"
 
 class Bullet;
 
@@ -21,8 +23,9 @@ class Weapon : public Item
         Weapon(Spaceship *pParent, string pName = "Laser Simple", string PathToWeapon = "", unsigned int pHit = 10, float pSpeed = 0.33, string PathToBulletTexture = "", string PathToBlastTexture = "");
         virtual ~Weapon();
 
-        Bullet* getBulletType();
+        Bullet* copyBullet();
         void setBullet(unsigned int pHit, string PathToBulletTexture, string PathToBlastTexture);
+        void setBullet(Bullet BulletReference);
         void setShootingDirection(sf::Vector2f Direction);
         void setRelativePosition(sf::Vector2f Position);
         void setShootPosition(sf::Vector2f Position);

@@ -1,5 +1,9 @@
 #include "Inventory.h"
 
+/**
+ * @brief Inventory::Inventory
+ */
+
 Inventory::Inventory()
 {
     Opened = false;
@@ -111,7 +115,7 @@ void Inventory::HandleEvent(sf::Event &Event)
 
     if(NextBtn->isTriggered())
     {
-        if(CurrentTab < 3)
+        if(CurrentTab < 1)
             selectTab(CurrentTab +1);
     }
 
@@ -306,7 +310,7 @@ void Inventory::selectTab(unsigned int Category)
 
                 if(i < BAG_SIZE)
                 {
-                    if(MyBag[i]->getState() == Item::InBag)
+                    if(CurrentShield->getState() == Item::InBag)
                     {
                         MyBag[i]->setItem(CurrentShield);
                         i++;

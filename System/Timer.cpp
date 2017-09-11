@@ -1,5 +1,11 @@
 #include "Timer.h"
 
+/**
+ * @brief Timer::Timer
+ * @param pPeriod
+ * @param pMode
+ */
+
 Timer::Timer(float pPeriod, unsigned int pMode)
 {
     Period = pPeriod;

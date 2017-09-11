@@ -6,8 +6,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Weapon.h"
-#include "../../Entities/Spaceship.h"
+#include "../../Entity.h"
 
 using namespace std;
 
@@ -17,9 +16,14 @@ class Spaceship;
 class Bullet : public Entity
 {
     public:
+        enum BulletType{Laser, Missile};
+
+    public:
         Bullet(Bullet *copy);
         Bullet(Spaceship *pParent, string pName = "Laser Simple", unsigned int pHit = 10, string PathToBulletTexture = "Ressources/Sprite/LaserBleu.png", string PathToBlastTexture = "Ressources/Sprite/boom1.png");
+        ~Bullet();
 
+        unsigned int getType();
         unsigned int getHit();
         void setHit(unsigned int pHit);
 
@@ -38,10 +42,11 @@ class Bullet : public Entity
         void setParent(Spaceship *pParent);
         Spaceship *getParent();
 
-        void Hitting(Spaceship *Shooter, Spaceship *Shooted);
+        virtual void Hitting(Spaceship *Shooter, Spaceship *Shooted);
 
-    private:
-        unsigned int Hit;       //Dégats en HP/tirs
+    protected:
+        unsigned int Type;      // Identifie la sous classe de munition
+        unsigned int Hit;       // Dégats en HP/tirs
 
         sf::Vector2f Direction;
 

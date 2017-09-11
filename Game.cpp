@@ -9,6 +9,10 @@ int Window_Width = 0;
 list<Bullet*> FiredBullets;
 list<Spaceship*> Spaceships;
 
+/**
+ * @brief OSSAM::OSSAM
+ */
+
 OSSAM::OSSAM()
 {
     sf::ContextSettings Settings;
@@ -167,7 +171,12 @@ void OSSAM::HandlePhysics()
 
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
     {
-        Captain->Shoot(Weapon::Main);
+        Captain->Shoot(Weapon::Secondary);
+    }
+
+    if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    {
+        Captain->Shoot(Weapon::Secondary);
     }
 
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
