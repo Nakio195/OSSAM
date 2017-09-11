@@ -8,8 +8,8 @@
  * @param Texture
  * @param pTimerMode
  */
-
-Animation::Animation(Spaceship *pParent, float Period, unsigned int pAnimationMode, sf::Texture *Texture, unsigned int pTimerMode)
+template<typename Type>
+Animation<Type>::Animation(Type* pParent, float Period, unsigned int pAnimationMode, sf::Texture *Texture, unsigned int pTimerMode)
 {
     Parent = pParent;
     AnimationTimer.setMode(pTimerMode);
@@ -30,7 +30,8 @@ Animation::Animation(Spaceship *pParent, float Period, unsigned int pAnimationMo
     }
 }
 
-Animation::Animation(Spaceship *pParent, float Period, unsigned int pAnimationMode, unsigned int pTimerMode)
+template<typename Type>
+Animation<Type>::Animation(Type *pParent, float Period, unsigned int pAnimationMode, unsigned int pTimerMode)
 {
     Parent = pParent;
     AnimationTimer.setMode(pTimerMode);
@@ -43,51 +44,21 @@ Animation::Animation(Spaceship *pParent, float Period, unsigned int pAnimationMo
     CurrentFrame = 0;
 }
 
-Animation::Animation(Weapon *pParent, float Period, unsigned int pAnimationMode, sf::Texture *Texture, unsigned int pTimerMode)
-{
-    Parent = NULL;
-    AnimationTimer.setMode(pTimerMode);
-    AnimationTimer.setPeriod(Period);
-    Mode = pAnimationMode;
 
-    StartAction = NULL;
-    EndAction = NULL;
-
-    CurrentFrame = 0;
-
-    RelativePosition = sf::Vector2f(0,0);
-
-    if(Texture != NULL)
-    {
-        SpriteTexture = Texture;
-        setTexture(*SpriteTexture);
-    }
-}
-
-Animation::Animation(Weapon *pParent, float Period, unsigned int pAnimationMode, unsigned int pTimerMode)
-{
-    Parent = NULL;
-    StartAction = NULL;
-    EndAction = NULL;
-    AnimationTimer.setMode(pTimerMode);
-    AnimationTimer.setPeriod(Period);
-    Mode = pAnimationMode;
-
-    CurrentFrame = 0;
-}
-
-
-sf::Vector2f Animation::getRelativePosition()
+template<typename Type>
+sf::Vector2f Animation<Type>::getRelativePosition()
 {
     return RelativePosition;
 }
 
-void Animation::setRelativePosition(sf::Vector2f Position)
+template<typename Type>
+void Animation<Type>::setRelativePosition(sf::Vector2f Position)
 {
     RelativePosition = Position;
 }
 
-void Animation::setFrame(unsigned int pFrame, sf::IntRect FrameSize)
+template<typename Type>
+void Animation<Type>::setFrame(unsigned int pFrame, sf::IntRect FrameSize)
 {
     Frame = pFrame;
     FrameRect = FrameSize;
@@ -96,32 +67,38 @@ void Animation::setFrame(unsigned int pFrame, sf::IntRect FrameSize)
 }
 
 
-bool Animation::isRunning()
+template<typename Type>
+bool Animation<Type>::isRunning()
 {
     return AnimationTimer.isRunning();
 }
 
-void Animation::setTimerMode(unsigned int pMode)
+template<typename Type>
+void Animation<Type>::setTimerMode(unsigned int pMode)
 {
     AnimationTimer.setMode(pMode);
 }
 
-unsigned int Animation::getTimerMode()
+template<typename Type>
+unsigned int Animation<Type>::getTimerMode()
 {
     return AnimationTimer.getMode();
 }
 
-void Animation::setPeriod(float pPeriod)
+template<typename Type>
+void Animation<Type>::setPeriod(float pPeriod)
 {
     AnimationTimer.setPeriod(pPeriod);
 }
 
-float Animation::getPeriod()
+template<typename Type>
+float Animation<Type>::getPeriod()
 {
     return AnimationTimer.getPeriod();
 }
 
-void Animation::Start(float Period)
+template<typename Type>
+void Animation<Type>::Start(float Period)
 {
     AnimationTimer.StartTimer(Period);
 
@@ -150,7 +127,8 @@ void Animation::Start(float Period)
 
 }
 
-void Animation::Stop()
+template<typename Type>
+void Animation<Type>::Stop()
 {
     AnimationTimer.StopTimer();
 
@@ -161,17 +139,20 @@ void Animation::Stop()
         (Parent->*EndAction)();
 }
 
-void Animation::Pause()
+template<typename Type>
+void Animation<Type>::Pause()
 {
     AnimationTimer.PauseTimer();
 }
 
-void Animation::Release()
+template<typename Type>
+void Animation<Type>::Release()
 {
     AnimationTimer.ReleaseTimer();
 }
 
-void Animation::Play(float ElapsedTime)
+template<typename Type>
+void Animation<Type>::Play(float ElapsedTime)
 {
     AnimationTimer.Count(ElapsedTime);
 
@@ -185,17 +166,25 @@ void Animation::Play(float ElapsedTime)
     }
 }
 
-void Animation::setStartAction(void (Spaceship::*Action)(void))
+template<typename Type>
+void Animation<Type>::setStartAction(void (Type::*Action)(void))
 {
     StartAction = Action;
 }
 
-void Animation::setRepeatAction(void (Spaceship::*Action)(void))
+template<typename Type>
+void Animation<Type>::setRepeatAction(void (Type::*Action)(void))
 {
     RepeatAction = Action;
 }
 
-void Animation::setEndAction(void (Spaceship::*Action)(void))
+template<typename Type>
+void Animation<Type>::setEndAction(void (Type::*Action)(void))
 {
     EndAction = Action;
 }
+
+
+template class Animation<Spaceship>;
+template class Animation<Weapon>;
+template class Animation<Bullet>;

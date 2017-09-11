@@ -81,17 +81,21 @@ void OSSAM::HandlePhysics()
 
     int randomval = rand();
 
-    if(randomval < 1200)
-        Bleuton->Shoot(Weapon::Main);
-
-
-    if(!Bleuton->Move(Bleuton->Direction))
+    if(!Bleuton->isDead())
     {
-        if(Bleuton->getPosition().x > Window_Width/2)
-            Bleuton->Direction = sf::Vector2f(Bleuton->Direction.x -0.1, Bleuton->Direction.y*-1.0);
-        else
-            Bleuton->Direction = sf::Vector2f(Bleuton->Direction.x +1, Bleuton->Direction.y*-1.0);
+        if(randomval < 1200)
+            Bleuton->Shoot(Weapon::Main);
+
+
+        if(!Bleuton->Move(Bleuton->Direction))
+        {
+            if(Bleuton->getPosition().x > Window_Width/2)
+                Bleuton->Direction = sf::Vector2f(Bleuton->Direction.x -0.1, Bleuton->Direction.y*-1.0);
+            else
+                Bleuton->Direction = sf::Vector2f(Bleuton->Direction.x +1, Bleuton->Direction.y*-1.0);
+        }
     }
+
 
     for (list<Bullet*>::iterator it = FiredBullets.begin(); it != FiredBullets.end();)
     {
@@ -176,45 +180,45 @@ void OSSAM::HandlePhysics()
 
     if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
     {
-        Captain->Shoot(Weapon::Secondary);
+        Captain->Shoot(Weapon::Main);
     }
 
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::S) && sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
     {
         Captain->Move(sf::Vector2f(-1, 1));
     }
 
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::S) && sf::Keyboard::isKeyPressed(sf::Keyboard::D))
     {
         Captain->Move(sf::Vector2f(1, 1));
     }
 
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)  && sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Z)  && sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
     {
         Captain->Move(sf::Vector2f(-1, -1));
     }
 
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Z) && sf::Keyboard::isKeyPressed(sf::Keyboard::D))
     {
         Captain->Move(sf::Vector2f(1, -1));
     }
 
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
     {
         Captain->Move(sf::Vector2f(0, -1));
     }
 
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
     {
         Captain->Move(sf::Vector2f(1, 0));
     }
 
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
     {
         Captain->Move(sf::Vector2f(-1, 0));
     }
 
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
     {
         Captain->Move(sf::Vector2f(0, 1));
     }

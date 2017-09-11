@@ -10,27 +10,29 @@ extern int Window_Width;
 Player::Player(string pName, string PathTotexture, unsigned int pLife, unsigned int pShield, unsigned int pAttack, unsigned int pDefense, unsigned int pGenerator, float pSpeed, unsigned int pXP, unsigned int pAmmo) : Spaceship(pName, PathTotexture, pLife, pShield, pAttack, pDefense, pGenerator, pSpeed, pXP, pAmmo)
 {
 
-    MainWeapon = new Weapon(this, "Laser Simple", "Ressources/Sprite/Player/canon.png", 10, 0.1, "Ressources/Sprite/LaserBleu.png", "Ressources/Sprite/boom2.png");
+    MainWeapon = new Weapon(this, "Laser Simple", "Ressources/Sprite/Player/canon.png", 0.3);
     MainWeapon->setShootingDirection(sf::Vector2f(1, 0));
     MainWeapon->setRelativePosition(sf::Vector2f(-27, -30));
     MainWeapon->setShootPosition(sf::Vector2f(80, -6));
-    MainWeapon->setBlastTexture("Ressources/Sprite/blast-CP.png");
+    MainWeapon->setBlastAnim("Ressources/Sprite/blast-CP.png", 2, sf::IntRect(0, 0, 40, 24));
     MainWeapon->setIcon("Ressources/System/Icon/RG_1.png");
 
     Laser MainWeaponBullet(this);
     MainWeaponBullet.setHit(10);
     MainWeaponBullet.setBulletTexture("Ressources/Sprite/LaserBleu.png");
-    MainWeaponBullet.setBlastTexture("Ressources/Sprite/boom2.png");
     MainWeapon->setBullet(MainWeaponBullet);
 
 
-    SecondaryWeapon = new Weapon(this, "Lance Missile", "", 40, 1, "Ressources/Sprite/missile.png", "Ressources/Sprite/explosion.png");
+    SecondaryWeapon = new Weapon(this, "Lance Missile", "", 1);
     SecondaryWeapon->setShootingDirection(sf::Vector2f(1, 0));
+    SecondaryWeapon->setRelativePosition(sf::Vector2f(-27, -30));
+    SecondaryWeapon->setShootPosition(sf::Vector2f(80, -6));
+    SecondaryWeapon->setBlastAnim("Ressources/Sprite/blast-LM.png", 3, sf::IntRect(0, 0, 50, 31));
+    SecondaryWeapon->setIcon("Ressources/System/Icon/LM_1.png");
 
     Missile SecondaryWeaponBullet(this);
     SecondaryWeaponBullet.setHit(40);
     SecondaryWeaponBullet.setBulletTexture("Ressources/Sprite/missile.png");
-    SecondaryWeaponBullet.setBlastTexture("Ressources/Sprite/boom2.png");
     SecondaryWeapon->setBullet(SecondaryWeaponBullet);
 
     DyingAnim->setFrame(4, sf::IntRect(0, 0, 177, 153));

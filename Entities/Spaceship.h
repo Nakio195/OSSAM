@@ -99,10 +99,10 @@ class Spaceship : public Entity
         sf::Texture *Texture_HalfLife;
 
         //Hitted
-        Animation *HittedAnim;
+        Animation<Spaceship> *HittedAnim;
 
         //Dying
-        Animation *DyingAnim;
+        Animation<Spaceship> *DyingAnim;
         sf::Texture *Texture_Dying;
 
 };

@@ -6,7 +6,7 @@
 
 extern list<Bullet*> FiredBullets;
 
-Weapon::Weapon(Spaceship *pParent, string pName, string PathToWeapon, unsigned int pHit, float pSpeed, string PathToBulletTexture, string PathToBlastTexture) : Item(pName)
+Weapon::Weapon(Spaceship *pParent, string pName, string PathToWeapon, float pSpeed) : Item(pName)
 {
     setCategory(Item::Weapon);
 
@@ -17,8 +17,7 @@ Weapon::Weapon(Spaceship *pParent, string pName, string PathToWeapon, unsigned i
     ShootingDirection.y = 0;
 
     Blast_Texture = new sf::Texture();
-    BlastAnim = new Animation(this, 0.1, Animation::Sprite, Blast_Texture);
-    BlastAnim->setFrame(2, sf::IntRect(0, 0, 40, 24));
+    BlastAnim = new Animation<Weapon>(this, 0.1, Animation<Weapon>::Sprite, Blast_Texture);
 
     ReloadTimer.setPeriod(Speed);
     ReloadTimer.setMode(Timer::OneShot);
@@ -28,13 +27,6 @@ Weapon::Weapon(Spaceship *pParent, string pName, string PathToWeapon, unsigned i
     MainSprite.setTexture(*Base_Texture);
 
     setIcon("Ressources/System/Icon/CP_1.png");
-
-    cout << endl;
-    cout << "Weapon : " << pName << endl;
-    cout << "\t" << "Hit : " << pHit << endl;
-    cout << "\t" << "Bullet Skin : " << PathToBulletTexture << endl;
-    cout << "\t" << "Blast Skin : " << PathToBlastTexture << endl;
-    cout << endl;
 }
 
 Weapon::~Weapon()
@@ -61,9 +53,11 @@ Bullet* Weapon::copyBullet()
 }
 
 
-void Weapon::setBlastTexture(std::string Path)
+void Weapon::setBlastAnim(std::string Path, unsigned int NbFrames, sf::IntRect Rect)
 {
     Blast_Texture->loadFromFile(Path);
+    BlastAnim->setFrame(NbFrames, Rect);
+
 }
 
 void Weapon::setBullet(unsigned int pHit, string PathToBulletTexture, string PathToBlastTexture)
@@ -128,7 +122,7 @@ void Weapon::Shoot(sf::Vector2f InitialPosition)
         FiredBullets.push_back(newBullet);
 
         ReloadTimer.StartTimer();
-        BlastAnim->Start();
+          BlastAnim->Start();
     }
 
     else

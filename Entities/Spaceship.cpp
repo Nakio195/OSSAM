@@ -29,11 +29,11 @@ Spaceship::Spaceship(string pName, string PathToTexture, unsigned int pLife, uns
     Texture_Dying = new sf::Texture();
     Texture_HalfLife = new sf::Texture();
 
-    HittedAnim = new Animation(this, 0.1, Animation::Event);
+    HittedAnim = new Animation<Spaceship>(this, 0.1, Animation<Spaceship>::Event);
     HittedAnim->setStartAction(&Spaceship::Anim_start_HitMark);
     HittedAnim->setEndAction(&Spaceship::Anim_stop_HitMark);
 
-    DyingAnim = new Animation(this, 0.1, Animation::Sprite, Texture_Dying);
+    DyingAnim = new Animation<Spaceship>(this, 0.1, Animation<Spaceship>::Sprite, Texture_Dying);
     DyingAnim->setStartAction(&Spaceship::Anim_start_Dying);
     DyingAnim->setEndAction(&Spaceship::Anim_stop_Dying);
 
@@ -218,6 +218,7 @@ void Spaceship::draw(sf::RenderWindow *Window)
     {
         Window->draw(*this);
         MainWeapon->draw(Window);
+        SecondaryWeapon->draw(Window);
 
         MainShield->draw(Window);
     }

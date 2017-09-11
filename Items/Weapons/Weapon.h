@@ -20,7 +20,7 @@ class Weapon : public Item
     public:
         enum Select{Main, Secondary};
 
-        Weapon(Spaceship *pParent, string pName = "Laser Simple", string PathToWeapon = "", unsigned int pHit = 10, float pSpeed = 0.33, string PathToBulletTexture = "", string PathToBlastTexture = "");
+        Weapon(Spaceship *pParent, string pName = "Laser Simple", string PathToWeapon = "", float pSpeed = 0.33);
         virtual ~Weapon();
 
         Bullet* copyBullet();
@@ -34,7 +34,7 @@ class Weapon : public Item
 
         void draw(sf::RenderWindow *Window);
 
-        void setBlastTexture(std::string Path);
+        void setBlastAnim(std::string Path, unsigned int NbFrames, sf::IntRect Rect);
         virtual void Shoot(sf::Vector2f InitialPosition);
 
         float getSpeed();
@@ -56,7 +56,7 @@ class Weapon : public Item
         //Textures et anim
         sf::Texture *Base_Texture;
 
-        Animation *BlastAnim;
+        Animation<Weapon> *BlastAnim;
         sf::Texture *Blast_Texture;
 
 };

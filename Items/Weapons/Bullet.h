@@ -53,6 +53,7 @@ class Bullet : public Entity
         float Speed; // Vitesse de déplacment en pixels/s
         Spaceship *Parent;
 
+        Animation<Bullet> *BlastAnim;
         sf::Texture *BlastTexture;
         sf::Texture *BulletTexture;
 };

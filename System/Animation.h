@@ -9,18 +9,20 @@ using namespace std;
 
 class Spaceship;
 class Weapon;
+class Bullet;
 
+template <class Type>
 class Animation : public sf::Sprite
 {
     public:
         enum AnimationMode{Event, Sprite};
 
     public:
-        Animation(Spaceship* pParent, float Period, unsigned int pAnimationMode, unsigned int pTimerMode = Timer::OneShot);
-        Animation(Spaceship* pParent, float Period, unsigned int pAnimationMode, sf::Texture* Texture, unsigned int pTimerMode = Timer::OneShot);
+        Animation(Type* pParent, float Period, unsigned int pAnimationMode, unsigned int pTimerMode = Timer::OneShot);
+        Animation(Type* pParent, float Period, unsigned int pAnimationMode, sf::Texture* Texture, unsigned int pTimerMode = Timer::OneShot);
 
-        Animation(Weapon* pParent, float Period, unsigned int pAnimationMode, unsigned int pTimerMode = Timer::OneShot);
-        Animation(Weapon* pParent, float Period, unsigned int pAnimationMode, sf::Texture* Texture, unsigned int pTimerMode = Timer::OneShot);
+        //Animation(Weapon* pParent, float Period, unsigned int pAnimationMode, unsigned int pTimerMode = Timer::OneShot);
+        //Animation(Weapon* pParent, float Period, unsigned int pAnimationMode, sf::Texture* Texture, unsigned int pTimerMode = Timer::OneShot);
 
         void setTimerMode(unsigned int pMode);
         unsigned int getTimerMode();
@@ -42,9 +44,9 @@ class Animation : public sf::Sprite
 
         void Play(float ElapsedTime);
 
-        void setStartAction(void (Spaceship::*Action)(void));
-        void setRepeatAction(void (Spaceship::*Action)(void));
-        void setEndAction(void (Spaceship::*Action)(void));
+        void setStartAction(void (Type::*Action)(void));
+        void setRepeatAction(void (Type::*Action)(void));
+        void setEndAction(void (Type::*Action)(void));
 
     private:
         Timer AnimationTimer;
@@ -57,11 +59,11 @@ class Animation : public sf::Sprite
         unsigned int Frame;
         unsigned int CurrentFrame;
 
-        Spaceship* Parent;
+        Type* Parent;
 
-        void (Spaceship::*StartAction)(void);
-        void (Spaceship::*RepeatAction)(void);
-        void (Spaceship::*EndAction)(void);
+        void (Type::*StartAction)(void);
+        void (Type::*RepeatAction)(void);
+        void (Type::*EndAction)(void);
 };
 
 #endif // ANIMATION_H

@@ -22,7 +22,6 @@ Laser::~Laser()
 
 }
 
-
 void Laser::Hitting(Spaceship *Shooter, Spaceship *Shooted)
 {
     Shooted->TakeDamage(this);
