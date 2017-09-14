@@ -44,7 +44,7 @@ class Weapon : public Item
 
     private:
         float Speed;     //Cadence de tir en tir/s
-        Bullet *BulletType;      //Type de tir
+        Bullet* BulletType;      //Type de tir
         Timer ReloadTimer;
         Entity *Parent;
         sf::Vector2f ShootingDirection;

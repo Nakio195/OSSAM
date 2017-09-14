@@ -24,5 +24,15 @@ Laser::~Laser()
 
 void Laser::Hitting(Spaceship *Shooter, Spaceship *Shooted)
 {
-    Shooted->TakeDamage(this);
+    if(!Exploded)
+    {
+        Shooted->TakeDamage(this);
+        Exploded = true;
+        BlastAnim->Start();
+    }
+
+    else if(Exploded && !BlastAnim->isRunning())
+    {
+        Remove = true;
+    }
 }

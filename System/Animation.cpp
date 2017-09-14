@@ -46,6 +46,31 @@ Animation<Type>::Animation(Type *pParent, float Period, unsigned int pAnimationM
 
 
 template<typename Type>
+Animation<Type>::Animation(Animation<Type>* copy)
+{
+    CurrentFrame = 0;
+    Frame = copy->Frame;
+    FrameRect = copy->FrameRect;
+    SpriteTexture = copy->SpriteTexture;
+
+    if(SpriteTexture != NULL)
+        setTexture(*SpriteTexture);
+
+    AnimationTimer = copy->AnimationTimer;
+    AnimationTimer.StopTimer();
+    Mode = copy->Mode;
+
+    Parent = copy->Parent;
+}
+
+
+template<typename Type>
+void Animation<Type>::setParent(Type* pParent)
+{
+    Parent = pParent;
+}
+
+template<typename Type>
 sf::Vector2f Animation<Type>::getRelativePosition()
 {
     return RelativePosition;
@@ -103,7 +128,7 @@ void Animation<Type>::Start(float Period)
     AnimationTimer.StartTimer(Period);
 
     if(StartAction != NULL && Parent != NULL)
-        (Parent->*StartAction)();
+        StartAction(Parent);
 
     if(Mode == Animation::Sprite)
     {
@@ -136,7 +161,7 @@ void Animation<Type>::Stop()
         CurrentFrame = 0;
 
     if(EndAction != NULL && Parent != NULL)
-        (Parent->*EndAction)();
+        EndAction(Parent);
 }
 
 template<typename Type>
@@ -167,19 +192,19 @@ void Animation<Type>::Play(float ElapsedTime)
 }
 
 template<typename Type>
-void Animation<Type>::setStartAction(void (Type::*Action)(void))
+void Animation<Type>::setStartAction(std::function<void(Type *)> Action)
 {
     StartAction = Action;
 }
 
 template<typename Type>
-void Animation<Type>::setRepeatAction(void (Type::*Action)(void))
+void Animation<Type>::setRepeatAction(std::function<void(Type *)> Action)
 {
     RepeatAction = Action;
 }
 
 template<typename Type>
-void Animation<Type>::setEndAction(void (Type::*Action)(void))
+void Animation<Type>::setEndAction(std::function<void(Type *)> Action)
 {
     EndAction = Action;
 }

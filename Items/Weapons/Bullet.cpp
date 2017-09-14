@@ -23,14 +23,37 @@ Bullet::Bullet(Spaceship *pParent, string pName, unsigned int pHit, string PathT
     BlastTexture = new sf::Texture();
     BlastTexture->loadFromFile(PathToBlastTexture);
     BlastAnim = new Animation<Bullet>(this, 0.1, Animation<Bullet>::Sprite, BlastTexture);
+    BlastAnim->setFrame(3, sf::IntRect(0, 0, 65, 70));
 
     setOrigin(getTexture()->getSize().x, getTexture()->getSize().y/2);
+
+    Remove = false;
+    Exploded = false;
 }
 
+bool Bullet::isBlastAnimRunning()
+{
+    return BlastAnim->isRunning();
+}
+
+bool Bullet::isExploded()
+{
+    return Exploded;
+}
+
+bool Bullet::NeedRemove()
+{
+    return Remove;
+}
 
 Bullet::Bullet(Bullet *copy) : Entity(copy->getName())
 {
-    BlastAnim = copy->BlastAnim;
+    BlastAnim = new Animation<Bullet>(copy->BlastAnim);
+    BlastAnim->setParent(this);
+    BlastAnim->setStartAction(NULL);
+    BlastAnim->setRepeatAction(NULL);
+    BlastAnim->setEndAction(&Bullet::BlastAnim_EndAction);
+
     Hit = copy->Hit;
     Direction = copy->Direction;
     Parent = copy->Parent;
@@ -38,6 +61,8 @@ Bullet::Bullet(Bullet *copy) : Entity(copy->getName())
     BulletTexture = copy->BulletTexture;
     BlastTexture = copy->BlastTexture;
     Type = copy->Type;
+    Remove = false;
+    Exploded = false;
     ChangeTexture(BulletTexture);
 }
 
@@ -54,7 +79,17 @@ unsigned int Bullet::getType()
 
 void Bullet::Hitting(Spaceship *Shooter, Spaceship *Shooted)
 {
-    Shooted->TakeDamage(this);
+    if(!Exploded)
+    {
+        Shooted->TakeDamage(this);
+        Exploded = true;
+        BlastAnim->Start();
+    }
+
+    else if(Exploded && !BlastAnim->isRunning())
+    {
+        Remove = true;
+    }
 }
 
 
@@ -118,3 +153,27 @@ sf::Vector2f Bullet::getDirection()
 {
     return Direction;
 }
+
+void Bullet::RefreshElapsedTime(bool Release)
+{
+    Entity::RefreshElapsedTime(Release);
+    BlastAnim->Play(ElapsedTime);
+}
+
+void Bullet::draw(sf::RenderWindow *Window)
+{
+    if(BlastAnim->isRunning())
+    {
+        BlastAnim->setPosition(getPosition().x, getPosition().y);
+        Window->draw(*BlastAnim);
+    }
+
+    else
+        Window->draw(*this);
+}
+
+void Bullet::BlastAnim_EndAction()
+{
+    Remove = true;
+}
+

@@ -15,7 +15,7 @@ Shield::Shield(Entity *pParent, unsigned int Shield, std::string pName) : Item(p
     ShieldMax = Shield;
     ShieldPoints = ShieldMax;
 
-    Hitmark.setPeriod(0.8);
+    Hitmark.setPeriod(0.3);
     Hitmark.setMode(Timer::OneShot);
     Hitted = 0;
 

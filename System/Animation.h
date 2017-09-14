@@ -4,6 +4,7 @@
 #include "Timer.h"
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include <functional>
 
 using namespace std;
 
@@ -20,10 +21,12 @@ class Animation : public sf::Sprite
     public:
         Animation(Type* pParent, float Period, unsigned int pAnimationMode, unsigned int pTimerMode = Timer::OneShot);
         Animation(Type* pParent, float Period, unsigned int pAnimationMode, sf::Texture* Texture, unsigned int pTimerMode = Timer::OneShot);
+        Animation(Animation<Type>* copy);
 
         //Animation(Weapon* pParent, float Period, unsigned int pAnimationMode, unsigned int pTimerMode = Timer::OneShot);
         //Animation(Weapon* pParent, float Period, unsigned int pAnimationMode, sf::Texture* Texture, unsigned int pTimerMode = Timer::OneShot);
 
+        void setParent(Type* pParent);
         void setTimerMode(unsigned int pMode);
         unsigned int getTimerMode();
 
@@ -44,9 +47,9 @@ class Animation : public sf::Sprite
 
         void Play(float ElapsedTime);
 
-        void setStartAction(void (Type::*Action)(void));
-        void setRepeatAction(void (Type::*Action)(void));
-        void setEndAction(void (Type::*Action)(void));
+        void setStartAction(std::function<void(Type*)> Action);
+        void setRepeatAction(std::function<void(Type*)> Action);
+        void setEndAction(std::function<void(Type*)> Action);
 
     private:
         Timer AnimationTimer;
@@ -61,9 +64,12 @@ class Animation : public sf::Sprite
 
         Type* Parent;
 
-        void (Type::*StartAction)(void);
-        void (Type::*RepeatAction)(void);
-        void (Type::*EndAction)(void);
+        std::function<void(Type*)> StartAction;
+        std::function<void(Type*)> RepeatAction;
+        std::function<void(Type*)> EndAction;
+        //void (Type::*StartAction)(void);
+        //void (Type::*RepeatAction)(void);
+        //void (Type::*EndAction)(void);
 };
 
 #endif // ANIMATION_H

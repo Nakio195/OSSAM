@@ -31,7 +31,8 @@ Player::Player(string pName, string PathTotexture, unsigned int pLife, unsigned 
     SecondaryWeapon->setIcon("Ressources/System/Icon/LM_1.png");
 
     Missile SecondaryWeaponBullet(this);
-    SecondaryWeaponBullet.setHit(40);
+    SecondaryWeaponBullet.setHit(100);
+    SecondaryWeaponBullet.setBlastTexture("Ressoures/Sprite/missile-blast.png");
     SecondaryWeaponBullet.setBulletTexture("Ressources/Sprite/missile.png");
     SecondaryWeapon->setBullet(SecondaryWeaponBullet);
 

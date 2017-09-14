@@ -39,7 +39,7 @@ Ennemy::Ennemy(string PathTotexture, string pName, unsigned int pLife, unsigned 
     MainWeapon->setBlastAnim("Ressources/Sprite/blast-CP.png", 2, sf::IntRect(0, 0, 40, 24));
 
     Laser MainWeaponBullet(this);
-    MainWeaponBullet.setHit(7);
+    MainWeaponBullet.setHit(100);
     MainWeaponBullet.setBulletTexture("Ressources/Sprite/LaserRouge.png");
     MainWeaponBullet.setBlastTexture("Ressources/Sprite/boom2.png");
     MainWeapon->setBullet(MainWeaponBullet);

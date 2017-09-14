@@ -20,8 +20,12 @@ class Bullet : public Entity
 
     public:
         Bullet(Bullet *copy);
-        Bullet(Spaceship *pParent, string pName = "Laser Simple", unsigned int pHit = 10, string PathToBulletTexture = "Ressources/Sprite/LaserBleu.png", string PathToBlastTexture = "Ressources/Sprite/boom1.png");
+        Bullet(Spaceship *pParent, string pName = "Laser Simple", unsigned int pHit = 10, string PathToBulletTexture = "Ressources/Sprite/LaserBleu.png", string PathToBlastTexture = "Ressources/Sprite/missile-blast.png");
         ~Bullet();
+
+        bool isBlastAnimRunning();
+        bool isExploded();
+        bool NeedRemove();
 
         unsigned int getType();
         unsigned int getHit();
@@ -41,8 +45,12 @@ class Bullet : public Entity
 
         void setParent(Spaceship *pParent);
         Spaceship *getParent();
-
+        void draw(sf::RenderWindow *Window);
+        void RefreshElapsedTime(bool Release);
         virtual void Hitting(Spaceship *Shooter, Spaceship *Shooted);
+
+        //Actions
+        void BlastAnim_EndAction();
 
     protected:
         unsigned int Type;      // Identifie la sous classe de munition
@@ -56,6 +64,8 @@ class Bullet : public Entity
         Animation<Bullet> *BlastAnim;
         sf::Texture *BlastTexture;
         sf::Texture *BulletTexture;
+        bool Exploded;
+        bool Remove;
 };
 
 #endif // BULLET_H

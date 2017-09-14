@@ -33,7 +33,7 @@ Spaceship::Spaceship(string pName, string PathToTexture, unsigned int pLife, uns
     HittedAnim->setStartAction(&Spaceship::Anim_start_HitMark);
     HittedAnim->setEndAction(&Spaceship::Anim_stop_HitMark);
 
-    DyingAnim = new Animation<Spaceship>(this, 0.1, Animation<Spaceship>::Sprite, Texture_Dying);
+    DyingAnim = new Animation<Spaceship>(this, 0.2, Animation<Spaceship>::Sprite, Texture_Dying);
     DyingAnim->setStartAction(&Spaceship::Anim_start_Dying);
     DyingAnim->setEndAction(&Spaceship::Anim_stop_Dying);
 
@@ -155,6 +155,8 @@ int Spaceship::Move(sf::Vector2f Direction)
 void Spaceship::TakeDamage(Bullet* Damage)
 {
     int Damages = MainShield->TakeDamage(Damage);
+
+    cout << Name << " hitted by " << Damage->getHit() << " points !" << endl;
 
     if(Damages > 0)
     {

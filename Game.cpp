@@ -102,7 +102,9 @@ void OSSAM::HandlePhysics()
         bool RemoveBullet = false;
 
         Bullet* CurrentBullet = *it;
-        CurrentBullet->move(sf::Vector2f(CurrentBullet->getSpeed()*CurrentBullet->getElapsedTime()*CurrentBullet->getDirection().x, CurrentBullet->getSpeed()*CurrentBullet->getElapsedTime()*CurrentBullet->getDirection().y));
+
+        if(!CurrentBullet->isExploded())
+            CurrentBullet->move(sf::Vector2f(CurrentBullet->getSpeed()*CurrentBullet->getElapsedTime()*CurrentBullet->getDirection().x, CurrentBullet->getSpeed()*CurrentBullet->getElapsedTime()*CurrentBullet->getDirection().y));
 
         /* Déplacement des tirs et collisions */
         if (CurrentBullet->getPosition().x > Window_Width || CurrentBullet->getPosition().x + CurrentBullet->getTexture()->getSize().x < 0)
@@ -125,19 +127,18 @@ void OSSAM::HandlePhysics()
         for (list<Spaceship*>::iterator jt = Spaceships.begin(); jt != Spaceships.end(); ++jt)
         {
             Spaceship* CurrentSpaceship = *jt;
+
             if(CurrentBullet->getGlobalBounds().intersects(CurrentSpaceship->getGlobalBounds()))
             {
                 if(CurrentBullet->getParent()->getFaction() != CurrentSpaceship->getFaction())
                 {
                     CurrentBullet->Hitting(CurrentBullet->getParent(), CurrentSpaceship);
-                    RemoveBullet = true;
                 }
             }
         }
 
-        if(RemoveBullet)
+        if(CurrentBullet->NeedRemove())
             it = FiredBullets.erase(it);
-
         else
             ++it;
     }
@@ -298,7 +299,10 @@ void OSSAM::HandleDisplay()
     for(list<Bullet*>::iterator it = FiredBullets.begin(); it != FiredBullets.end(); it++)
     {
         if(*it != NULL)
-            Window.draw(**it);
+        {
+            Bullet *CurrentBullet = *it;
+            CurrentBullet->draw(&Window);
+        }
     }
 
     for (list<Spaceship*>::iterator it = Spaceships.begin(); it != Spaceships.end(); ++it)

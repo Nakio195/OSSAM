@@ -107,6 +107,7 @@ void Weapon::draw(sf::RenderWindow *Window)
 
     if(BlastAnim->isRunning())
     {
+
         BlastAnim->setPosition(Parent->getPosition().x+ShootPosition.x+RelativePosition.x, Parent->getPosition().y+ShootPosition.y+RelativePosition.y);
         Window->draw(*BlastAnim);
     }
@@ -122,7 +123,7 @@ void Weapon::Shoot(sf::Vector2f InitialPosition)
         FiredBullets.push_back(newBullet);
 
         ReloadTimer.StartTimer();
-          BlastAnim->Start();
+        BlastAnim->Start();
     }
 
     else
