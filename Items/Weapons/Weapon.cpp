@@ -107,8 +107,7 @@ void Weapon::draw(sf::RenderWindow *Window)
 
     if(BlastAnim->isRunning())
     {
-
-        BlastAnim->setPosition(Parent->getPosition().x+ShootPosition.x+RelativePosition.x, Parent->getPosition().y+ShootPosition.y+RelativePosition.y);
+        BlastAnim->setPosition(MainSprite.getPosition().x+ShootPosition.x+RelativePosition.x, MainSprite.getPosition().y+ShootPosition.y+RelativePosition.y);
         Window->draw(*BlastAnim);
     }
 }
@@ -119,7 +118,7 @@ void Weapon::Shoot(sf::Vector2f InitialPosition)
     {
         Bullet *newBullet = copyBullet();
         newBullet->setDirection(ShootingDirection);
-        newBullet->setPosition(InitialPosition.x+ShootPosition.x+RelativePosition.x, InitialPosition.y+ShootPosition.y+RelativePosition.y);
+        newBullet->setPosition(MainSprite.getPosition().x+ShootPosition.x+RelativePosition.x, MainSprite.getPosition().y+ShootPosition.y+RelativePosition.y);
         FiredBullets.push_back(newBullet);
 
         ReloadTimer.StartTimer();

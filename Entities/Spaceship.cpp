@@ -17,9 +17,12 @@ Spaceship::Spaceship(string pName, string PathToTexture, unsigned int pLife, uns
     Stats.Attack = pAttack;
     Stats.Defense = pDefense;
     Stats.Generator = pGenerator;
-    Stats.Speed = pSpeed;
+    Speed = pSpeed;
 
     HealthPoints = pLife;
+
+    Inertia = 1.0;
+    Direction = sf::Vector2f(0, 0);
 
     UI = new ATH(this);
 
@@ -129,29 +132,6 @@ void Spaceship::Die()
     Dead = true;
 }
 
-int Spaceship::Move(sf::Vector2f Direction)
-{
-    if(Dying)
-        return 0;
-
-    sf::Vector2f Vector(ElapsedTime*Stats.Speed*Direction.x, ElapsedTime*Stats.Speed*Direction.y);
-
-    if(getPosition().y - getOrigin().y + getTexture()->getSize().y*getScale().y + Vector.y >= Window_Height)  // Bas
-        return 0;
-
-    if(getPosition().y - getOrigin().y + Vector.y <= 0)     // Haut
-        return 0;
-
-    if(getPosition().x  - getOrigin().x + getTexture()->getSize().x*getScale().x + Vector.x >= Window_Width) // Droite
-        return 0;
-
-    if(getPosition().x  - getOrigin().x + Vector.x <= 0)  // Gauche
-        return 0;
-
-    move(Vector);
-    return 1;
-}
-
 void Spaceship::TakeDamage(Bullet* Damage)
 {
     int Damages = MainShield->TakeDamage(Damage);
@@ -186,21 +166,136 @@ void Spaceship::TakeDamage(Bullet* Damage)
     }
 }
 
+void Spaceship::StartAutoMove()
+{
+    MovePath.Start();
+}
 
+void Spaceship::MoveLinearTo(PathNode<Spaceship> *Node)
+{
+    AutoMoveNode = Node;
+
+    AutoMoveRunning = true;
+    AutoMoveNeedRefresh = true;
+    AutoMoveDeparturePosition = getPosition();
+
+    cout << "On Going : " << Node->Destination.x << "  " << Node->Destination.y << endl;
+    cout << "Position : " << getPosition().x << "  " << getPosition().y << endl;
+}
+
+int Spaceship::Move()
+{
+    sf::Vector2f Vector;
+
+    if(Dying)
+        return 0;
+
+    if(AutoMoveRunning == true)
+    {
+        if(AutoMoveNode->MoveType == PathNode<Entity>::Linear)
+        {
+            sf::Vector2f Position = getPosition();
+
+            float dX = (AutoMoveNode->Destination.x-Position.x);
+            float dY = (AutoMoveNode->Destination.y-Position.y);
+
+            if(AutoMoveNeedRefresh)
+            {
+                float Phi = atan(dX/dY);
+
+                AutoMoveDirection.x = sin(Phi);
+                AutoMoveDirection.y = cos(Phi);
+
+                if((dX < 0 && dY < 0) || dY < 0)
+                {
+                    AutoMoveDirection.x *= -1.0;
+                    AutoMoveDirection.y *= -1.0;
+                }
+
+                cout << AutoMoveDirection.x << "  " << AutoMoveDirection.y << endl;
+                AutoMoveNeedRefresh = false;
+            }
+
+            if(abs(getPosition().x - AutoMoveDeparturePosition.x)/abs(AutoMoveNode->Destination.x - AutoMoveDeparturePosition.x) > 0.9 &&
+               abs(getPosition().y - AutoMoveDeparturePosition.y)/abs(AutoMoveNode->Destination.y - AutoMoveDeparturePosition.y) > 0.9)
+            {
+                AutoMoveDirection.x *= Inertia*0.8;
+                AutoMoveDirection.y *= Inertia*0.8;
+            }
+
+
+            if((abs(dX) < 5 && abs(dY) < 5) || (abs(AutoMoveDirection.x) < 0.01 && abs(AutoMoveDirection.y) < 0.01))
+            {
+                cout << "End at : " << dX << "  " << dY << endl << endl;
+                AutoMoveRunning = false;
+                AutoMoveNeedRefresh = false;
+                AutoMoveDirection = sf::Vector2f(0, 0);
+
+                AutoMoveNode->RunDestinationAction();
+                AutoMoveNode->RunToNextNode = true;
+            }
+
+            Direction = AutoMoveDirection;
+        }
+    }
+
+    else
+    {
+        Direction.x *= Inertia;
+        Direction.y *= Inertia;
+
+        if(Direction.x < 0.01 && Direction.x > 0)
+            Direction.x = 0;
+        if(Direction.x > -0.01 && Direction.x < 0)
+            Direction.x = 0;
+
+        if(Direction.y < 0.01 && Direction.y > 0)
+            Direction.y = 0;
+        if(Direction.y > -0.01 && Direction.y < 0)
+            Direction.y = 0;
+    }
+
+    Vector = sf::Vector2f(ElapsedTime*Direction.x*Speed, ElapsedTime*Direction.y*Speed);
+
+    if(getPosition().y - getOrigin().y + getTexture()->getSize().y*getScale().y + Vector.y >= Window_Height) // Bas
+    {
+        Vector.y = 0;
+    }
+
+    if(getPosition().y - getOrigin().y + Vector.y <= 0)     // Haut
+    {
+        Vector.y = 0;
+    }
+
+    if(getPosition().x  - getOrigin().x + getTexture()->getSize().x*getScale().x + Vector.x >= Window_Width) // Droite
+    {
+        Vector.x = 0;
+    }
+
+    if(getPosition().x  - getOrigin().x + Vector.x <= 0)  // Gauche
+    {
+        Vector.x = 0;
+    }
+
+    //cout << Vector.x << "  " << Vector.y << endl;
+    move(Vector);
+    return 1;
+}
 
 void Spaceship::RefreshElapsedTime(bool Release)
 {
     Entity::RefreshElapsedTime(Release);
 
-    if(MainWeapon != NULL)
-        MainWeapon->RefreshElapsedTime(Release);
     if(SecondaryWeapon != NULL)
         SecondaryWeapon->RefreshElapsedTime(Release);
+    if(MainWeapon != NULL)
+        MainWeapon->RefreshElapsedTime(Release);
     if(MainShield != NULL)
         MainShield->RefreshElapsedTime(Release);
 
     HittedAnim->Play(ElapsedTime);
     DyingAnim->Play(ElapsedTime);
+    MovePath.Play(ElapsedTime);
 }
 
 void Spaceship::draw(sf::RenderWindow *Window)
@@ -219,8 +314,8 @@ void Spaceship::draw(sf::RenderWindow *Window)
     else
     {
         Window->draw(*this);
-        MainWeapon->draw(Window);
         SecondaryWeapon->draw(Window);
+        MainWeapon->draw(Window);
 
         MainShield->draw(Window);
     }

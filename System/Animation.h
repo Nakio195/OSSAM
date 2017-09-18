@@ -67,9 +67,6 @@ class Animation : public sf::Sprite
         std::function<void(Type*)> StartAction;
         std::function<void(Type*)> RepeatAction;
         std::function<void(Type*)> EndAction;
-        //void (Type::*StartAction)(void);
-        //void (Type::*RepeatAction)(void);
-        //void (Type::*EndAction)(void);
 };
 
 #endif // ANIMATION_H

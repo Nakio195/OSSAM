@@ -18,7 +18,7 @@ OSSAM::OSSAM()
     sf::ContextSettings Settings;
     Settings.antialiasingLevel = ANTI_ALIAS;
 
-    Window.create(sf::VideoMode(WINDOW_WIDHT, WINDOW_HEIGHT), "#OSSAM 2017", sf::Style::Default, Settings);
+    Window.create(sf::VideoMode(WINDOW_WIDHT, WINDOW_HEIGHT), "#OSSAM 2017", sf::Style::Fullscreen, Settings);
 
     Window_Height = Window.getSize().y;
     Window_Width = Window.getSize().x;
@@ -29,6 +29,7 @@ OSSAM::OSSAM()
 
     Captain = new Player("Cap'tain Khaal", "Ressources/Sprite/Player/Player.png", 500, 200);
     Captain->setFaction(Spaceship::FactionPlayer);
+    Captain->setInertia(0.95);
     Captain->setTexture_HalfLife("Ressources/Sprite/Player/Player_Quarter.png");
     Captain->setTexture_Shield("Ressources/Sprite/Player/Pouclier.png", "Ressources/Sprite/Player/Pouclier_casse.png");
     Captain->setTexture_Dying("Ressources/Sprite/explosion.png");
@@ -79,22 +80,14 @@ void OSSAM::HandlePhysics()
 
     /*Gestion des tirs */
 
-    int randomval = rand();
+    int randomval = rand() %100;
 
     if(!Bleuton->isDead())
     {
-        if(randomval < 1200)
+        if(randomval < 25)
             Bleuton->Shoot(Weapon::Main);
-
-
-        if(!Bleuton->Move(Bleuton->Direction))
-        {
-            if(Bleuton->getPosition().x > Window_Width/2)
-                Bleuton->Direction = sf::Vector2f(Bleuton->Direction.x -0.1, Bleuton->Direction.y*-1.0);
-            else
-                Bleuton->Direction = sf::Vector2f(Bleuton->Direction.x +1, Bleuton->Direction.y*-1.0);
-        }
     }
+
 
 
     for (list<Bullet*>::iterator it = FiredBullets.begin(); it != FiredBullets.end();)
@@ -170,6 +163,8 @@ void OSSAM::HandlePhysics()
                 delete CurrentSpaceship;
             }
         }
+
+        CurrentSpaceship->Move();
     }
 
 
@@ -184,44 +179,29 @@ void OSSAM::HandlePhysics()
         Captain->Shoot(Weapon::Main);
     }
 
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::S) && sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
     {
-        Captain->Move(sf::Vector2f(-1, 1));
+        Captain->setDirection(sf::Vector2f(0, -1));
     }
 
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::S) && sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
     {
-        Captain->Move(sf::Vector2f(1, 1));
+        Captain->setDirection(sf::Vector2f(1, 0));
     }
 
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Z)  && sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
     {
-        Captain->Move(sf::Vector2f(-1, -1));
+        Captain->setDirection(sf::Vector2f(-1, 0));
     }
 
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Z) && sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
     {
-        Captain->Move(sf::Vector2f(1, -1));
+        Captain->setDirection(sf::Vector2f(0, 1));
     }
 
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::P))
     {
-        Captain->Move(sf::Vector2f(0, -1));
-    }
-
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-    {
-        Captain->Move(sf::Vector2f(1, 0));
-    }
-
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
-    {
-        Captain->Move(sf::Vector2f(-1, 0));
-    }
-
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-    {
-        Captain->Move(sf::Vector2f(0, 1));
+        Bleuton->StartAutoMove();
     }
 
 }

@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <string.h>
 #include <System/Animation.h>
+#include "Entities/IA/AutoMovePath.h"
 
 using namespace std;
 
@@ -17,16 +18,28 @@ class Entity : public sf::Sprite
 
         void ChangeTexture(sf::Texture *NewTexture);
 
-        void MoveLinearTo(sf::Vector2f Position);
+        void setInertia(float pInertia);
+        sf::Vector2f getDirection();
+
+        void setDirection(sf::Vector2f pDirection);
 
         string getName();
 
     protected:
         string Name;
+        float Inertia;
+        float Speed;
+
+        sf::Vector2f Direction;
         float ElapsedTime;
         sf::Clock Clock;
 
-        sf::Vector2f OnGoingPosition;
+
+        bool AutoMoveNeedRefresh;
+        sf::Vector2f AutoMoveDirection;
+        sf::Vector2f AutoMoveDeparturePosition;
+        bool AutoMoveRunning;
+
 };
 
 #endif // ENTITY_H

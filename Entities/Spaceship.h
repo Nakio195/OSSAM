@@ -25,13 +25,12 @@ class Spaceship : public Entity
             unsigned int Generator;
             unsigned int Attack;
             unsigned int Defense;
-            float Speed;
         }Statistics;
 
         enum SpaceshipFaction{FactionPlayer, FactionWasp};
 
     public:
-        Spaceship(string pName = "Cap'tain Barbare", string PathTotexture = "Ressources/Sprite/Galile.png", unsigned int pLife = 100, unsigned int pShield = 50, unsigned int pAttack = 10, unsigned int pDefense = 10, unsigned int pGenerator = 10, float pSpeed = 300, unsigned int pXP = 0, unsigned int pAmmo = 3);
+        Spaceship(string pName = "Cap'tain Barbare", string PathTotexture = "Ressources/Sprite/Galile.png", unsigned int pLife = 100, unsigned int pShield = 50, unsigned int pAttack = 10, unsigned int pDefense = 10, unsigned int pGenerator = 10, float pSpeed = 600, unsigned int pXP = 0, unsigned int pAmmo = 3);
         ~Spaceship();
 
         Spaceship::Statistics getStats();
@@ -43,14 +42,16 @@ class Spaceship : public Entity
         void Shoot(int UsedWeapon);
         void TakeDamage(Bullet* Damage);
 
+        int Move();
+        void StartAutoMove();
+        void MoveLinearTo(PathNode<Spaceship> *Node);
+
         bool isPlayer();
         void setFaction(int pFaction);
         int getFaction();
 
-
         bool isDead();
         void Die();
-        int Move(sf::Vector2f Direction);
 
         void RefreshElapsedTime(bool Release = false);
         void draw(sf::RenderWindow *Window);
@@ -79,9 +80,14 @@ class Spaceship : public Entity
         int HealthPoints;
         int Faction;
 
+
         Statistics Stats;
         bool Dying;
         bool Dead;
+
+        /** IA **/
+        PathNode<Spaceship> *AutoMoveNode;
+        AutoMovePath<Spaceship> MovePath;
 
         /** Shield **/
         Shield *MainShield;

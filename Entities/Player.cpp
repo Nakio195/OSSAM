@@ -13,7 +13,7 @@ Player::Player(string pName, string PathTotexture, unsigned int pLife, unsigned 
     MainWeapon = new Weapon(this, "Laser Simple", "Ressources/Sprite/Player/canon.png", 0.3);
     MainWeapon->setShootingDirection(sf::Vector2f(1, 0));
     MainWeapon->setRelativePosition(sf::Vector2f(-27, -30));
-    MainWeapon->setShootPosition(sf::Vector2f(80, -6));
+    MainWeapon->setShootPosition(sf::Vector2f(104, 25));
     MainWeapon->setBlastAnim("Ressources/Sprite/blast-CP.png", 2, sf::IntRect(0, 0, 40, 24));
     MainWeapon->setIcon("Ressources/System/Icon/RG_1.png");
 
@@ -23,10 +23,10 @@ Player::Player(string pName, string PathTotexture, unsigned int pLife, unsigned 
     MainWeapon->setBullet(MainWeaponBullet);
 
 
-    SecondaryWeapon = new Weapon(this, "Lance Missile", "", 1);
+    SecondaryWeapon = new Weapon(this, "Lance Missile", "Ressources/Sprite/Player/LM.png", 1);
     SecondaryWeapon->setShootingDirection(sf::Vector2f(1, 0));
-    SecondaryWeapon->setRelativePosition(sf::Vector2f(-27, -30));
-    SecondaryWeapon->setShootPosition(sf::Vector2f(80, -6));
+    SecondaryWeapon->setRelativePosition(sf::Vector2f(-30, -47));
+    SecondaryWeapon->setShootPosition(sf::Vector2f(55, 40));
     SecondaryWeapon->setBlastAnim("Ressources/Sprite/blast-LM.png", 3, sf::IntRect(0, 0, 50, 31));
     SecondaryWeapon->setIcon("Ressources/System/Icon/LM_1.png");
 
@@ -48,21 +48,20 @@ Player::Player(string pName, string PathTotexture, unsigned int pLife, unsigned 
     mInventory->addItem(SecondaryWeapon);
     mInventory->addItem(MainShield);
 
-    /*
+
     cout << endl;
 
-    cout << pName << endl;
-    cout << "\t" << "Life : " << pLife << endl;
-    cout << "\t" << "XP : " << pXP << endl;
-    cout << "\t" << "Attack : " << pAttack << endl;
-    cout << "\t" << "Defense : " << pDefense << endl;
-    cout << "\t" << "Shield : " << pShield << endl;
-    cout << "\t" << "Energy Generator : " << pGenerator << endl;
-    cout << "\t" << "Movement Speed : " << pSpeed << endl;
-    cout << "\t" << "Ammunitions size : " << pAmmo << endl;
+    cout << Name << endl;
+    cout << "\t" << "Life : " << Stats.Life << endl;
+    cout << "\t" << "XP : " << Xp << endl;
+    cout << "\t" << "Attack : " << Stats.Attack << endl;
+    cout << "\t" << "Defense : " << Stats.Defense << endl;
+    cout << "\t" << "Shield : " << Stats.Shield << endl;
+    cout << "\t" << "Energy Generator : " << Stats.Generator << endl;
+    cout << "\t" << "Movement Speed : " << Speed << endl;
     cout << "\t" << "Skin : " << PathTotexture << endl;
     cout << endl;
-    */
+
 }
 
 
