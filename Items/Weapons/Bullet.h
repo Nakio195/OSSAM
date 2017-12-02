@@ -31,6 +31,7 @@ class Bullet : public Entity
         unsigned int getHit();
         void setHit(unsigned int pHit);
 
+        virtual void Move();
         void setDirection(sf::Vector2f pDirection);
         sf::Vector2f getDirection();
 
@@ -45,7 +46,7 @@ class Bullet : public Entity
 
         void setParent(Spaceship *pParent);
         Spaceship *getParent();
-        void draw(sf::RenderWindow *Window);
+        virtual void draw(sf::RenderWindow *Window);
         void RefreshElapsedTime(bool Release);
         virtual void Hitting(Spaceship *Shooter, Spaceship *Shooted);
 

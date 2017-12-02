@@ -15,7 +15,7 @@ Bullet::Bullet(Spaceship *pParent, string pName, unsigned int pHit, string PathT
 {
     setHit(pHit);
     setParent(pParent);
-    Speed = 500;
+    Speed = 1500;
     BulletTexture = new sf::Texture();
     BulletTexture->loadFromFile(PathToBulletTexture);
     ChangeTexture(BulletTexture);
@@ -23,7 +23,7 @@ Bullet::Bullet(Spaceship *pParent, string pName, unsigned int pHit, string PathT
     BlastTexture = new sf::Texture();
     BlastTexture->loadFromFile(PathToBlastTexture);
     BlastAnim = new Animation<Bullet>(this, 0.1, Animation<Bullet>::Sprite, BlastTexture);
-    BlastAnim->setFrame(3, sf::IntRect(0, 0, 65, 70));
+    BlastAnim->setFrame(3, sf::IntRect(0, 0, 130, 140));
 
     setOrigin(getTexture()->getSize().x, getTexture()->getSize().y/2);
 
@@ -46,6 +46,14 @@ bool Bullet::NeedRemove()
     return Remove;
 }
 
+void Bullet::Move()
+{
+    //std::cout << "\t\tElapsed Time :" << ElapsedTime << std::endl;
+
+    if(ElapsedTime < 100.0 && ElapsedTime > 0.0)
+        move(Speed*ElapsedTime*Direction.x, Speed*ElapsedTime*Direction.y);
+}
+
 Bullet::Bullet(Bullet *copy) : Entity(copy->getName())
 {
     BlastAnim = new Animation<Bullet>(copy->BlastAnim);
@@ -64,6 +72,7 @@ Bullet::Bullet(Bullet *copy) : Entity(copy->getName())
     Remove = false;
     Exploded = false;
     ChangeTexture(BulletTexture);
+    setOrigin(getTexture()->getSize().x/2, getTexture()->getSize().y/2);
 }
 
 Bullet::~Bullet()
@@ -82,7 +91,12 @@ void Bullet::Hitting(Spaceship *Shooter, Spaceship *Shooted)
     if(!Exploded)
     {
         Shooted->TakeDamage(this);
+        if(Shooted->isDead())
         Exploded = true;
+
+        if(Shooted->getHealth() <= 0)
+            Shooter->setAimedTarget(NULL);
+
         BlastAnim->Start();
     }
 

@@ -23,7 +23,8 @@ SOURCES += main.cpp \
     System/UI/UI_Slot.cpp \
     Items/Weapons/Bullet/Missile.cpp \
     Items/Weapons/Bullet/Laser.cpp \
-    Entities/IA/AutoMovePath.cpp
+    Entities/IA/IA_Node.cpp \
+    Entities/IA/IA_Sequencer.cpp
 
 include(deployment.pri)
 qtcAddDeployment()
@@ -71,4 +72,5 @@ HEADERS += \
     System/UI/UI_Slot.h \
     Items/Weapons/Bullet/Missile.h \
     Items/Weapons/Bullet/Laser.h \
-    Entities/IA/AutoMovePath.h
+    Entities/IA/IA_Node.h \
+    Entities/IA/IA_Sequencer.h

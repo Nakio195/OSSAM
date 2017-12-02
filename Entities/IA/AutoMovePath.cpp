@@ -1,60 +1,6 @@
 #include "AutoMovePath.h"
 
-
-template<typename T>
-PathNode<T>::PathNode(T *pParent, sf::Vector2f pDestination, unsigned int pMoveType)
-{
-    Parent = pParent;
-    Origin = sf::Vector2f(0, 0);
-    Destination = pDestination;
-    MoveType = pMoveType;
-    Delay = 3;
-
-    RunToNextNode = false;
-    OriginAction = NULL;
-    TravelAction = NULL;
-    DestinationAction = NULL;
-}
-
-template<typename T>
-void PathNode<T>::setOriginAction(std::function<void(T *)> Action)
-{
-    OriginAction = Action;
-}
-
-template<typename T>
-void PathNode<T>::setTravelAction(std::function<void(T *, PathNode<T>*)> Action)
-{
-    TravelAction = Action;
-}
-
-template<typename T>
-void PathNode<T>::setDestinationAction(std::function<void(T *)> Action)
-{
-    DestinationAction = Action;
-}
-
-template<typename T>
-void PathNode<T>::RunOriginAction()
-{
-    if(OriginAction != NULL && Parent != NULL)
-        OriginAction(Parent);
-}
-
-template<typename T>
-void PathNode<T>::StartTravel()
-{
-    if(TravelAction != NULL && Parent != NULL)
-        TravelAction(Parent, this);
-}
-
-template<typename T>
-void PathNode<T>::RunDestinationAction()
-{
-    if(DestinationAction != NULL && Parent != NULL)
-        DestinationAction(Parent);
-}
-
+/******************************* AutoMovePath ************************************/
 
 template<typename T>
 AutoMovePath<T>::AutoMovePath()
@@ -68,13 +14,13 @@ AutoMovePath<T>::AutoMovePath()
 
 
 template<typename T>
-void AutoMovePath<T>::AddPoint(PathNode<T> PathPoint)
+void AutoMovePath<T>::AddPoint(IA_PathNode<T> PathPoint)
 {
     Path.push_back(PathPoint);
 }
 
 template<typename T>
-PathNode<T> AutoMovePath<T>::getCurrentNode()
+IA_PathNode<T> AutoMovePath<T>::getCurrentNode()
 {
     return Path.at(CurrentNode);
 }
@@ -84,7 +30,7 @@ void AutoMovePath<T>::Play(float ElapsedTime)
 {
     if(Running)
     {
-        PathNode<T> *Node = &(Path.at(CurrentNode));
+        IA_PathNode<T> *Node = &(Path.at(CurrentNode));
 
         if(Node->RunToNextNode == false && OnTravel == false)
         {

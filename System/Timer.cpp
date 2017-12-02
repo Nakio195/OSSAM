@@ -20,7 +20,10 @@ Timer::Timer(float pPeriod, unsigned int pMode)
 
 bool Timer::isRunning()
 {
-    return Running;
+    if(Counter <= Period && Running == false)
+        return false;
+    else
+        return true;
 }
 
 float Timer::getPeriod()

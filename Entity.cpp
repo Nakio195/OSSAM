@@ -44,6 +44,27 @@ sf::Vector2f Entity::getDirection()
     return Direction;
 }
 
+
+sf::Vector2f Entity::getLinearDirectionTo(Entity* Target)
+{
+    sf::Vector2f LinearDirection(0, 0);
+
+    float dX = (Target->getPosition().x-getPosition().x);
+    float dY = (Target->getPosition().y-getPosition().y);
+    float Phi = atan(dX/dY);
+
+    LinearDirection.x = sin(Phi);
+    LinearDirection.y = cos(Phi);
+
+    if((dX < 0 && dY < 0) || dY < 0)
+    {
+        LinearDirection.x *= -1.0;
+        LinearDirection.y *= -1.0;
+    }
+
+    return LinearDirection;
+}
+
 void Entity::setDirection(sf::Vector2f pDirection)
 {
     Direction += pDirection;
@@ -68,6 +89,10 @@ void Entity::RefreshElapsedTime(bool Release)
     }
 
     else
+    {
         ElapsedTime = Clock.restart().asSeconds();
+        if(ElapsedTime < 0.0)
+            ElapsedTime = 0.0;
+    }
 }
 

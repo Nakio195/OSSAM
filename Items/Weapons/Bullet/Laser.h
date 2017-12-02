@@ -12,6 +12,8 @@ class Laser : public Bullet
         Laser(Laser *copy);
         ~Laser();
 
+        virtual void Move();
+
         virtual void Hitting(Spaceship *Shooter, Spaceship *Shooted);
 };
 

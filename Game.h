@@ -3,8 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 
-#define WINDOW_WIDHT    1400
-#define WINDOW_HEIGHT   800
+#define WINDOW_WIDHT    1600
+#define WINDOW_HEIGHT   900
 
 #include "Entities/Player.h"
 #include "Entities/Ennemy.h"
@@ -32,6 +32,8 @@ class OSSAM
         void HandleDisplay(); // return FPS
         Player *Captain;
         Ennemy *Bleuton;
+        Ennemy *Vador;
+        Ennemy *Picard;
 
 
     private:

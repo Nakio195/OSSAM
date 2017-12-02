@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <string.h>
 #include <System/Animation.h>
-#include "Entities/IA/AutoMovePath.h"
+#include "Entities/IA/IA_Sequencer.h"
 
 using namespace std;
 
@@ -22,6 +22,7 @@ class Entity : public sf::Sprite
         sf::Vector2f getDirection();
 
         void setDirection(sf::Vector2f pDirection);
+        sf::Vector2f getLinearDirectionTo(Entity* Target);
 
         string getName();
 

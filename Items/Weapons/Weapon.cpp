@@ -1,4 +1,5 @@
 #include "Weapon.h"
+#include <iostream>
 
 /**
  * @brief FiredBullets
@@ -38,14 +39,14 @@ Weapon::~Weapon()
 
 Bullet* Weapon::copyBullet()
 {
-    switch(BulletType->getType())
+    switch(BulletType)
     {
         case Bullet::Laser:
-            return new Laser(static_cast<Laser*>(BulletType));
+            return new Laser(LaserBullet);
         break;
 
         case Bullet::Missile:
-            return new Missile(static_cast<Missile*>(BulletType));
+            return new Missile(MissileBullet);
         break;
     }
 
@@ -60,16 +61,16 @@ void Weapon::setBlastAnim(std::string Path, unsigned int NbFrames, sf::IntRect R
 
 }
 
-void Weapon::setBullet(unsigned int pHit, string PathToBulletTexture, string PathToBlastTexture)
+void Weapon::setBullet(Missile BulletReference)
 {
-    BulletType->setHit(pHit);
-    BulletType->setBlastTexture(PathToBlastTexture);
-    BulletType->setBulletTexture(PathToBulletTexture);
+    BulletType = Bullet::Missile;
+    MissileBullet = new Missile(BulletReference);
 }
 
-void Weapon::setBullet(Bullet BulletReference)
+void Weapon::setBullet(Laser BulletReference)
 {
-    BulletType = new Bullet(&BulletReference);
+    BulletType = Bullet::Laser;
+    LaserBullet = new Laser(BulletReference);
 }
 
 
@@ -77,7 +78,6 @@ void Weapon::setShootingDirection(sf::Vector2f Direction)
 {
     ShootingDirection = Direction;
 }
-
 
 void Weapon::setRelativePosition(sf::Vector2f Position)
 {
@@ -112,23 +112,33 @@ void Weapon::draw(sf::RenderWindow *Window)
     }
 }
 
-void Weapon::Shoot(sf::Vector2f InitialPosition)
+bool Weapon::Shoot()
 {
+    if(ReloadTimer.Triggered())
+        ReloadTimer.StopTimer();
+
     if(!ReloadTimer.isRunning())
     {
         Bullet *newBullet = copyBullet();
+
+        if(newBullet->getType() == Bullet::Missile)
+           static_cast<Missile*>(newBullet)->setTarget(Parent->getAimedTarget());
+
         newBullet->setDirection(ShootingDirection);
         newBullet->setPosition(MainSprite.getPosition().x+ShootPosition.x+RelativePosition.x, MainSprite.getPosition().y+ShootPosition.y+RelativePosition.y);
         FiredBullets.push_back(newBullet);
 
+        std::cout << "Bullet in the list : " << FiredBullets.size() << std::endl;
+
         ReloadTimer.StartTimer();
         BlastAnim->Start();
+
+        return true;
     }
 
     else
     {
-        if(ReloadTimer.Triggered())
-            ReloadTimer.StopTimer();
+        return false;
     }
 }
 

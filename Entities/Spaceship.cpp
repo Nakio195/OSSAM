@@ -21,6 +21,9 @@ Spaceship::Spaceship(string pName, string PathToTexture, unsigned int pLife, uns
 
     HealthPoints = pLife;
 
+    Target = NULL;
+    Aimed = false;
+
     Inertia = 1.0;
     Direction = sf::Vector2f(0, 0);
 
@@ -28,6 +31,12 @@ Spaceship::Spaceship(string pName, string PathToTexture, unsigned int pLife, uns
 
     Dying = false;
     Dead = false;
+
+    Aimed_Texture = new sf::Texture();
+
+    Aimed_Texture->loadFromFile("Ressources/System/InGame/Target.png");
+    Aimed_Sprite.setTexture(*Aimed_Texture);
+    Aimed_Sprite.setOrigin(Aimed_Texture->getSize().x/2, Aimed_Texture->getSize().y/2);
 
     Texture_Dying = new sf::Texture();
     Texture_HalfLife = new sf::Texture();
@@ -115,16 +124,37 @@ bool Spaceship::isDead()
     return Dead;
 }
 
-void Spaceship::Shoot(int UsedWeapon)
+bool Spaceship::Shoot(int UsedWeapon)
 {
     if(Dying || Dead)
-        return;
+        return false;
 
     if(UsedWeapon == Weapon::Main)
-        MainWeapon->Shoot(getPosition());
+    {
+        return MainWeapon->Shoot();
+    }
 
     if(UsedWeapon == Weapon::Secondary)
-        SecondaryWeapon->Shoot(getPosition());
+    {
+        return SecondaryWeapon->Shoot();
+    }
+}
+
+
+bool Spaceship::Shoot(IA_ShootNode<Spaceship> *Node)
+{
+    if(Dying || Dead)
+        return false;
+
+    if(Node->WeaponChoice == Weapon::Main)
+    {
+        return MainWeapon->Shoot();
+    }
+
+    if(Node->WeaponChoice == Weapon::Secondary)
+    {
+        return MainWeapon->Shoot();
+    }
 }
 
 void Spaceship::Die()
@@ -152,7 +182,10 @@ void Spaceship::TakeDamage(Bullet* Damage)
         {
             HealthPoints = 0;
             cout << endl;
-            cout << Name << " was killed with " << Damage->getName() << endl << endl;
+            cout << Name << " was killed with " << Damage->getName() << " by " << Damage->getParent()->getName() << endl << endl;
+
+            if(Damage->getParent()->getAimedTarget() == this)
+                Damage->getParent()->setAimedTarget(NULL);
 
             if(!DyingAnim->isRunning())
             {
@@ -166,12 +199,18 @@ void Spaceship::TakeDamage(Bullet* Damage)
     }
 }
 
-void Spaceship::StartAutoMove()
+void Spaceship::StartSequencer()
 {
-    MovePath.Start();
+    Sequencer.Start();
 }
 
-void Spaceship::MoveLinearTo(PathNode<Spaceship> *Node)
+
+void Spaceship::AddSequencerNode(IA_Node<Spaceship> NewNode)
+{
+    Sequencer.AddNode(NewNode);
+}
+
+void Spaceship::MoveLinearTo(IA_PathNode<Spaceship> *Node)
 {
     AutoMoveNode = Node;
 
@@ -179,7 +218,7 @@ void Spaceship::MoveLinearTo(PathNode<Spaceship> *Node)
     AutoMoveNeedRefresh = true;
     AutoMoveDeparturePosition = getPosition();
 
-    cout << "On Going : " << Node->Destination.x << "  " << Node->Destination.y << endl;
+    cout << "On Going : " << AutoMoveNode->Destination.x << "  " << AutoMoveNode->Destination.y << endl;
     cout << "Position : " << getPosition().x << "  " << getPosition().y << endl;
 }
 
@@ -192,7 +231,7 @@ int Spaceship::Move()
 
     if(AutoMoveRunning == true)
     {
-        if(AutoMoveNode->MoveType == PathNode<Entity>::Linear)
+        if(AutoMoveNode->MoveType == IA_PathNode<Entity>::Linear)
         {
             sf::Vector2f Position = getPosition();
 
@@ -212,7 +251,7 @@ int Spaceship::Move()
                     AutoMoveDirection.y *= -1.0;
                 }
 
-                cout << AutoMoveDirection.x << "  " << AutoMoveDirection.y << endl;
+
                 AutoMoveNeedRefresh = false;
             }
 
@@ -226,13 +265,11 @@ int Spaceship::Move()
 
             if((abs(dX) < 5 && abs(dY) < 5) || (abs(AutoMoveDirection.x) < 0.01 && abs(AutoMoveDirection.y) < 0.01))
             {
-                cout << "End at : " << dX << "  " << dY << endl << endl;
                 AutoMoveRunning = false;
                 AutoMoveNeedRefresh = false;
                 AutoMoveDirection = sf::Vector2f(0, 0);
 
-                AutoMoveNode->RunDestinationAction();
-                AutoMoveNode->RunToNextNode = true;
+                AutoMoveNode->setEndOfTravel();
             }
 
             Direction = AutoMoveDirection;
@@ -282,6 +319,22 @@ int Spaceship::Move()
     return 1;
 }
 
+
+void Spaceship::setAimedTarget(Spaceship* pTarget)
+{
+    Target = pTarget;
+}
+
+Spaceship* Spaceship::getAimedTarget()
+{
+    return Target;
+}
+
+void Spaceship::setAimed(bool pAimed)
+{
+    Aimed = pAimed;
+}
+
 void Spaceship::RefreshElapsedTime(bool Release)
 {
     Entity::RefreshElapsedTime(Release);
@@ -295,7 +348,7 @@ void Spaceship::RefreshElapsedTime(bool Release)
 
     HittedAnim->Play(ElapsedTime);
     DyingAnim->Play(ElapsedTime);
-    MovePath.Play(ElapsedTime);
+    Sequencer.Play(ElapsedTime);
 }
 
 void Spaceship::draw(sf::RenderWindow *Window)
@@ -317,6 +370,11 @@ void Spaceship::draw(sf::RenderWindow *Window)
         SecondaryWeapon->draw(Window);
         MainWeapon->draw(Window);
 
+        if(Aimed)
+        {
+            Aimed_Sprite.setPosition(this->getPosition()+this->getOrigin());
+            Window->draw(Aimed_Sprite);
+        }
         MainShield->draw(Window);
     }
 

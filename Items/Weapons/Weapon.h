@@ -25,7 +25,8 @@ class Weapon : public Item
 
         Bullet* copyBullet();
         void setBullet(unsigned int pHit, string PathToBulletTexture, string PathToBlastTexture);
-        void setBullet(Bullet BulletReference);
+        void setBullet(Missile BulletReference);
+        void setBullet(Laser BulletReference);
         void setShootingDirection(sf::Vector2f Direction);
         void setRelativePosition(sf::Vector2f Position);
         void setShootPosition(sf::Vector2f Position);
@@ -35,7 +36,7 @@ class Weapon : public Item
         void draw(sf::RenderWindow *Window);
 
         void setBlastAnim(std::string Path, unsigned int NbFrames, sf::IntRect Rect);
-        virtual void Shoot(sf::Vector2f InitialPosition);
+        virtual bool Shoot();
 
         float getSpeed();
         void setSpeed(float pSpeed);
@@ -44,9 +45,12 @@ class Weapon : public Item
 
     private:
         float Speed;     //Cadence de tir en tir/s
-        Bullet* BulletType;      //Type de tir
+        unsigned int BulletType;      //Type de tir
+        Missile *MissileBullet;
+        Laser *LaserBullet;
+
         Timer ReloadTimer;
-        Entity *Parent;
+        Spaceship *Parent;
         sf::Vector2f ShootingDirection;
 
         sf::Vector2f RelativePosition;
