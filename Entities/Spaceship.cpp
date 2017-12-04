@@ -1,4 +1,5 @@
 #include "Spaceship.h"
+#include <math.h>
 #include "Game.h"
 
 /**
