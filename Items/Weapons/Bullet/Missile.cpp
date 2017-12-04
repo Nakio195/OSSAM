@@ -1,6 +1,8 @@
 #include "Missile.h"
 #include "../../../Entities/Spaceship.h"
 
+#include <math.h>
+
 /**
  * @brief Missile::Missile
  * @param Parent
