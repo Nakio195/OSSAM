@@ -51,8 +51,15 @@ void Missile::Move()
     if(Target != NULL)
     {
         Direction = getLinearDirectionTo(Target);
-        if(Direction.x < 0.1)
+
+        if(Direction.x < 0.8)
             Target = NULL;
+
+        if(Direction.x < 0.0)
+        {
+            Direction.x = 0.2;
+            Target = NULL;
+        }
 
         move(sf::Vector2f(Speed*ElapsedTime*Direction.x, Speed*ElapsedTime*Direction.y));
         setRotation(atan2(Direction.y, Direction.x)/3.14159*180);
@@ -71,6 +78,7 @@ void Missile::draw(sf::RenderWindow *Window)
     {
         //Window->draw(Zone);
         BlastAnim->setPosition(getPosition().x-30, getPosition().y-40);
+        BlastAnim->scale(DamageRadius/BlastAnim->getTexture()->getSize().x, DamageRadius/BlastAnim->getTexture()->getSize().x);
         Window->draw(*BlastAnim);
     }
 

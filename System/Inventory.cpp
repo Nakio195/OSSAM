@@ -341,6 +341,26 @@ void Inventory::addItem(Item *NewItem)
     }
 }
 
+void Inventory::useItem(Item *ItemToUse)
+{
+    if(ItemToUse == nullptr)
+        return;
+
+    switch(ItemToUse->getCategory())
+    {
+        case Item::Weapon:
+            if(Slot_MainWeapon->isEmpty())
+            {
+                Slot_MainWeapon->setItem(ItemToUse);
+            }
+            break;
+
+        case Item::Shield:
+
+            break;
+    }
+}
+
 bool Inventory::isOpen()
 {
     return Opened;

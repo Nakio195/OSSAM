@@ -38,6 +38,10 @@ class OSSAM
 
     private:
         unsigned int GameState;
+
+        sf::View GameView;
+        sf::View ATH_View;
+
         sf::Sprite Background;
         sf::Texture Text_Background;
 

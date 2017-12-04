@@ -351,12 +351,19 @@ void Spaceship::RefreshElapsedTime(bool Release)
     Sequencer.Play(ElapsedTime);
 }
 
+
+ATH* Spaceship::getUI()
+{
+    return UI;
+}
+
 void Spaceship::draw(sf::RenderWindow *Window)
 {
     if(Dead)
         return;
 
-    UI->draw(Window);
+    if(!isPlayer())
+        UI->draw(Window);
 
     if(Dying)
     {

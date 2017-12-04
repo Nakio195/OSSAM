@@ -23,6 +23,9 @@ OSSAM::OSSAM()
     Window_Height = Window.getSize().y;
     Window_Width = Window.getSize().x;
 
+    GameView = sf::View(sf::Vector2f(Window_Width/2, Window_Height/2), sf::Vector2f(Window_Width, Window_Height));
+    ATH_View = sf::View(sf::Vector2f(Window_Width/2, Window_Height/2), sf::Vector2f(Window_Width, Window_Height));
+
     srand(time(0));
 
     GameState = OSSAM::Playing;
@@ -288,6 +291,7 @@ void OSSAM::HandlePhysics()
         CurrentSpaceship->Move();
     }
 
+    GameView.setCenter(Captain->getPosition());
 
 
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
@@ -402,6 +406,7 @@ void OSSAM::HandleDisplay()
 {
     Window.clear();
 
+    Window.setView(GameView);
     Window.draw(Background);
 
     for(list<Bullet*>::iterator it = FiredBullets.begin(); it != FiredBullets.end(); it++)
@@ -422,7 +427,12 @@ void OSSAM::HandleDisplay()
         }
     }
 
+    Window.setView(ATH_View);
+
     //Drawing ATH
+
+    Captain->getUI()->draw(&Window);
+
     if(GameState == OSSAM::OnInventory)
     {
         if(OpenedInventory == NULL)

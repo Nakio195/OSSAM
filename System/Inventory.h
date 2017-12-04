@@ -20,6 +20,7 @@ class Inventory : public UserInterface
         void Display(sf::RenderWindow &Window);
         void HandleEvent(sf::Event &Event);
         void addItem(Item *NewItem);
+        void useItem(Item *ItemToUse);
         void selectTab(unsigned int Category);
         bool isOpen();
         void Close();

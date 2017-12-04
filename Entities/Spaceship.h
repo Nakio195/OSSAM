@@ -58,6 +58,7 @@ class Spaceship : public Entity
         void Die();
 
         void RefreshElapsedTime(bool Release = false);
+        ATH* getUI();
         void draw(sf::RenderWindow *Window);
 
         /** Animations and Textures **/
