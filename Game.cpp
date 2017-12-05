@@ -37,6 +37,38 @@ OSSAM::OSSAM()
     Captain->setTexture_Shield("Ressources/Sprite/Player/Pouclier.png", "Ressources/Sprite/Player/Pouclier_casse.png");
     Captain->setTexture_Dying("Ressources/Sprite/explosion.png");
 
+
+    Weapon *MainWeapon = new Weapon("Laser Simple", "Ressources/Sprite/Player/canon.png", 0.3);
+    MainWeapon->setShootingDirection(sf::Vector2f(1, 0));
+    MainWeapon->setRelativePosition(sf::Vector2f(-27, -30));
+    MainWeapon->setShootPosition(sf::Vector2f(104, 25));
+    MainWeapon->setBlastAnim("Ressources/Sprite/blast-CP.png", 2, sf::IntRect(0, 0, 40, 24));
+    MainWeapon->setIcon("Ressources/System/Icon/RG_1.png");
+
+    Laser MainWeaponBullet(Captain);
+    MainWeaponBullet.setHit(10);
+    MainWeaponBullet.setBulletTexture("Ressources/Sprite/LaserBleu.png");
+    MainWeapon->setBullet(MainWeaponBullet);
+
+
+    Weapon *SecondaryWeapon = new Weapon("Lance Missile", "Ressources/Sprite/Player/LM.png", 1);
+    SecondaryWeapon->setShootingDirection(sf::Vector2f(1, 0));
+    SecondaryWeapon->setRelativePosition(sf::Vector2f(-30, -47));
+    SecondaryWeapon->setShootPosition(sf::Vector2f(55, 40));
+    SecondaryWeapon->setBlastAnim("Ressources/Sprite/blast-LM.png", 3, sf::IntRect(0, 0, 50, 31));
+    SecondaryWeapon->setIcon("Ressources/System/Icon/LM_1.png");
+
+    Missile SecondaryWeaponBullet(Captain);
+    SecondaryWeaponBullet.setHit(100);
+    SecondaryWeaponBullet.setBlastTexture("Ressoures/Sprite/missile-blast.png");
+    SecondaryWeaponBullet.setBulletTexture("Ressources/Sprite/missile.png");
+    SecondaryWeapon->setBullet(SecondaryWeaponBullet);
+
+    Shield *MainShield = new Shield(Captain);
+    Captain->addItem(MainShield);
+    Captain->addItem(MainWeapon);
+    Captain->addItem(SecondaryWeapon);
+
     Spaceships.push_back(Captain);
 
     Bleuton = new Ennemy("Bleuton", "Ressources/Sprite/Ennemies/Intercepteur.png", 100,  0);
@@ -52,7 +84,7 @@ OSSAM::OSSAM()
     First.Delay = 1;
     First.ShootNode = new IA_ShootNode<Spaceship>(Bleuton, Weapon::Main, 5);
     First.ShootNode->ShootNumber = 5;
-    First.ShootNode->ShootingPeriod = 0.2;
+    First.ShootNode->ShootingPeriod = 1.5;
     First.ShootNode->Mode = IA_ShootNode<Spaceship>::Single;
     First.ShootNode->setShootAction(static_cast<bool (Spaceship::*)(IA_ShootNode<Spaceship>*)>(&Spaceship::Shoot));
 
@@ -97,7 +129,7 @@ OSSAM::OSSAM()
     FirstV.Delay = 1;
     FirstV.ShootNode = new IA_ShootNode<Spaceship>(Vador, Weapon::Main, 5);
     FirstV.ShootNode->ShootNumber = 5;
-    FirstV.ShootNode->ShootingPeriod = 0.2;
+    FirstV.ShootNode->ShootingPeriod = 1.5;
     FirstV.ShootNode->Mode = IA_ShootNode<Spaceship>::Single;
     FirstV.ShootNode->setShootAction(static_cast<bool (Spaceship::*)(IA_ShootNode<Spaceship>*)>(&Spaceship::Shoot));
 
@@ -142,7 +174,7 @@ OSSAM::OSSAM()
     FirstP.Delay = 1;
     FirstP.ShootNode = new IA_ShootNode<Spaceship>(Picard, Weapon::Main, 5);
     FirstP.ShootNode->ShootNumber = 5;
-    FirstP.ShootNode->ShootingPeriod = 0.2;
+    FirstP.ShootNode->ShootingPeriod = 1.5;
     FirstP.ShootNode->Mode = IA_ShootNode<Spaceship>::Single;
     FirstP.ShootNode->setShootAction(static_cast<bool (Spaceship::*)(IA_ShootNode<Spaceship>*)>(&Spaceship::Shoot));
 
@@ -291,8 +323,6 @@ void OSSAM::HandlePhysics()
         CurrentSpaceship->Move();
     }
 
-    GameView.setCenter(Captain->getPosition());
-
 
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
     {
@@ -366,7 +396,7 @@ void OSSAM::HandleEvents()
         {
             OpenedInventory->HandleEvent(event);
 
-            if(OpenedInventory->isOpen() == false)
+            if(OpenedInventory->isOpened() == false)
                 GameState = OSSAM::Playing;
 
         }

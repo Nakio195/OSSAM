@@ -4,13 +4,20 @@
  * @brief Inventory::Inventory
  */
 
-Inventory::Inventory()
+extern int Window_Height;
+extern int Window_Width;
+
+Inventory::Inventory(Spaceship *newOwner)
 {
     Opened = false;
+    RefreshOwner = false;
+
+    if(newOwner != NULL)
+        Owner = newOwner;
 
     Background.loadFromFile("Ressources/System/Inventory.png");
     setTexture(Background);
-    setPosition(1400/2-Background.getSize().x/2, 800/2-Background.getSize().y/2);
+    setPosition(Window_Width/2-Background.getSize().x/2, Window_Height/2-Background.getSize().y/2);
 
     CloseBtn = new UI_Button("Ressources/System/UI/CloseBtn.png", this);
     CloseBtn->setRelativePosition(753, 36);
@@ -227,18 +234,21 @@ void Inventory::HandleEvent(sf::Event &Event)
 
         if(DestinationSlot != NULL)
         {
-            if(DestinationSlot->getType() == MovedSlot->getItem()->getCategory() || DestinationSlot->getType() == UI_Slot::Bag)
+            if(DestinationSlot->getType() == MovedSlot->getItem()->getCategory() || (DestinationSlot->getType() == UI_Slot::Bag && CurrentTab == MovedSlot->getItem()->getCategory()))
             {
                 if(!DestinationSlot->isEmpty())
                 {
                     Item* Temp = DestinationSlot->getItem();
                     DestinationSlot->setItem(MovedSlot->getItem());
+                    MovedSlot->getItem()->setMySlot(DestinationSlot);
                     MovedSlot->setItem(Temp);
+
                 }
 
                 else
                 {
                     DestinationSlot->setItem(MovedSlot->getItem());
+                    MovedSlot->getItem()->setMySlot(DestinationSlot);
                     MovedSlot->Clear();
                 }
 
@@ -249,6 +259,7 @@ void Inventory::HandleEvent(sf::Event &Event)
 
                 MovedSlot->ValidateDrop();
                 DestinationSlot->setState(UI_Slot::Enabled);
+                RefreshOwner = true;
             }
 
             else
@@ -291,6 +302,7 @@ void Inventory::selectTab(unsigned int Category)
                     if(CurrentWeapon->getState() == Item::InBag)
                     {
                         MyBag[i]->setItem(CurrentWeapon);
+                        CurrentWeapon->setMySlot(MyBag[i]);
                         i++;
                     }
                 }
@@ -313,6 +325,7 @@ void Inventory::selectTab(unsigned int Category)
                     if(CurrentShield->getState() == Item::InBag)
                     {
                         MyBag[i]->setItem(CurrentShield);
+                        CurrentShield->setMySlot(MyBag[i]);
                         i++;
                     }
                 }
@@ -329,10 +342,43 @@ void Inventory::addItem(Item *NewItem)
     switch(NewItem->getCategory())
     {
         case Item::Weapon:
+            if(Slot_MainWeapon->isEmpty())
+            {
+                NewItem->setMySlot(Slot_MainWeapon);
+                Slot_MainWeapon->setItem(NewItem);
+                NewItem->setState(Item::Equiped);
+                RefreshOwner = true;
+            }
+
+            else if(Slot_SecondaryWeapon->isEmpty())
+            {
+                NewItem->setMySlot(Slot_SecondaryWeapon);
+                Slot_SecondaryWeapon->setItem(NewItem);
+                NewItem->setState(Item::Equiped);
+                RefreshOwner = true;
+            }
+
+            else
+            {
+                NewItem->setState(Item::InBag);
+            }
+
             MyWeapons.push_back(static_cast<Weapon*>(NewItem));
             break;
 
         case Item::Shield:
+            if(Slot_MainShield->isEmpty())
+            {
+                NewItem->setMySlot(Slot_MainShield);
+                Slot_MainShield->setItem(NewItem);
+                RefreshOwner = true;
+            }
+
+            else
+            {
+                NewItem->setState(Item::InBag);
+            }
+
             MyShields.push_back(static_cast<Shield*>(NewItem));
             break;
 
@@ -341,17 +387,82 @@ void Inventory::addItem(Item *NewItem)
     }
 }
 
-void Inventory::useItem(Item *ItemToUse)
+
+Weapon* Inventory::getWeaponItem(unsigned int Type)
+{
+    if(Type == Weapon::Main && !Slot_MainWeapon->isEmpty())
+        return static_cast<Weapon*>(Slot_MainWeapon->getItem());
+    else if(Type == Weapon::Secondary && !Slot_SecondaryWeapon->isEmpty())
+        return static_cast<Weapon*>(Slot_SecondaryWeapon->getItem());
+    else
+        return NULL;
+}
+
+Shield* Inventory::getShieldItem()
+{
+    if(!Slot_MainShield->isEmpty())
+        return static_cast<Shield*>(Slot_MainShield->getItem());
+    else
+        return NULL;
+}
+
+bool Inventory::useItem(Item *ItemToUse, unsigned int Parameter)
 {
     if(ItemToUse == nullptr)
-        return;
+        return false;
 
     switch(ItemToUse->getCategory())
     {
         case Item::Weapon:
             if(Slot_MainWeapon->isEmpty())
             {
+                ItemToUse->setMySlot(Slot_MainShield);
                 Slot_MainWeapon->setItem(ItemToUse);
+                RefreshOwner = true;
+                return true;
+            }
+
+            else if(Slot_SecondaryWeapon->isEmpty())
+            {
+                ItemToUse->setMySlot(Slot_SecondaryWeapon);
+                Slot_SecondaryWeapon->setItem(ItemToUse);
+                RefreshOwner = true;
+                return true;
+            }
+
+            else if(Parameter != 255)
+            {
+                if(Parameter == Weapon::Main)
+                {
+                    if(MyWeapons.size() < BAG_SIZE)
+                    {
+                        MyWeapons.push_back(static_cast<Weapon*>(Slot_MainWeapon->getItem()));
+                        Slot_MainWeapon->Clear();
+                        Slot_MainWeapon->setItem(ItemToUse);
+                        RefreshOwner = true;
+                        ItemToUse->setMySlot(Slot_MainWeapon);
+                        return true;
+                    }
+
+                    else
+                        return false;
+                }
+
+                else if(Parameter == Weapon::Secondary)
+                {
+                    if(MyWeapons.size() < BAG_SIZE)
+                    {
+                        MyWeapons.push_back(static_cast<Weapon*>(Slot_MainWeapon->getItem()));
+                        Slot_MainWeapon->Clear();
+                        Slot_MainWeapon->setItem(ItemToUse);
+                        RefreshOwner = true;
+                        ItemToUse->setMySlot(Slot_MainWeapon);
+                        return true;
+                    }
+
+                    else
+                        return false;
+                }
             }
             break;
 
@@ -361,7 +472,18 @@ void Inventory::useItem(Item *ItemToUse)
     }
 }
 
-bool Inventory::isOpen()
+
+bool Inventory::OwnerNeedRefresh()
+{
+    return RefreshOwner;
+}
+
+void Inventory::OwnerRefreshed()
+{
+    RefreshOwner = false;
+}
+
+bool Inventory::isOpened()
 {
     return Opened;
 }

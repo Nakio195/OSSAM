@@ -20,6 +20,9 @@ Spaceship::Spaceship(string pName, string PathToTexture, unsigned int pLife, uns
     Stats.Generator = pGenerator;
     Speed = pSpeed;
 
+    MainWeapon = NULL;
+    SecondaryWeapon = NULL;
+
     HealthPoints = pLife;
 
     Target = NULL;
@@ -29,6 +32,8 @@ Spaceship::Spaceship(string pName, string PathToTexture, unsigned int pLife, uns
     Direction = sf::Vector2f(0, 0);
 
     UI = new ATH(this);
+
+    mInventory = new Inventory(this);
 
     Dying = false;
     Dead = false;
@@ -87,13 +92,19 @@ int Spaceship::getHealth()
 
 int Spaceship::getShield()
 {
-    return MainShield->getShieldPoints();
+    if(MainShield != NULL)
+        return MainShield->getShieldPoints();
+    else
+        return 0;
 }
 
 
 int Spaceship::getShieldMax()
 {
-    return MainShield->getShieldMax();
+    if(MainShield != NULL)
+        return MainShield->getShieldMax();
+    else
+        return 0;
 }
 
 Spaceship::Statistics Spaceship::getStats()
@@ -132,12 +143,14 @@ bool Spaceship::Shoot(int UsedWeapon)
 
     if(UsedWeapon == Weapon::Main)
     {
-        return MainWeapon->Shoot();
+        if(MainWeapon != NULL)
+            return MainWeapon->Shoot();
     }
 
     if(UsedWeapon == Weapon::Secondary)
     {
-        return SecondaryWeapon->Shoot();
+        if(SecondaryWeapon != NULL)
+            return SecondaryWeapon->Shoot();
     }
 }
 
@@ -149,12 +162,14 @@ bool Spaceship::Shoot(IA_ShootNode<Spaceship> *Node)
 
     if(Node->WeaponChoice == Weapon::Main)
     {
-        return MainWeapon->Shoot();
+        if(MainWeapon != NULL)
+            return MainWeapon->Shoot();
     }
 
     if(Node->WeaponChoice == Weapon::Secondary)
     {
-        return MainWeapon->Shoot();
+        if(SecondaryWeapon != NULL)
+            return MainWeapon->Shoot();
     }
 }
 
@@ -165,7 +180,11 @@ void Spaceship::Die()
 
 void Spaceship::TakeDamage(Bullet* Damage)
 {
-    int Damages = MainShield->TakeDamage(Damage);
+
+    int Damages = Damage->getHit();
+
+    if(MainShield != NULL)
+        Damages = MainShield->TakeDamage(Damage);
 
     cout << Name << " hitted by " << Damage->getHit() << " points !" << endl;
 
@@ -340,6 +359,14 @@ void Spaceship::RefreshElapsedTime(bool Release)
 {
     Entity::RefreshElapsedTime(Release);
 
+    if(mInventory->OwnerNeedRefresh())
+    {
+        MainWeapon = mInventory->getWeaponItem(Weapon::Main);
+        SecondaryWeapon = mInventory->getWeaponItem(Weapon::Secondary);
+        MainShield = mInventory->getShieldItem();
+        mInventory->OwnerRefreshed();
+    }
+
     if(SecondaryWeapon != NULL)
         SecondaryWeapon->RefreshElapsedTime(Release);
     if(MainWeapon != NULL)
@@ -352,6 +379,17 @@ void Spaceship::RefreshElapsedTime(bool Release)
     Sequencer.Play(ElapsedTime);
 }
 
+Inventory* Spaceship::getInventory()
+{
+    return mInventory;
+}
+
+
+bool Spaceship::addItem(Item* newItem)
+{
+    newItem->setOwner(this);
+    mInventory->addItem(newItem);
+}
 
 ATH* Spaceship::getUI()
 {
@@ -375,15 +413,20 @@ void Spaceship::draw(sf::RenderWindow *Window)
     else
     {
         Window->draw(*this);
-        SecondaryWeapon->draw(Window);
-        MainWeapon->draw(Window);
+        if(SecondaryWeapon != NULL)
+            SecondaryWeapon->draw(Window);
+
+        if(MainWeapon != NULL)
+            MainWeapon->draw(Window);
 
         if(Aimed)
         {
             Aimed_Sprite.setPosition(this->getPosition()+this->getOrigin());
             Window->draw(Aimed_Sprite);
         }
-        MainShield->draw(Window);
+
+        if(MainShield != NULL)
+            MainShield->draw(Window);
     }
 
 }

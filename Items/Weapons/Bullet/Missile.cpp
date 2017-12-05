@@ -80,7 +80,7 @@ void Missile::draw(sf::RenderWindow *Window)
     {
         //Window->draw(Zone);
         BlastAnim->setPosition(getPosition().x-30, getPosition().y-40);
-        BlastAnim->scale(DamageRadius/BlastAnim->getTexture()->getSize().x, DamageRadius/BlastAnim->getTexture()->getSize().x);
+        //BlastAnim->scale(DamageRadius/BlastAnim->getTexture()->getSize().x, DamageRadius/BlastAnim->getTexture()->getSize().x);
         Window->draw(*BlastAnim);
     }
 

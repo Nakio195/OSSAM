@@ -16,18 +16,27 @@ class Shield;
 class Inventory : public UserInterface
 {
     public:
-        Inventory();
+        Inventory(Spaceship *newOwner);
         void Display(sf::RenderWindow &Window);
         void HandleEvent(sf::Event &Event);
         void addItem(Item *NewItem);
-        void useItem(Item *ItemToUse);
+        bool useItem(Item *ItemToUse, unsigned int Parameter = 255);
         void selectTab(unsigned int Category);
-        bool isOpen();
+        bool OwnerNeedRefresh();
+        void OwnerRefreshed();
+
+        Weapon* getWeaponItem(unsigned int Type);
+        Shield* getShieldItem();
+
+        bool isOpened();
         void Close();
         void Open();
 
     private:
         bool Opened;
+        Spaceship *Owner;
+        bool RefreshOwner;
+
         sf::Texture Background;
         sf::Font TextFont;
         sf::Text CategoryTxt;

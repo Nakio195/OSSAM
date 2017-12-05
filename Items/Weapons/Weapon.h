@@ -20,7 +20,7 @@ class Weapon : public Item
     public:
         enum Select{Main, Secondary};
 
-        Weapon(Spaceship *pParent, string pName = "Laser Simple", string PathToWeapon = "", float pSpeed = 0.33);
+        Weapon(string pName = "Laser Simple", string PathToWeapon = "", float pSpeed = 0.33);
         virtual ~Weapon();
 
         Bullet* copyBullet();
@@ -50,7 +50,6 @@ class Weapon : public Item
         Laser *LaserBullet;
 
         Timer ReloadTimer;
-        Spaceship *Parent;
         sf::Vector2f ShootingDirection;
 
         sf::Vector2f RelativePosition;

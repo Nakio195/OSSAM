@@ -37,6 +37,9 @@ class Spaceship : public Entity
         int getShield();
         int getShieldMax();
 
+        Inventory* getInventory();
+        bool addItem(Item* newItem);
+
         bool Shoot(int UsedWeapon);
         bool Shoot(IA_ShootNode<Spaceship> *Node);
         void TakeDamage(Bullet* Damage);
@@ -97,6 +100,9 @@ class Spaceship : public Entity
 
         Spaceship *Target;
         bool Aimed;
+
+        /** Inventory **/
+        Inventory *mInventory;
 
         /** Shield **/
         Shield *MainShield;

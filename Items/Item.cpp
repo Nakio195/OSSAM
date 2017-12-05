@@ -1,5 +1,6 @@
 #include "Item.h"
 
+#include "../System/UI/UI_Slot.h"
 /**
  * @brief Item::Item
  * @param pName
@@ -11,6 +12,9 @@ Item::Item(std::string pName)
     Clock.restart();
     Category = Item::Passive;
     State = Item::InBag;
+
+    Owner = NULL;
+    mySlot = NULL;
 }
 
 void Item::setName(std::string pName)
@@ -53,6 +57,20 @@ unsigned int Item::getCategory()
 float Item::getElapsedTime()
 {
     return ElapsedTime;
+}
+
+void Item::setOwner(Spaceship* newOwner)
+{
+    Owner = newOwner;
+}
+
+void Item::setMySlot(UI_Slot* MyNewSlot)
+{
+    if(MyNewSlot != NULL)
+    {
+        setState(MyNewSlot->getType());
+        mySlot = MyNewSlot;
+    }
 }
 
 void Item::RefreshElapsedTime(bool Release)

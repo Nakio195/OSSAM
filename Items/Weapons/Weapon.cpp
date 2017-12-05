@@ -7,11 +7,9 @@
 
 extern list<Bullet*> FiredBullets;
 
-Weapon::Weapon(Spaceship *pParent, string pName, string PathToWeapon, float pSpeed) : Item(pName)
+Weapon::Weapon(string pName, string PathToWeapon, float pSpeed) : Item(pName)
 {
     setCategory(Item::Weapon);
-
-    Parent = pParent;
     setSpeed(pSpeed);
 
     ShootingDirection.x = -1;
@@ -102,7 +100,10 @@ sf::Vector2f Weapon::getShootPosition()
 
 void Weapon::draw(sf::RenderWindow *Window)
 {
-    MainSprite.setPosition(Parent->getPosition()+RelativePosition);
+    if(Owner == NULL)
+        return;
+
+    MainSprite.setPosition(Owner->getPosition()+RelativePosition);
     Window->draw(MainSprite);
 
     if(BlastAnim->isRunning())
@@ -114,6 +115,9 @@ void Weapon::draw(sf::RenderWindow *Window)
 
 bool Weapon::Shoot()
 {
+    if(Owner == NULL)
+        return false;
+
     if(ReloadTimer.Triggered())
         ReloadTimer.StopTimer();
 
@@ -122,7 +126,7 @@ bool Weapon::Shoot()
         Bullet *newBullet = copyBullet();
 
         if(newBullet->getType() == Bullet::Missile)
-           static_cast<Missile*>(newBullet)->setTarget(Parent->getAimedTarget());
+           static_cast<Missile*>(newBullet)->setTarget(Owner->getAimedTarget());
 
         newBullet->setDirection(ShootingDirection);
         newBullet->setPosition(MainSprite.getPosition().x+ShootPosition.x+RelativePosition.x, MainSprite.getPosition().y+ShootPosition.y+RelativePosition.y);

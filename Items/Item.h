@@ -4,6 +4,9 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 
+class Spaceship;
+class UI_Slot;
+
 class Item
 {
     public:
@@ -25,8 +28,14 @@ class Item
         float getElapsedTime();
         void RefreshElapsedTime(bool Release = false);
 
+        void setOwner(Spaceship *newOwner);
+        void setMySlot(UI_Slot* MyNewSlot);
+
     protected:
         void setCategory(unsigned int pCategory);
+
+        UI_Slot *mySlot;
+        Spaceship *Owner;
 
         std::string Name;
         unsigned int Category;
