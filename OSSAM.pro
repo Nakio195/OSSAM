@@ -24,7 +24,11 @@ SOURCES += main.cpp \
     Items/Weapons/Bullet/Missile.cpp \
     Items/Weapons/Bullet/Laser.cpp \
     Entities/IA/IA_Node.cpp \
-    Entities/IA/IA_Sequencer.cpp
+    Entities/IA/IA_Sequencer.cpp \
+    System/AnimationKey.cpp \
+    System/AnimationKey/RotationKey.cpp \
+    System/AnimationKey/TranslationKey.cpp \
+    System/AnimationKey/ScaleKey.cpp
 
 HEADERS += \
     Entity.h \
@@ -47,7 +51,11 @@ HEADERS += \
     Items/Weapons/Bullet/Missile.h \
     Items/Weapons/Bullet/Laser.h \
     Entities/IA/IA_Node.h \
-    Entities/IA/IA_Sequencer.h
+    Entities/IA/IA_Sequencer.h \
+    System/AnimationKey.h \
+    System/AnimationKey/RotationKey.h \
+    System/AnimationKey/TranslationKey.h \
+    System/AnimationKey/ScaleKey.h
 
 
 win32{

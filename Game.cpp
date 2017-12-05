@@ -23,7 +23,19 @@ OSSAM::OSSAM()
     Window_Height = Window.getSize().y;
     Window_Width = Window.getSize().x;
 
+    BackgroundView = sf::View(sf::Vector2f(Window_Width/2, Window_Height/2), sf::Vector2f(Window_Width, Window_Height));
+    MiddlegroundView = sf::View(sf::Vector2f(Window_Width/2, Window_Height/2), sf::Vector2f(Window_Width, Window_Height));
+
+    Animation<OSSAM>* Planet = new Animation<OSSAM>(this, 0, Animation<OSSAM>::KeySequence, Timer::Continuous);
+    Planet->loadTexture("Ressources/Levels/planet1.png");
+    Planet->setOrigin(Planet->getTexture()->getSize().x/2, Planet->getTexture()->getSize().y/2);
+    Planet->setPosition(300, Window_Height*0.8);
+    Planet->addKey(RotationKey(360, RotationKey::Clockwise, 600));
+    Planet->Start();
+    MiddlegroundElements.push_back(Planet);
+
     GameView = sf::View(sf::Vector2f(Window_Width/2, Window_Height/2), sf::Vector2f(Window_Width, Window_Height));
+    ForegroundView = sf::View(sf::Vector2f(Window_Width/2, Window_Height/2), sf::Vector2f(Window_Width, Window_Height));
     ATH_View = sf::View(sf::Vector2f(Window_Width/2, Window_Height/2), sf::Vector2f(Window_Width, Window_Height));
 
     srand(time(0));
@@ -407,11 +419,14 @@ void OSSAM::HandleEvents()
 
 void OSSAM::HandleTime()
 {
-
+    float ElapsedTime = GameClock.restart().asSeconds();
     bool Release = false;
 
     if(GameState != OSSAM::Playing)
         Release = true;
+
+    if(Release)
+        ElapsedTime = 0.0;
 
     for (list<Bullet*>::iterator it = FiredBullets.begin(); it != FiredBullets.end(); ++it)
     {
@@ -429,6 +444,13 @@ void OSSAM::HandleTime()
             CurrentSpaceship->RefreshElapsedTime(Release);
     }
 
+
+    for (list<Animation<OSSAM>*>::iterator it = MiddlegroundElements.begin(); it != MiddlegroundElements.end(); ++it)
+    {
+        Animation<OSSAM>* CurrentElement = *it;
+
+        CurrentElement->Play(ElapsedTime);
+    }
 }
 
 
@@ -436,8 +458,19 @@ void OSSAM::HandleDisplay()
 {
     Window.clear();
 
-    Window.setView(GameView);
+    Window.setView(BackgroundView);
     Window.draw(Background);
+
+    Window.setView(MiddlegroundView);
+
+    for (list<Animation<OSSAM>*>::iterator it = MiddlegroundElements.begin(); it != MiddlegroundElements.end(); ++it)
+    {
+        Animation<OSSAM>* CurrentElement = *it;
+
+        Window.draw(*CurrentElement);
+    }
+
+    Window.setView(GameView);
 
     for(list<Bullet*>::iterator it = FiredBullets.begin(); it != FiredBullets.end(); it++)
     {

@@ -11,8 +11,6 @@ extern list<Spaceship*> Spaceships;
 
 Player::Player(string pName, string PathTotexture, unsigned int pLife, unsigned int pShield, unsigned int pAttack, unsigned int pDefense, unsigned int pGenerator, float pSpeed, unsigned int pXP, unsigned int pAmmo) : Spaceship(pName, PathTotexture, pLife, pShield, pAttack, pDefense, pGenerator, pSpeed, pXP, pAmmo)
 {
-
-
     DyingAnim->setFrame(4, sf::IntRect(0, 0, 177, 153));
 
     UI->setBackground("Ressources/ATH/ath2.png");

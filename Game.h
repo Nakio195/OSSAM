@@ -11,7 +11,7 @@
 #include "System/ATH.h"
 
 
-#define ANTI_ALIAS      4
+#define ANTI_ALIAS      0
 
 class Player;
 
@@ -39,7 +39,14 @@ class OSSAM
     private:
         unsigned int GameState;
 
+        sf::Clock GameClock;
+
+        sf::View BackgroundView;
+
+        sf::View MiddlegroundView;
+        std::list<Animation<OSSAM>*> MiddlegroundElements;
         sf::View GameView;
+        sf::View ForegroundView;
         sf::View ATH_View;
 
         sf::Sprite Background;
