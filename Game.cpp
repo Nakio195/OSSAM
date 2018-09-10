@@ -3,8 +3,8 @@
 #include <ctime>
 #include <cstdlib>
 
-int Window_Height = 0;
-int Window_Width = 0;
+unsigned int Window_Height = 0;
+unsigned int Window_Width = 0;
 
 list<Bullet*> FiredBullets;
 list<Spaceship*> Spaceships;
@@ -18,7 +18,7 @@ OSSAM::OSSAM()
     sf::ContextSettings Settings;
     Settings.antialiasingLevel = ANTI_ALIAS;
 
-    Window.create(sf::VideoMode(WINDOW_WIDHT, WINDOW_HEIGHT), "#OSSAM 2017", sf::Style::Fullscreen, Settings);
+    Window.create(sf::VideoMode::getDesktopMode(), "#OSSAM 2017", sf::Style::Fullscreen, Settings);
 
     Window_Height = Window.getSize().y;
     Window_Width = Window.getSize().x;
