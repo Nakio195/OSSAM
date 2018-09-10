@@ -1,4 +1,3 @@
-TEMPLATE = app
 CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
@@ -63,28 +62,17 @@ HEADERS += \
 
 
 win32{
-INCLUDEPATH += C:/SFML/SFML_Build/SFML-2.3.2-sources-Debug-4.9.1/include
-DEPENDPATH += C:/SFML/SFML_Build/SFML-2.3.2-sources-Debug-4.9.1/include
+INCLUDEPATH += ../SFML-2.5.0/include
+DEPENDPATH += ../SFML-2.5.0/include
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../SFML_Build/SFML-2.3.2-Build-Debug-4.9.1/lib/ -lsfml-system-
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../SFML_Build/SFML-2.3.2-Build-Debug-4.9.1/lib/ -lsfml-system-d
+CONFIG(release, debug|release): LIBS += -L$$PWD/../../SFML-2.5.0/lib/ -lsfml-system
+else:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../SFML-2.5.0/lib/ -lsfml-system-d
 
-INCLUDEPATH += $$PWD/../../../SFML_Build/SFML-2.3.2-Build-Debug-4.9.1/lib
-DEPENDPATH += $$PWD/../../../SFML_Build/SFML-2.3.2-Build-Debug-4.9.1/lib
+CONFIG(release, debug|release): LIBS += -L$$PWD/../../SFML-2.5.0/lib/ -lsfml-window
+else:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../SFML-2.5.0/lib/ -lsfml-window-d
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../SFML_Build/SFML-2.3.2-Build-Debug-4.9.1/lib/ -lsfml-window-
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../SFML_Build/SFML-2.3.2-Build-Debug-4.9.1/lib/ -lsfml-window-d
-else:unix: LIBS += -L$$PWD/../../../SFML_Build/SFML-2.3.2-Build-Debug-4.9.1/lib/ -lsfml-window-
-
-INCLUDEPATH += $$PWD/../../../SFML_Build/SFML-2.3.2-Build-Debug-4.9.1/lib
-DEPENDPATH += $$PWD/../../../SFML_Build/SFML-2.3.2-Build-Debug-4.9.1/lib
-
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../SFML_Build/SFML-2.3.2-Build-Debug-4.9.1/lib/ -lsfml-graphics-
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../SFML_Build/SFML-2.3.2-Build-Debug-4.9.1/lib/ -lsfml-graphics-d
-else:unix: LIBS += -L$$PWD/../../../SFML_Build/SFML-2.3.2-Build-Debug-4.9.1/lib/ -lsfml-graphics-
-
-INCLUDEPATH += $$PWD/../../../SFML_Build/SFML-2.3.2-Build-Debug-4.9.1/include/
-DEPENDPATH += $$PWD/../../../SFML_Build/SFML-2.3.2-Build-Debug-4.9.1/include/
+CONFIG(release, debug|release): LIBS += -L$$PWD/../../SFML-2.5.0/lib/ -lsfml-graphics
+else:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../SFML-2.5.0/lib/ -lsfml-graphics-d
 }
 
 unix{
