@@ -30,6 +30,8 @@ SOURCES += main.cpp \
     System/AnimationKey/ScaleKey.cpp \
     System/EventsGenerator/MiddleGroundGenerator.cpp \
     System/EventsGenerator/GameEvent.cpp
+    System/AnimationKey/ScaleKey.cpp \
+    System/Ressources/RessourceHolder.cpp
 
 HEADERS += \
     Entity.h \
@@ -57,7 +59,9 @@ HEADERS += \
     System/AnimationKey/RotationKey.h \
     System/AnimationKey/TranslationKey.h \
     System/AnimationKey/ScaleKey.h \
+    System/AnimationKey/ScaleKey.h \
     System/EventsGenerator/MiddleGroundGenerator.h \
+    System/Ressources/RessourceHolder.h
     System/EventsGenerator/GameEvent.h
 
 

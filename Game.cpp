@@ -486,7 +486,7 @@ void OSSAM::HandleDisplay()
 
     for(list<Bullet*>::iterator it = FiredBullets.begin(); it != FiredBullets.end(); it++)
     {
-        if(*it != NULL)
+        if(*it != nullptr)
         {
             Bullet *CurrentBullet = *it;
             CurrentBullet->draw(&Window);
@@ -495,7 +495,7 @@ void OSSAM::HandleDisplay()
 
     for (list<Spaceship*>::iterator it = Spaceships.begin(); it != Spaceships.end(); ++it)
     {
-        if(*it != NULL)
+        if(*it != nullptr)
         {
             Spaceship *CurrentSpaceship = *it;
             CurrentSpaceship->draw(&Window);
@@ -510,7 +510,7 @@ void OSSAM::HandleDisplay()
 
     if(GameState == OSSAM::OnInventory)
     {
-        if(OpenedInventory == NULL)
+        if(OpenedInventory == nullptr)
             OpenedInventory = Captain->getInventory();
 
         OpenedInventory->Display(Window);
