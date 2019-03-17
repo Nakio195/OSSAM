@@ -42,18 +42,18 @@ OSSAM::OSSAM()
 
     GameState = OSSAM::Playing;
 
-    Captain = new Player("Cap'tain Khaal", "Ressources/Sprite/Player/Player.png", 5000, 200);
+    Captain = new Player("Cap'tain Khaal", "Ressources/Sprite/Player/Player.png", 500, 200);
     Captain->setFaction(Spaceship::FactionPlayer);
     Captain->setInertia(0.95);
     Captain->setTexture_HalfLife("Ressources/Sprite/Player/Player_Quarter.png");
-    Captain->setTexture_Shield("Ressources/Sprite/Player/Pouclier.png", "Ressources/Sprite/Player/Pouclier_casse.png");
+    //Captain->setTexture_Shield("Ressources/Sprite/Player/Pouclier.png", "Ressources/Sprite/Player/Pouclier_casse.png");
     Captain->setTexture_Dying("Ressources/Sprite/explosion.png");
 
 
     Weapon *MainWeapon = new Weapon("Laser Simple", "Ressources/Sprite/Player/canon.png", 0.3);
     MainWeapon->setShootingDirection(sf::Vector2f(1, 0));
     MainWeapon->setRelativePosition(sf::Vector2f(-27, -30));
-    MainWeapon->setShootPosition(sf::Vector2f(104, 25));
+    MainWeapon->setShootPosition(sf::Vector2f(104, 38));
     MainWeapon->setBlastAnim("Ressources/Sprite/blast-CP.png", 2, sf::IntRect(0, 0, 40, 24));
     MainWeapon->setIcon("Ressources/System/Icon/RG_1.png");
 
@@ -63,7 +63,7 @@ OSSAM::OSSAM()
     MainWeapon->setBullet(MainWeaponBullet);
 
 
-    Weapon *SecondaryWeapon = new Weapon("Lance Missile", "Ressources/Sprite/Player/LM.png", 1);
+    Weapon *SecondaryWeapon = new Weapon("Lance Missile", "Ressources/Sprite/Player/LM.png", 10);
     SecondaryWeapon->setShootingDirection(sf::Vector2f(1, 0));
     SecondaryWeapon->setRelativePosition(sf::Vector2f(-30, -47));
     SecondaryWeapon->setShootPosition(sf::Vector2f(55, 40));
@@ -76,7 +76,9 @@ OSSAM::OSSAM()
     SecondaryWeaponBullet.setBulletTexture("Ressources/Sprite/missile.png");
     SecondaryWeapon->setBullet(SecondaryWeaponBullet);
 
-    Shield *MainShield = new Shield(Captain);
+    Shield *MainShield = new Shield(Captain, 50);
+    MainShield->setShieldTexture("Ressources/Sprite/Player/Pouclier.png", "Ressources/Sprite/Player/Pouclier_casse.png");
+
     Captain->addItem(MainShield);
     Captain->addItem(MainWeapon);
     Captain->addItem(SecondaryWeapon);
@@ -87,7 +89,6 @@ OSSAM::OSSAM()
     Bleuton->setFaction(Spaceship::FactionWasp);
     Bleuton->setTexture_HalfLife("Ressources/Sprite/Ennemies/Intercepteur.png");
     Bleuton->setTexture_Dying("Ressources/Sprite/explo enn.png");
-    Bleuton->setTexture_Shield("Ressources/Sprite/Ennemies/Pouclier.png", "Ressources/Sprite/Ennemies/Pouclier_casse.png");
     Spaceships.push_back(Bleuton);
 
     IA_Node<Spaceship> First(Bleuton);
@@ -126,13 +127,17 @@ OSSAM::OSSAM()
     Bleuton->AddSequencerNode(First);
     Bleuton->AddSequencerNode(Second);
     Bleuton->AddSequencerNode(Third);
+
+    Shield *MainShieldB = new Shield(Bleuton, 50);
+    MainShieldB->setShieldTexture("Ressources/Sprite/Ennemies/Pouclier.png", "Ressources/Sprite/Ennemies/Pouclier_casse.png");
+    Bleuton->addItem(MainShieldB);
+
     //Bleuton->AddSequencerNode(Fourth);
 
-    Vador = new Ennemy("Vador", "Ressources/Sprite/Ennemies/ennemi2.png", 100,  0);
+    Vador = new Ennemy("Vador", "Ressources/Sprite/Ennemies/ennemi2.png", 100, 0);
     Vador->setFaction(Spaceship::FactionWasp);
     Vador->setTexture_HalfLife("Ressources/Sprite/Ennemies/ennemi2.png");
     Vador->setTexture_Dying("Ressources/Sprite/explo enn.png");
-    Vador->setTexture_Shield("Ressources/Sprite/Ennemies/Pouclier.png", "Ressources/Sprite/Ennemies/Pouclier_casse.png");
     Spaceships.push_back(Vador);
 
     IA_Node<Spaceship> FirstV(Vador);
@@ -173,11 +178,14 @@ OSSAM::OSSAM()
     Vador->AddSequencerNode(ThirdV);
     //Vador->AddSequencerNode(FourthV);
 
+    Shield *MainShieldV = new Shield(Vador, 150);
+    MainShieldV->setShieldTexture("Ressources/Sprite/Ennemies/Pouclier.png", "Ressources/Sprite/Ennemies/Pouclier_casse.png");
+    Vador->addItem(MainShieldV);
+
     Picard = new Ennemy("Bleuton", "Ressources/Sprite/Ennemies/Intercepteur.png", 100,  0);
     Picard->setFaction(Spaceship::FactionWasp);
     Picard->setTexture_HalfLife("Ressources/Sprite/Ennemies/Intercepteur.png");
     Picard->setTexture_Dying("Ressources/Sprite/explo enn.png");
-    Picard->setTexture_Shield("Ressources/Sprite/Ennemies/Pouclier.png", "Ressources/Sprite/Ennemies/Pouclier_casse.png");
     Spaceships.push_back(Picard);
 
     IA_Node<Spaceship> FirstP(Picard);
@@ -211,6 +219,10 @@ OSSAM::OSSAM()
     Picard->AddSequencerNode(FirstP);
     Picard->AddSequencerNode(SecondP);
     Picard->AddSequencerNode(ThirdP);
+
+    Shield *MainShieldP = new Shield(Picard, 50);
+    MainShieldP->setShieldTexture("Ressources/Sprite/Ennemies/Pouclier.png", "Ressources/Sprite/Ennemies/Pouclier_casse.png");
+    Picard->addItem(MainShieldP);
 
     Vador->setPosition(Window_Width*0.8, Window_Height*0.15);
     Bleuton->setPosition(Window_Width*0.9, Window_Height*0.05);

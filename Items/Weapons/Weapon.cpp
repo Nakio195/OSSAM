@@ -56,6 +56,7 @@ void Weapon::setBlastAnim(std::string Path, unsigned int NbFrames, sf::IntRect R
 {
     Blast_Texture->loadFromFile(Path);
     BlastAnim->setFrame(NbFrames, Rect);
+    BlastAnim->setOrigin(Rect.width/2, Rect.height /2);
 
 }
 

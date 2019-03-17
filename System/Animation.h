@@ -38,6 +38,7 @@ class Animation : public sf::Sprite
 
         // Frame Mode
         void setFrame(unsigned int pFrame, sf::IntRect FrameSize);
+        sf::IntRect getFrameRect();
 
         // Key Mode
         void addKey(RotationKey Key);

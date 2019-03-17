@@ -24,6 +24,7 @@ Bullet::Bullet(Spaceship *pParent, string pName, unsigned int pHit, string PathT
     BlastTexture->loadFromFile(PathToBlastTexture);
     BlastAnim = new Animation<Bullet>(this, 0.1, Animation<Bullet>::Sprite, BlastTexture);
     BlastAnim->setFrame(3, sf::IntRect(0, 0, 130, 140));
+    BlastAnim->setOrigin(BlastAnim->getFrameRect().width/2, BlastAnim->getFrameRect().height/2);
 
     setOrigin(getTexture()->getSize().x, getTexture()->getSize().y/2);
 
@@ -61,6 +62,7 @@ Bullet::Bullet(Bullet *copy) : Entity(copy->getName())
     BlastAnim->setStartAction(NULL);
     BlastAnim->setRepeatAction(NULL);
     BlastAnim->setEndAction(&Bullet::BlastAnim_EndAction);
+    BlastAnim->setOrigin(0, BlastAnim->getFrameRect().height/2);
 
     Hit = copy->Hit;
     Direction = copy->Direction;

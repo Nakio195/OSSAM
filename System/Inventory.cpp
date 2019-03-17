@@ -337,7 +337,7 @@ void Inventory::selectTab(unsigned int Category)
     }
 }
 
-void Inventory::addItem(Item *NewItem)
+bool Inventory::addItem(Item *NewItem)
 {
     switch(NewItem->getCategory())
     {
@@ -371,6 +371,7 @@ void Inventory::addItem(Item *NewItem)
             {
                 NewItem->setMySlot(Slot_MainShield);
                 Slot_MainShield->setItem(NewItem);
+                NewItem->setState(Item::Equiped);
                 RefreshOwner = true;
             }
 
@@ -383,8 +384,11 @@ void Inventory::addItem(Item *NewItem)
             break;
 
         default:
+            return false;
             break;
     }
+
+    return true;
 }
 
 
@@ -470,6 +474,8 @@ bool Inventory::useItem(Item *ItemToUse, unsigned int Parameter)
 
             break;
     }
+
+
 }
 
 

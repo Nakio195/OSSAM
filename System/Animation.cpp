@@ -130,6 +130,12 @@ void Animation<Type>::setFrame(unsigned int pFrame, sf::IntRect FrameSize)
 }
 
 template<typename Type>
+sf::IntRect Animation<Type>::getFrameRect()
+{
+    return FrameRect;
+}
+
+template<typename Type>
 void Animation<Type>::addKey(RotationKey Key)
 {
     RotationKeys.push_back(Key);

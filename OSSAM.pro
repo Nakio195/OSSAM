@@ -28,7 +28,9 @@ SOURCES += main.cpp \
     System/AnimationKey.cpp \
     System/AnimationKey/RotationKey.cpp \
     System/AnimationKey/TranslationKey.cpp \
-    System/AnimationKey/ScaleKey.cpp
+    System/AnimationKey/ScaleKey.cpp \
+    System/EventsGenerator/MiddleGroundGenerator.cpp \
+    System/EventsGenerator/GameEvent.cpp
 
 HEADERS += \
     Entity.h \
@@ -55,7 +57,9 @@ HEADERS += \
     System/AnimationKey.h \
     System/AnimationKey/RotationKey.h \
     System/AnimationKey/TranslationKey.h \
-    System/AnimationKey/ScaleKey.h
+    System/AnimationKey/ScaleKey.h \
+    System/EventsGenerator/MiddleGroundGenerator.h \
+    System/EventsGenerator/GameEvent.h
 
 
 win32{

@@ -51,8 +51,11 @@ Ennemy::Ennemy(string PathTotexture, string pName, unsigned int pLife, unsigned 
     MainWeaponBullet.setBlastTexture("Ressources/Sprite/boom2.png");
     MainWeapon->setBullet(MainWeaponBullet);
 
+    if(MainWeapon != NULL)
     addItem(MainWeapon);
-    addItem(MainShield);
+
+    if(MainShield != NULL)
+        addItem(MainShield);
 
     SecondaryWeapon = NULL;
 

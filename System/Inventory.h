@@ -19,7 +19,7 @@ class Inventory : public UserInterface
         Inventory(Spaceship *newOwner);
         void Display(sf::RenderWindow &Window);
         void HandleEvent(sf::Event &Event);
-        void addItem(Item *NewItem);
+        bool addItem(Item *NewItem);
         bool useItem(Item *ItemToUse, unsigned int Parameter = 255);
         void selectTab(unsigned int Category);
         bool OwnerNeedRefresh();

@@ -11,7 +11,7 @@
 #include "System/ATH.h"
 
 
-#define ANTI_ALIAS      0
+#define ANTI_ALIAS      4
 
 class Player;
 

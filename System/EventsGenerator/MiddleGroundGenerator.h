@@ -3,8 +3,11 @@
 
 class MiddleGroundGenerator
 {
-public:
-    MiddleGroundGenerator();
+    public:
+        MiddleGroundGenerator();
+
+        HandleTime(float ElapsedTime);
+
 };
 
 #endif // MIDDLEGROUNDGENERATOR_H

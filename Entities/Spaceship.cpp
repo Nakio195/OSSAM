@@ -22,6 +22,7 @@ Spaceship::Spaceship(string pName, string PathToTexture, unsigned int pLife, uns
 
     MainWeapon = NULL;
     SecondaryWeapon = NULL;
+    MainShield = NULL;
 
     HealthPoints = pLife;
 
@@ -61,8 +62,6 @@ Spaceship::Spaceship(string pName, string PathToTexture, unsigned int pLife, uns
     Texture_Spaceship = Texture_FullLife;
     ChangeTexture(Texture_Spaceship);
     this->setOrigin(getTexture()->getSize().x/2, getTexture()->getSize().y/2);
-
-    MainShield = new Shield(this, pShield, "Pouclier !");
 }
 
 Spaceship::~Spaceship()
@@ -152,6 +151,8 @@ bool Spaceship::Shoot(int UsedWeapon)
         if(SecondaryWeapon != NULL)
             return SecondaryWeapon->Shoot();
     }
+
+    return false;
 }
 
 
@@ -171,6 +172,8 @@ bool Spaceship::Shoot(IA_ShootNode<Spaceship> *Node)
         if(SecondaryWeapon != NULL)
             return MainWeapon->Shoot();
     }
+
+    return false;
 }
 
 void Spaceship::Die()
@@ -388,7 +391,7 @@ Inventory* Spaceship::getInventory()
 bool Spaceship::addItem(Item* newItem)
 {
     newItem->setOwner(this);
-    mInventory->addItem(newItem);
+    return mInventory->addItem(newItem);
 }
 
 ATH* Spaceship::getUI()
