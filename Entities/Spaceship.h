@@ -27,8 +27,10 @@ class Spaceship : public Entity
 
         enum SpaceshipFaction{FactionPlayer, FactionWasp};
 
+        enum SpaceshipType {Kaahl, Bleuton, Picard};
+
     public:
-        Spaceship(string pName = "Cap'tain Barbare", string PathTotexture = "Ressources/Sprite/Galile.png", unsigned int pLife = 100, unsigned int pShield = 50, unsigned int pAttack = 10, unsigned int pDefense = 10, unsigned int pGenerator = 10, float pSpeed = 600, unsigned int pXP = 0, unsigned int pAmmo = 3);
+        Spaceship(SpaceshipType pType, string pName = "Cap'tain Khaal'A.Gan", string PathTotexture = "Ressources/Sprite/Galile.png", int pLife = 100, int pShield = 50, unsigned int pAttack = 10, unsigned int pDefense = 10, unsigned int pGenerator = 10, float pSpeed = 600, unsigned int pXP = 0, unsigned int pAmmo = 3);
         ~Spaceship();
 
         Spaceship::Statistics getStats();
@@ -62,7 +64,7 @@ class Spaceship : public Entity
 
         void RefreshElapsedTime(bool Release = false);
         ATH* getUI();
-        void draw(sf::RenderWindow *Window);
+        void drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const;
 
         /** Animations and Textures **/
 
@@ -88,7 +90,7 @@ class Spaceship : public Entity
 
         int HealthPoints;
         int Faction;
-
+        SpaceshipType Type;
 
         Statistics Stats;
         bool Dying;
@@ -116,7 +118,8 @@ class Spaceship : public Entity
 
         /** Animations **/
 
-        //Icons and main
+        sf::Sprite Sprite;
+        //Icons and main        
         sf::Texture *Aimed_Texture;
         sf::Sprite Aimed_Sprite;
 

@@ -50,7 +50,7 @@ OSSAM::OSSAM()
     Captain->setTexture_Dying("Ressources/Sprite/explosion.png");
 
 
-    Weapon *MainWeapon = new Weapon("Laser Simple", "Ressources/Sprite/Player/canon.png", 0.3);
+    Weapon *MainWeapon = new Weapon("Laser Simple", "Ressources/Sprite/Player/canon.png", 0.07);
     MainWeapon->setShootingDirection(sf::Vector2f(1, 0));
     MainWeapon->setRelativePosition(sf::Vector2f(-27, -30));
     MainWeapon->setShootPosition(sf::Vector2f(104, 38));

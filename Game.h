@@ -9,6 +9,7 @@
 #include "Entities/Player.h"
 #include "Entities/Ennemy.h"
 #include "System/ATH.h"
+#include "System/Ressources/RessourceHolder.h"
 
 
 #define ANTI_ALIAS      4

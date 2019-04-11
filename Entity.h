@@ -1,14 +1,14 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include <SFML/Graphics.hpp>
 #include <string.h>
+#include <System/Scene/SceneNode.h>
 #include <System/Animation.h>
 #include "Entities/IA/IA_Sequencer.h"
 
 using namespace std;
 
-class Entity : public sf::Sprite
+class Entity : public SceneNode
 {
     public:
         Entity(string pName = "Entity");

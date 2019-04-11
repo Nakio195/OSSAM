@@ -11,8 +11,11 @@ extern int Window_Width;
 
 extern list<Spaceship*> Spaceships;
 
-Spaceship::Spaceship(string pName, string PathToTexture, unsigned int pLife, unsigned int pShield, unsigned int pAttack, unsigned int pDefense, unsigned int pGenerator, float pSpeed, unsigned int pXP, unsigned int pAmmo) : Entity(pName)
+Spaceship::Spaceship(SpaceshipType pType, string pName, string PathToTexture, int pLife, int pShield, unsigned int pAttack, unsigned int pDefense, unsigned int pGenerator, float pSpeed, unsigned int pXP, unsigned int pAmmo) : Entity(pName)
 {
+
+    Type = pType;
+
     Stats.Life = pLife;
     Stats.Shield = pShield;
     Stats.Attack = pAttack;
@@ -397,6 +400,11 @@ bool Spaceship::addItem(Item* newItem)
 ATH* Spaceship::getUI()
 {
     return UI;
+}
+
+void Spaceship::drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const
+{
+    target.draw(Sprite, states);
 }
 
 void Spaceship::draw(sf::RenderWindow *Window)

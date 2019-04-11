@@ -27,11 +27,11 @@ SOURCES += main.cpp \
     System/AnimationKey.cpp \
     System/AnimationKey/RotationKey.cpp \
     System/AnimationKey/TranslationKey.cpp \
-    System/AnimationKey/ScaleKey.cpp \
     System/EventsGenerator/MiddleGroundGenerator.cpp \
-    System/EventsGenerator/GameEvent.cpp
+    System/EventsGenerator/GameEvent.cpp \
     System/AnimationKey/ScaleKey.cpp \
-    System/Ressources/RessourceHolder.cpp
+    System/Ressources/RessourceHolder.inl \
+    System/Scene/SceneNode.cpp
 
 HEADERS += \
     Entity.h \
@@ -59,10 +59,11 @@ HEADERS += \
     System/AnimationKey/RotationKey.h \
     System/AnimationKey/TranslationKey.h \
     System/AnimationKey/ScaleKey.h \
-    System/AnimationKey/ScaleKey.h \
     System/EventsGenerator/MiddleGroundGenerator.h \
-    System/Ressources/RessourceHolder.h
-    System/EventsGenerator/GameEvent.h
+    System/Ressources/RessourceHolder.h \
+    System/EventsGenerator/GameEvent.h \
+    System/Scene/SceneNode.h \
+    System/Ressources/ResourcesIdentifiers.h
 
 
 win32{
@@ -77,6 +78,7 @@ else:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../SFML-2.5.0/lib/ -lsfml-
 
 CONFIG(release, debug|release): LIBS += -L$$PWD/../../SFML-2.5.0/lib/ -lsfml-graphics
 else:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../SFML-2.5.0/lib/ -lsfml-graphics-d
+
 }
 
 unix{

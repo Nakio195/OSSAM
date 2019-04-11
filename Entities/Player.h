@@ -11,7 +11,7 @@ using namespace std;
 class Player : public Spaceship
 {
     public:
-        Player(string pName = "Cap'tain Barbare", string PathTotexture = "Ressources/Sprite/Galile.png", unsigned int pLife = 100, unsigned int pShield = 50, unsigned int pAttack = 10, unsigned int pDefense = 10, unsigned int pGenerator = 10, float pSpeed = 300, unsigned int pXP = 0, unsigned int pAmmo = 3);
+        Player(Spaceship::SpaceshipType::Kaahl, string pName = "Cap'tain Barbare", string PathTotexture = "Ressources/Sprite/Galile.png", unsigned int pLife = 100, unsigned int pShield = 50, unsigned int pAttack = 10, unsigned int pDefense = 10, unsigned int pGenerator = 10, float pSpeed = 400, unsigned int pXP = 0, unsigned int pAmmo = 3);
 
         void AimNext();
         void AimPrevious();
